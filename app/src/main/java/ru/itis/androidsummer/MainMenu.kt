@@ -20,7 +20,7 @@ class MainMenu : AppCompatActivity() {
         val settingsButton = findViewById<ImageButton>(R.id.main_menu_button_settings)
         val helpButton = findViewById<ImageButton>(R.id.main_menu_button_help)
         startButton.setOnClickListener {
-            //startActivity(Intent(this, Teamuretc))
+            startActivity(Intent(this, Game::class.java))
         }
         helpButton.setOnClickListener {
             //startActivity(Intent(this, Teamuretc))

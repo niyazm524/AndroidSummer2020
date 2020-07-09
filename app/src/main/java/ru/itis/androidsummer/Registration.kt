@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import org.xmlpull.v1.XmlPullParser
 import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES
 import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES_REGISTRATION
 import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES_SCORE

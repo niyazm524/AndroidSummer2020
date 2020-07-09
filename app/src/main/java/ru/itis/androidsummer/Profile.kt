@@ -37,5 +37,10 @@ class Profile : AppCompatActivity() {
             Toast.makeText(applicationContext, R.string.profile_button_score_reset_notification,
                 Toast.LENGTH_LONG).show()
         }
+
+
+
+
+
     }
 }
