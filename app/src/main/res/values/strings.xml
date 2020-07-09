@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">AndroidSummer</string>
+    <string name="app_name">Oigame</string>
+    <string name="main_menu_start">start</string>
+    <string name="main_menu_rating">rating</string>
+
+    <string name="registration_name_request">Enter your name, please</string>
+    <string name="registration_name_example">Your name</string>
+    <string name="registration_button_name_setting">Alright, let"'"s go</string>
+
+
 </resources>
