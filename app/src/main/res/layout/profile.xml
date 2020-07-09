@@ -12,39 +12,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
-        android:text="@string/registration_name_request"
+        android:text="@string/profile_text_default_name"
         android:textColor="@color/colorAccent"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.19999999" />
 
-    <EditText
-        android:id="@+id/registration_text_users_name"
+    <TextView
+        android:id="@+id/profile_text_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/registration_name_example"
-        android:inputType="textPersonName"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/profile_text_default_score"
+        android:textColor="@color/colorAccent"
+        android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_text_name"
         app:layout_constraintVertical_bias="0.100000024" />
 
     <Button
-        android:id="@+id/registration_button_correct"
+        android:id="@+id/profile_button_sign_out"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
-        android:text="@string/registration_button_name_setting"
-        android:textSize="12sp"
+        android:text="@string/profile_button_sign_out"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registration_text_users_name"
-        app:layout_constraintVertical_bias="0.19999999" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_text_score" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

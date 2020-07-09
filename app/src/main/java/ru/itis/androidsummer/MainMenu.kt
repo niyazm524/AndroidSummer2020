@@ -1,6 +1,7 @@
 package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -15,7 +16,7 @@ class MainMenu : AppCompatActivity() {
         setContentView(R.layout.main_menu)
         
         val startButton = findViewById<Button>(R.id.main_menu_button_start) 
-        val ratingButton = findViewById<Button>(R.id.main_menu_button_rating)
+        val profileButton = findViewById<Button>(R.id.main_menu_button_rating)
         val settingsButton = findViewById<ImageButton>(R.id.main_menu_button_settings)
         val helpButton = findViewById<ImageButton>(R.id.main_menu_button_help)
         startButton.setOnClickListener {
@@ -27,8 +28,8 @@ class MainMenu : AppCompatActivity() {
         settingsButton.setOnClickListener {
             //startActivity(Intent(this, SettingsActivity::class.java))
         }
-        ratingButton.setOnClickListener {
-            //startActivity(Intent(this, Teamuretc))
+        profileButton.setOnClickListener {
+            startActivity(Intent(this, Profile::class.java))
         }
     }
 }
