@@ -7,7 +7,7 @@
     <string name="registration_name_example">Your name</string>
     <string name="registration_button_name_setting">Alright, let"'"s go</string>
 
-    <string name="profile_text_default_score">Your score</string>
+    <string name="profile_text_default_score">No score yet</string>
     <string name="profile_text_default_name">Your name</string>
     <string name="profile_button_sign_out">Sign out</string>
 
