@@ -6,9 +6,11 @@
     <string name="registration_name_request">Enter your name, please</string>
     <string name="registration_name_example">Your name</string>
     <string name="registration_button_name_setting">Alright, let"'"s go</string>
+    <string name="registration_text_hello">Hello," "</string>
 
     <string name="profile_text_default_score">No score yet</string>
-    <string name="profile_text_default_name">Your name</string>
-    <string name="profile_button_sign_out">Sign out</string>
-
+    <string name="profile_text_default_name">Steve</string>
+    <string name="profile_button_sign_out">Change the Name</string>
+    <string name="profile_button_reset_score">Reset the score</string>
+    <string name="profile_button_score_reset_notification">You have reset the score</string>
 </resources>

@@ -24,5 +24,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val APP_PREFERENCES = "settings"
         const val APP_PREFERENCES_REGISTRATION = "userName"
+        const val APP_PREFERENCES_SCORE = "userScore"
     }
 }
