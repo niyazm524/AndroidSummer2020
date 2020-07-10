@@ -20,13 +20,13 @@ class MainMenu : AppCompatActivity() {
         val settingsButton = findViewById<ImageButton>(R.id.main_menu_button_settings)
         val helpButton = findViewById<ImageButton>(R.id.main_menu_button_help)
         startButton.setOnClickListener {
-            startActivity(Intent(this, Game::class.java))
+            startActivity(Intent(this, GameInterface::class.java))
         }
         helpButton.setOnClickListener {
             //startActivity(Intent(this, Teamuretc))
         }
         settingsButton.setOnClickListener {
-            //startActivity(Intent(this, SettingsActivity::class.java))
+            //startActivity(Intent(this, ?::class.java))
         }
         profileButton.setOnClickListener {
             startActivity(Intent(this, Profile::class.java))

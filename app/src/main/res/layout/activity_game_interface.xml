@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context=".GameInterface">
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="409dp"
+        android:layout_height="175dp"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:shadowColor="#FDFDFD"
+        android:text="какой то вопрос"
+        android:textColorHighlight="#090909"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FDFDFD"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/wantAnswer"
+        android:layout_width="268dp"
+        android:layout_height="135dp"
+        android:backgroundTint="@color/colorAccent"
+        android:text="Есть ответ!"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/question"
+        app:layout_constraintVertical_bias="0.739" />
+
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="127dp"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="20 с"
+        android:textColor="#0712DA"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/wantAnswer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.464"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/question"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/timer2"
+        android:layout_width="126dp"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="20 с"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/people"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.464"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/question"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="78dp"
+        android:text="Очков:"
+        android:textColor="#050505"
+        android:textSize="15sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/people"
+        app:layout_constraintEnd_toStartOf="@+id/timer2"
+        app:layout_constraintHorizontal_bias="0.636"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/question"
+        app:layout_constraintVertical_bias="0.0"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/numberOfRound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginBottom="78dp"
+        android:text="Раунд:"
+        android:textColor="#050505"
+        android:textSize="15sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/people"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.288"
+        app:layout_constraintStart_toEndOf="@+id/timer2"
+        app:layout_constraintTop_toBottomOf="@+id/question"
+        app:layout_constraintVertical_bias="0.0"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/people"
+        android:layout_width="309sp"
+        android:layout_height="121sp"
+        android:background="#45FFC18A"
+        android:text="Игроки:"
+        android:textColor="#090909"
+        android:textSize="15sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/wantAnswer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:visibility="invisible" />
+
+    <Button
+        android:id="@+id/finallAnswer"
+        android:layout_width="146dp"
+        android:layout_height="74dp"
+        android:backgroundTint="#4A9C27B0"
+        android:text="Ответить"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.452"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timer"
+        app:layout_constraintVertical_bias="0.862"
+        tools:visibility="invisible" />
+
+    <EditText
+        android:id="@+id/enterAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:ems="10"
+        android:hint="Введите ответ"
+        android:inputType="textPersonName"
+        android:textColorHint="#970712DA"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/finallAnswer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.437"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/people"
+        app:layout_constraintVertical_bias="0.841" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="412dp"
+        android:layout_height="9dp"
+        android:background="#8D3AA3D6"
+        android:max="20"
+        android:orientation="horizontal"
+        android:progress="0"
+        android:progressTint="#F8F8F8"
+        app:layout_constraintBottom_toTopOf="@+id/timer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/question"
+        app:layout_constraintVertical_bias="1.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
