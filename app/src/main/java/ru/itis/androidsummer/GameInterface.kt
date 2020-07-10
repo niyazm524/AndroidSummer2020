@@ -57,6 +57,7 @@ class GameInterface : AppCompatActivity() {
             rvQuestion = question.question
             rvPrice = question.price
             tv_textquestion.text = rvQuestion
+
         }
 
         //temporary strict category and price!!
@@ -144,7 +145,19 @@ class GameInterface : AppCompatActivity() {
                 }
             }
         }
-        time.start()
+//        time.start()
+        questionsAdapter.setOnItemClickListener {
+                question ->  Toast.makeText(this,"$question",Toast.LENGTH_SHORT).show()
+            wantAnswer.visibility = View.VISIBLE
+            rv_questions.visibility = View.INVISIBLE
+            tv_textquestion.visibility = View.VISIBLE
+            rvAnswer = question.answer
+            rvQuestion = question.question
+            rvPrice = question.price
+            tv_textquestion.text = rvQuestion
+            time.start()
+        }
+
 
     }
 
