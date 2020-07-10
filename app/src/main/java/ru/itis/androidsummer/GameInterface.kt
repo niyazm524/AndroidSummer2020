@@ -73,7 +73,10 @@ class GameInterface : AppCompatActivity() {
         fun resetQuestion(){
             heClick = false
             heFinalClick = false
-
+            rvAnswer = null
+            rvQuestion = null
+            rvPrice = 0
+            enterAnswer.setText("")
         }
 
 
