@@ -168,14 +168,14 @@
         android:orientation="horizontal"
         android:progress="0"
         android:progressTint="#F8F8F8"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/timer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/timer2"
         app:layout_constraintVertical_bias="1.0"
-        tools:visibility="invisible" />
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/tv_textquestion"
