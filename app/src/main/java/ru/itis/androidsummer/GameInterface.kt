@@ -185,53 +185,41 @@ class GameInterface : AppCompatActivity() {
     }
 
     //don't ye dare touch it!!
-    private fun parse(hashMap: HashMap<String, TreeMap<Int, HashSet<List<String>>>>){
+    private fun parseQuestion(): List<Category> {
+        val categories =  ArrayList<Category>()
         try {
             val parser: XmlPullParser = resources.getXml(R.xml.quizes)
             while (parser.eventType != XmlPullParser.END_DOCUMENT) {
-                if (parser.eventType == XmlPullParser.START_TAG
-                    && parser.name == "quiz"
-                ) {
-                    var category = ""
+                if (parser.name == "category") {
+                    val category = parser.getAttributeValue(0)
+                    categories.add(Category(category, ArrayList<Question>()))
+                } else if (parser.eventType == XmlPullParser.START_TAG
+                    && parser.name == "quiz") {
                     var price: Int = 0
-                    var array = ArrayList<String>(6)
+                    var question = ""
+                    var right = ""
                     while (parser.eventType != XmlPullParser.END_TAG || parser.name != "quiz") {
-                        if (parser.eventType == XmlPullParser.START_TAG){
-                            when(parser.name){
-                                "category" -> category = parser.getAttributeValue(0).toLowerCase()
+                        if (parser.eventType == XmlPullParser.START_TAG) {
+                            when (parser.name) {
                                 "price" -> price = parser.getAttributeValue(0).toInt()
-                                "question_itself" -> array.add(parser.getAttributeValue(0))
-                                "right_variant" -> {
-                                    for (i: Int in 0..(parser.attributeCount - 1)) {
-                                        array.add(parser.getAttributeValue(i).toLowerCase())
-                                    }
-                                }
+                                "question_itself" -> question = parser.getAttributeValue(0)
+                                "right_variant" -> right = parser.getAttributeValue(0)
+                                /*{
+                        for (i: Int in 0..(parser.attributeCount - 1)) {
+                            array.add(parser.getAttributeValue(i).toLowerCase())
+                        }*/
                             }
                         }
                         parser.next()
                     }
-                    if(hashMap.containsKey(category)){
-                        if (hashMap.get(category)!!.contains(price)){
-                            hashMap.get(category)!!.get(price)!!.add(array)
-                        }else{
-                            val hashSet = HashSet<List<String>>()
-                            hashSet.add(array)
-                            hashMap.get(category)!!.put(price,hashSet)
-                        }
-                    } else{
-                        val hashSet = HashSet<List<String>>()
-                        hashSet.add(array)
-                        val treeMap = TreeMap<Int,HashSet<List<String>>>()
-                        treeMap.put(price,hashSet)
-                        hashMap.put(category,treeMap)
-                    }
-
+                    categories.last().getArrayList().add(Question(price,question,right))
                 }
                 parser.next()
             }
         } catch (t: Throwable) {
             Toast.makeText(this, t.toString(), Toast.LENGTH_LONG).show()
         }
+        return categories
     }
 
     fun getPack() {
