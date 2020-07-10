@@ -38,7 +38,7 @@ class GameInterface : AppCompatActivity() {
 
         //that's necessary
         val hashMap = HashMap<String,TreeMap<Int,HashSet<List<String>>>>()
-        parse(hashMap)
+        parseQuestion()
         //don't delete
 
         getPack()
@@ -201,7 +201,7 @@ class GameInterface : AppCompatActivity() {
                         }
                         parser.next()
                     }
-                    categories.last().getArrayList().add(Question(price,question,right))
+                    categories.last().transformIntoArray().add(Question(price,question,right))
                 }
                 parser.next()
             }
