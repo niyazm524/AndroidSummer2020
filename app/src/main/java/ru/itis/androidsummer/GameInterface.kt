@@ -52,9 +52,11 @@ class GameInterface : AppCompatActivity() {
                 question ->  Toast.makeText(this,"$question",Toast.LENGTH_SHORT).show()
             wantAnswer.visibility = View.VISIBLE
             rv_questions.visibility = View.INVISIBLE
+            tv_textquestion.visibility = View.VISIBLE
             rvAnswer = question.answer
             rvQuestion = question.question
             rvPrice = question.price
+            tv_textquestion.text = rvQuestion
         }
 
         //temporary strict category and price!!
@@ -166,6 +168,7 @@ class GameInterface : AppCompatActivity() {
         finallAnswer.visibility = View.INVISIBLE
         people.visibility = View.INVISIBLE
         timer2.visibility = View.INVISIBLE
+        tv_textquestion.visibility = View.INVISIBLE
     }
 
     //don't ye dare touch it!!
