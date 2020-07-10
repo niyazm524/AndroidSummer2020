@@ -21,7 +21,7 @@
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
@@ -52,7 +52,7 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/wantAnswer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.464"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/timer2"
         app:layout_constraintVertical_bias="0.0" />
@@ -68,10 +68,10 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/people"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rv_questions"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.09" />
 
     <TextView
         android:id="@+id/count"
@@ -86,10 +86,10 @@
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/people"
         app:layout_constraintEnd_toStartOf="@+id/timer2"
-        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rv_questions"
-        app:layout_constraintVertical_bias="0.065"
+        app:layout_constraintVertical_bias="0.023"
         tools:visibility="visible" />
 
     <TextView
@@ -104,7 +104,7 @@
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/people"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.288"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/timer2"
         app:layout_constraintTop_toBottomOf="@+id/rv_questions"
         app:layout_constraintVertical_bias="0.0"
@@ -114,6 +114,7 @@
         android:id="@+id/people"
         android:layout_width="309sp"
         android:layout_height="121sp"
+        android:layout_marginTop="141dp"
         android:background="#45FFC18A"
         android:text="Игроки:"
         android:textColor="#090909"
@@ -123,7 +124,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.372"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_questions"
         app:layout_constraintVertical_bias="0.865"
         tools:visibility="invisible" />
 
@@ -171,9 +172,9 @@
         android:progressTint="#F8F8F8"
         app:layout_constraintBottom_toTopOf="@+id/timer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/timer2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

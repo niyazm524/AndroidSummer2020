@@ -68,8 +68,8 @@ class GameInterface : AppCompatActivity() {
         val me =  prefs.getString(APP_PREFERENCES_REGISTRATION,resources.getString(R.string.profile_text_default_name))
         val scopeView = findViewById<TextView>(R.id.count)
         val folksView = findViewById<TextView>(R.id.people)
-        scopeView.text = score.toString()
-        folksView.text = me
+        scopeView.text = "Очки:$score"
+        folksView.text = "ИГРОКИ: \n$me"
         //i'll fix it later as soon as Temur will have his table
 
         var heClick = false
@@ -262,7 +262,7 @@ class GameInterface : AppCompatActivity() {
         questionList.add(Question(470, "ЯзыкиВопрос4", "1"))
         questionList.add(Question(570, "ЯзыкиВопрос5", "1"))
 
-        categories.add(Category("Китап", questionList))
+        categories.add(Category("book", questionList))
 
 
 
