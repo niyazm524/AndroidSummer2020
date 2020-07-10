@@ -1,57 +1,96 @@
 <quizes>
-    <quiz>
-        <category
-            name = "sport" />
-        <price
-            number = "500" />
-        <question_itself
-            text = "Do you like Minecraft?" />
-        <right_variant
-            variant1 = "Yes"
-            variant2 = "Yep"/>
-    </quiz>
-    <quiz>
-        <category
-            name = "sport" />
-        <price
-            number = "200" />
-        <question_itself
-            text = "Do you like Tennis?" />
-        <right_variant
-            variant1 = "Yes"
-            variant2 = "Yep" />
-    </quiz>
-    <quiz>
-        <category
-            name = "sport" />
-        <price
-            number = "200" />
-        <question_itself
-            text = "Do you like Gambling?" />
-        <right_variant
-            variant1 = "Yes"
-            variant2 = "Yep" />
-    </quiz>
-    <quiz>
-        <category
-            name = "sport" />
-        <price
-            number = "100" />
-        <question_itself
-            text = "Do you like Push ups?" />
-        <right_variant
-            variant1 = "Yes"
-            variant2 = "Yep" />
-    </quiz>
-    <quiz>
-        <category
-            name = "sport" />
-        <price
-            number = "100" />
-        <question_itself
-            text = "Do you like Penguins?" />
-        <right_variant
-            variant1 = "Yes"
-            variant2 = "Yep" />
-    </quiz>
+    <category name = "sport">
+        <quiz>
+            <price
+                number = "500" />
+            <question_itself
+                text = "Do you like Minecraft?" />
+            <right_variant
+                variant1 = "Yes"
+                variant2 = "Yep"/>
+        </quiz>
+        <quiz>
+            <price
+                number = "200" />
+            <question_itself
+                text = "Do you like Tennis?" />
+            <right_variant
+                variant1 = "Yes"
+                variant2 = "Yep" />
+        </quiz>
+        <quiz>
+            <price
+                number = "200" />
+            <question_itself
+                text = "Do you like Gambling?" />
+            <right_variant
+                variant1 = "Yes"
+                variant2 = "Yep" />
+        </quiz>
+        <quiz>
+            <price
+                number = "100" />
+            <question_itself
+                text = "Do you like Push ups?" />
+            <right_variant
+                variant1 = "Yes"
+                variant2 = "Yep" />
+        </quiz>
+        <quiz>
+            <price
+                number = "100" />
+            <question_itself
+                text = "Do you like Penguins?" />
+            <right_variant
+                variant1 = "Yes"
+                variant2 = "Yep" />
+        </quiz>
+    </category>
+    <category name = "games">
+        <quiz>
+            <price
+                number = "500" />
+            <question_itself
+                text = "Do you like Minecraft?" />
+            <right_variant
+                variant1 = "Yes"
+                variant2 = "Yep"/>
+        </quiz>
+        <quiz>
+            <price
+                number = "200" />
+            <question_itself
+                text = "Do you like Tennis?" />
+            <right_variant
+                variant1 = "Yes"
+                variant2 = "Yep" />
+        </quiz>
+        <quiz>
+            <price
+                number = "200" />
+            <question_itself
+                text = "Do you like Gambling?" />
+            <right_variant
+                variant1 = "Yes"
+                variant2 = "Yep" />
+        </quiz>
+        <quiz>
+            <price
+                number = "100" />
+            <question_itself
+                text = "Do you like Push ups?" />
+            <right_variant
+                variant1 = "Yes"
+                variant2 = "Yep" />
+        </quiz>
+        <quiz>
+            <price
+                number = "100" />
+            <question_itself
+                text = "Do you like Penguins?" />
+            <right_variant
+                variant1 = "Yes"
+                variant2 = "Yep" />
+        </quiz>
+    </category>
 </quizes>
