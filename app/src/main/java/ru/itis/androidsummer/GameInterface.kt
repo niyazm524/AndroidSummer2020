@@ -153,6 +153,7 @@ class GameInterface : AppCompatActivity() {
             rvPrice = question.price
             tv_textquestion.text = rvQuestion
             time.start()
+            progressBar.visibility = View.VISIBLE
         }
 
 
