@@ -37,6 +37,7 @@ class Registration : AppCompatActivity() {
                             resources.getString(R.string.profile_text_default_name)),
                                 Toast.LENGTH_LONG).show()
             startActivity(Intent(this, MainMenu::class.java))
+            finish()
         }
     }
 }
