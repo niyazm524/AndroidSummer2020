@@ -23,7 +23,7 @@ class MainMenu : AppCompatActivity() {
             startActivity(Intent(this, GameInterface::class.java))
         }
         helpButton.setOnClickListener {
-            //startActivity(Intent(this, Teamuretc))
+            startActivity(Intent(this, Help::class.java))
         }
         settingsButton.setOnClickListener {
             //startActivity(Intent(this, ?::class.java))

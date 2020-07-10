@@ -16,6 +16,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
+import kotlin.concurrent.timer
 
 class GameInterface : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,31 +45,29 @@ class GameInterface : AppCompatActivity() {
 
 
 
-        finallAnswer.setOnClickListener{
-            if (case.contains(answer.text.toString().toLowerCase())) {
-                hefinallClick = true
-                startActivity(Intent(this, MainMenu::class.java))
-            } else{
-                hefinallClick = false
-                startActivity(Intent(this, MainMenu::class.java))
-            }
-        }
+
 
         wantAnswer.setOnClickListener {
             heClick = true
+
         }
 
 
-        var x = price //надо будет удалить после того как Булатек сделает туду
+        val x = price
         val time2 = object : CountDownTimer(20000,1000) {
             override fun onFinish() {
+                //TODO : Возвращение к таблице с вопросами или хз че
                 if(!hefinallClick or (bar.progress == 0)) {
                     timer2.text = "Вы не успели ввести ответ!"
-//                    TODO("Булатек, тут нужно количество вычитаемых/добавляемых очков указать в тост вместо икса")
                     Toast.makeText(this@GameInterface, "-$x очков!", Toast.LENGTH_SHORT).show()
+                    cancel()
+                    startActivity(Intent(this@GameInterface, MainMenu::class.java))
                 } else {
                     Toast.makeText(this@GameInterface, "+$x очков!", Toast.LENGTH_SHORT).show()
+                    cancel()
+                    startActivity(Intent(this@GameInterface, MainMenu::class.java))
                 }
+
             }
             @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
@@ -77,11 +76,15 @@ class GameInterface : AppCompatActivity() {
                 bar.progress = (bar.max - progress)
                 if(hefinallClick) {
                     onFinish()
-                    //cancel()
-//                    TODO("Возвращение к таблице с вопросами или хз че ")
                 }
             }
 
+        }
+
+        finallAnswer.setOnClickListener{
+            hefinallClick = case.contains(answer.text.toString().toLowerCase())
+            time2.onFinish()
+            //startActivity(Intent(this, MainMenu::class.java))
         }
 
 
