@@ -239,7 +239,7 @@ class GameInterface : AppCompatActivity() {
         questionList.add(Question(470, "ЯзыкиВопрос4", "1"))
         questionList.add(Question(570, "ЯзыкиВопрос5", "1"))
 
-        categories.add(Category("Китап", questionList))
+        categories.add(Category("Сора", questionList))
 
 
 
