@@ -2,11 +2,9 @@ package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -24,9 +22,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
-import kotlin.concurrent.timer
 
 class GameInterface : AppCompatActivity() {
+
     private val questionsAdapter = QuestionsAdapter()
     var rvAnswer:String? = null
     var rvQuestion:String? = null
@@ -65,18 +63,24 @@ class GameInterface : AppCompatActivity() {
         //i'll fix it later as soon as Temur will have his table
 
         var heClick = false
-        var hefinallClick:Boolean = false
+        var heFinalClick:Boolean = false
         val bar: ProgressBar = findViewById(R.id.progressBar)
 
         wantAnswer.setOnClickListener {
             heClick = true
         }
 
+        fun resetQuestion(){
+            heClick = false
+            heFinalClick = false
+
+        }
+
 
         val time2 = object : CountDownTimer(20000,1000) {
             override fun onFinish() {
                 //TODO : Возвращение к таблице с вопросами или хз че
-                if(!hefinallClick or (bar.progress == 0)) {
+                if(!heFinalClick or (bar.progress == 0)) {
                     timer2.text = "Вы не успели ввести ответ!"
                     Toast.makeText(this@GameInterface, "-$rvPrice очков!", Toast.LENGTH_SHORT).show()
                     prefs.edit().putInt(APP_PREFERENCES_SCORE,score - rvPrice).apply()
@@ -90,6 +94,7 @@ class GameInterface : AppCompatActivity() {
 
                     //startActivity(Intent(this@GameInterface, MainMenu::class.java))
                 }
+                resetQuestion()
                 makeInvisibleAnswerPart()
                 rv_questions.visibility = View.VISIBLE
 
@@ -99,7 +104,7 @@ class GameInterface : AppCompatActivity() {
                 timer2.text = "Осталось времени:" + millisUntilFinished / 1000
                 var progress = (millisUntilFinished/1000).toInt()
                 bar.progress = (bar.max - progress)
-                if(hefinallClick) {
+                if(heFinalClick) {
                     onFinish()
                 }
             }
@@ -107,7 +112,7 @@ class GameInterface : AppCompatActivity() {
         }
 
         finallAnswer.setOnClickListener{
-            hefinallClick = (answer.text.toString() == rvAnswer)
+            heFinalClick = (answer.text.toString() == rvAnswer)
 
             time2.onFinish()
 
@@ -172,6 +177,7 @@ class GameInterface : AppCompatActivity() {
         timer2.visibility = View.INVISIBLE
         tv_textquestion.visibility = View.INVISIBLE
     }
+
 
     //don't ye dare touch it!!
     private fun parseQuestion(): List<Category> {
