@@ -47,7 +47,6 @@ class GameInterface : AppCompatActivity() {
 
         questionsAdapter.setOnItemClickListener {
                 question ->  Toast.makeText(this,"$question",Toast.LENGTH_SHORT).show()
-            Log.d("ClickListener","Tap on: $question")
         }
 
         //temporary strict category and price!!

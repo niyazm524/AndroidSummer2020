@@ -32,8 +32,8 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="     У каждого игрока имеется свой персональный счет.
 В начале игры у всех игроков по 0 очков.\n\n
      Начинается всё с того, что игрок выбирает вопрос из игрового табло.
