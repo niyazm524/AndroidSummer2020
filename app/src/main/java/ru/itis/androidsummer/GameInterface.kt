@@ -216,7 +216,7 @@ class GameInterface : AppCompatActivity() {
                 parser.next()
             }
         } catch (t: Throwable) {
-            Toast.makeText(this, t.toString(), Toast.LENGTH_LONG).show()
+           Toast.makeText(this, t.toString(), Toast.LENGTH_LONG).show()
         }
         return categories
     }
