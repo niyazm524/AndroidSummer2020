@@ -75,6 +75,7 @@ class QuestionsAdapter : RecyclerView.Adapter<CategoriesViewHolder>() {
 
     private fun onItemClick(question: Question) {
         itemClickListener?.let { it(question) }
+
     }
 
     fun setOnItemClickListener(listener: (question:Question) -> Unit) {
@@ -98,7 +99,9 @@ class CategoriesViewHolder(override val containerView: View) :
                         it1
                     )
                 }
+                tv_text.visibility = View.INVISIBLE
             }
+
         }
         tv_text.textSize = 25F
         if (index != null) {

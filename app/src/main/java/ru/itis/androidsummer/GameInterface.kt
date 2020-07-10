@@ -36,7 +36,6 @@ class GameInterface : AppCompatActivity() {
 
         //that's necessary
         val hashMap = HashMap<String,TreeMap<Int,HashSet<List<String>>>>()
-        parseQuestion()
         //don't delete
 
         getPack()
@@ -50,16 +49,18 @@ class GameInterface : AppCompatActivity() {
         //temporary strict category and price!!
         val  category = "sport"
         val price = 100
+        var countRound = 1
         var case: List<String> =  hashMap.get(category)?.get(price)?.random() ?:  ArrayList<String>()
         val answer: EditText = findViewById(R.id.enterAnswer)
         case.drop(1)
         val prefs = getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE)
         val score =  prefs.getInt(APP_PREFERENCES_SCORE,0)
         val me =  prefs.getString(APP_PREFERENCES_REGISTRATION,resources.getString(R.string.profile_text_default_name))
-        val scopeView = findViewById<TextView>(R.id.count)
-        val folksView = findViewById<TextView>(R.id.people)
-        scopeView.text = "Очки:$score"
-        folksView.text = "ИГРОКИ: \n$me"
+//        val scopeView = findViewById<TextView>(R.id.count)
+//        val folksView = findViewById<TextView>(R.id.people)
+        count.text = "Очки:$score"
+        people.text = "ИГРОКИ: \n$me"
+        numberOfRound.text = "Раунд:" + (countRound)
         //i'll fix it later as soon as Temur will have his table
 
         var heClick = false
@@ -94,12 +95,15 @@ class GameInterface : AppCompatActivity() {
                     Toast.makeText(this@GameInterface, "+$rvPrice очков!", Toast.LENGTH_SHORT).show()
                     prefs.edit().putInt(APP_PREFERENCES_SCORE,score + rvPrice).apply()
                     cancel()
-
                     //startActivity(Intent(this@GameInterface, MainMenu::class.java))
                 }
                 resetQuestion()
                 makeInvisibleAnswerPart()
                 rv_questions.visibility = View.VISIBLE
+                count.visibility = View.VISIBLE
+                numberOfRound.visibility = View.VISIBLE
+                countRound++
+                numberOfRound.text = "Раунд:" + (countRound)
 
             }
             @SuppressLint("SetTextI18n")
@@ -156,6 +160,7 @@ class GameInterface : AppCompatActivity() {
             time.start()
             progressBar.visibility = View.VISIBLE
             timer.visibility = View.VISIBLE
+            numberOfRound.text = "Раунд:" + (countRound)
         }
 
 
@@ -191,11 +196,10 @@ class GameInterface : AppCompatActivity() {
         try {
             val parser: XmlPullParser = resources.getXml(R.xml.quizes)
             while (parser.eventType != XmlPullParser.END_DOCUMENT) {
-                if (parser.name == "category") {
+                if (parser.eventType == XmlPullParser.START_TAG && parser.name == "category") {
                     val category = parser.getAttributeValue(0)
                     categories.add(Category(category, ArrayList<Question>()))
-                } else if (parser.eventType == XmlPullParser.START_TAG
-                    && parser.name == "quiz") {
+                } else if (parser.eventType == XmlPullParser.START_TAG && parser.name == "quiz") {
                     var price: Int = 0
                     var question = ""
                     var right = ""
@@ -205,10 +209,6 @@ class GameInterface : AppCompatActivity() {
                                 "price" -> price = parser.getAttributeValue(0).toInt()
                                 "question_itself" -> question = parser.getAttributeValue(0)
                                 "right_variant" -> right = parser.getAttributeValue(0)
-                                /*{
-                        for (i: Int in 0..(parser.attributeCount - 1)) {
-                            array.add(parser.getAttributeValue(i).toLowerCase())
-                        }*/
                             }
                         }
                         parser.next()
@@ -224,7 +224,7 @@ class GameInterface : AppCompatActivity() {
     }
 
     fun getPack() {
-        questionsAdapter.inputList(getCategoryList())
+        questionsAdapter.inputList(parseQuestion())
 
     }
 
