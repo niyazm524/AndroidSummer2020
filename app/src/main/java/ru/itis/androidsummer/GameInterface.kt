@@ -112,6 +112,7 @@ class GameInterface : AppCompatActivity() {
 
         finallAnswer.setOnClickListener{
             hefinallClick = (answer.text.toString() == rvAnswer)
+            makeInvisibleAnswerPart()
             rv_questions.visibility = View.VISIBLE
             time2.onFinish()
         }
@@ -122,14 +123,7 @@ class GameInterface : AppCompatActivity() {
                 timer.text = "Осталось времени:" + millisUntilFinished / 1000
                 if(heClick) {
 //                    time2.start()
-                    count.visibility = View.VISIBLE
-                    numberOfRound.visibility = View.VISIBLE
-                    wantAnswer.visibility = View.INVISIBLE
-                    timer.visibility = View.INVISIBLE
-                    enterAnswer.visibility = View.VISIBLE
-                    finallAnswer.visibility = View.VISIBLE
-                    people.visibility = View.VISIBLE
-                    timer2.visibility = View.VISIBLE
+                    makeVisibleAnswerPart()
                     onFinish()
                     time2.start()
                     cancel()
@@ -146,6 +140,28 @@ class GameInterface : AppCompatActivity() {
         }
         time.start()
 
+    }
+
+
+    private fun makeVisibleAnswerPart(){
+        count.visibility = View.VISIBLE
+        numberOfRound.visibility = View.VISIBLE
+        wantAnswer.visibility = View.INVISIBLE
+        timer.visibility = View.INVISIBLE
+        enterAnswer.visibility = View.VISIBLE
+        finallAnswer.visibility = View.VISIBLE
+        people.visibility = View.VISIBLE
+        timer2.visibility = View.VISIBLE
+    }
+
+    private fun makeInvisibleAnswerPart(){
+        count.visibility = View.INVISIBLE
+        numberOfRound.visibility = View.INVISIBLE
+        timer.visibility = View.VISIBLE
+        enterAnswer.visibility = View.INVISIBLE
+        finallAnswer.visibility = View.INVISIBLE
+        people.visibility = View.INVISIBLE
+        timer2.visibility = View.INVISIBLE
     }
 
     //don't ye dare touch it!!
