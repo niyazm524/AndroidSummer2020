@@ -50,6 +50,8 @@ class GameInterface : AppCompatActivity() {
 
         questionsAdapter.setOnItemClickListener {
                 question ->  Toast.makeText(this,"$question",Toast.LENGTH_SHORT).show()
+            wantAnswer.visibility = View.VISIBLE
+            rv_questions.visibility = View.INVISIBLE
             rvAnswer = question.answer
             rvQuestion = question.question
             rvPrice = question.price
@@ -110,6 +112,7 @@ class GameInterface : AppCompatActivity() {
 
         finallAnswer.setOnClickListener{
             hefinallClick = (answer.text.toString() == rvAnswer)
+            rv_questions.visibility = View.VISIBLE
             time2.onFinish()
         }
 

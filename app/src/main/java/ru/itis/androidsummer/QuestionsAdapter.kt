@@ -34,6 +34,10 @@ class QuestionsAdapter : RecyclerView.Adapter<CategoriesViewHolder>() {
         )
     }
 
+    fun setInvisible(question: Question){
+        
+    }
+
     override fun getItemCount(): Int {
         var count = 0
         for (category in categories) {
