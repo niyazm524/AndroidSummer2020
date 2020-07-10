@@ -209,9 +209,9 @@ class GameInterface : AppCompatActivity() {
         questionList.add(Question(300, "ИгрыВопрос3", "1"))
         questionList.add(Question(400, "ИгрыВопрос4", "1"))
         questionList.add(Question(500, "ИгрыВопрос5", "1"))
-        questionList.add(Question(600, "ИгрыВопрос6", "1"))
 
-        categories.add(Category("gamese", questionList))
+
+        categories.add(Category("Game", questionList))
         questionList = ArrayList<Question>()
 
         questionList.add(Question(150, "АнимеВопрос1", "1"))
@@ -219,8 +219,8 @@ class GameInterface : AppCompatActivity() {
         questionList.add(Question(350, "АнимеВопрос3", "1"))
         questionList.add(Question(450, "АнимеВопрос4", "1"))
         questionList.add(Question(550, "АнимеВопрос5", "1"))
-        questionList.add(Question(650, "АнимеВопрос6", "1"))
-        categories.add(Category("Animeee", questionList))
+
+        categories.add(Category("Anime", questionList))
         questionList = ArrayList<Question>()
 
         questionList.add(Question(120, "ФильмыВопрос1", "1"))
@@ -228,7 +228,7 @@ class GameInterface : AppCompatActivity() {
         questionList.add(Question(320, "ФильмыВопрос3", "1"))
         questionList.add(Question(420, "ФильмыВопрос4", "1"))
         questionList.add(Question(520, "ФильмыВопрос5", "1"))
-        questionList.add(Question(620, "ФильмыВопрос6", "1"))
+
         categories.add(Category("Фильмы", questionList))
 
         questionList = ArrayList<Question>()
@@ -238,8 +238,8 @@ class GameInterface : AppCompatActivity() {
         questionList.add(Question(370, "ЯзыкиВопрос3", "1"))
         questionList.add(Question(470, "ЯзыкиВопрос4", "1"))
         questionList.add(Question(570, "ЯзыкиВопрос5", "1"))
-        questionList.add(Question(670, "ЯзыкиВопрос6", "1"))
-        categories.add(Category("Китапee", questionList))
+
+        categories.add(Category("Китап", questionList))
 
 
 
