@@ -116,9 +116,10 @@ class GameInterface : AppCompatActivity() {
 
         finallAnswer.setOnClickListener{
             heFinalClick = (answer.text.toString() == rvAnswer)
-
             time2.onFinish()
-
+            progressBar.visibility = View.INVISIBLE
+            timer2.visibility = View.INVISIBLE
+//            timer.visibility = View.INVISIBLE
         }
 
 
@@ -154,6 +155,7 @@ class GameInterface : AppCompatActivity() {
             tv_textquestion.text = rvQuestion
             time.start()
             progressBar.visibility = View.VISIBLE
+            timer.visibility = View.VISIBLE
         }
 
 
@@ -174,7 +176,7 @@ class GameInterface : AppCompatActivity() {
     private fun makeInvisibleAnswerPart(){
         count.visibility = View.INVISIBLE
         numberOfRound.visibility = View.INVISIBLE
-        timer.visibility = View.VISIBLE
+//        timer.visibility = View.VISIBLE
         enterAnswer.visibility = View.INVISIBLE
         finallAnswer.visibility = View.INVISIBLE
         people.visibility = View.INVISIBLE
