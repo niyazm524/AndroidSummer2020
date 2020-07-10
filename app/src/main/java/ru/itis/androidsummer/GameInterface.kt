@@ -89,13 +89,17 @@ class GameInterface : AppCompatActivity() {
                     Toast.makeText(this@GameInterface, "-$rvPrice очков!", Toast.LENGTH_SHORT).show()
                     prefs.edit().putInt(APP_PREFERENCES_SCORE,score - rvPrice).apply()
                     cancel()
+
                     //startActivity(Intent(this@GameInterface, MainMenu::class.java))
                 } else {
                     Toast.makeText(this@GameInterface, "+$rvPrice очков!", Toast.LENGTH_SHORT).show()
                     prefs.edit().putInt(APP_PREFERENCES_SCORE,score + rvPrice).apply()
                     cancel()
+
                     //startActivity(Intent(this@GameInterface, MainMenu::class.java))
                 }
+                makeInvisibleAnswerPart()
+                rv_questions.visibility = View.VISIBLE
 
             }
             @SuppressLint("SetTextI18n")
@@ -112,9 +116,9 @@ class GameInterface : AppCompatActivity() {
 
         finallAnswer.setOnClickListener{
             hefinallClick = (answer.text.toString() == rvAnswer)
-            makeInvisibleAnswerPart()
-            rv_questions.visibility = View.VISIBLE
+
             time2.onFinish()
+
         }
 
 
