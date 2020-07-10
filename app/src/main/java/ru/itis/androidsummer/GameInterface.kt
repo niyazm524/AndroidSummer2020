@@ -1,17 +1,25 @@
 package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_game_interface.*
 import org.xmlpull.v1.XmlPullParser
+import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES
+import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES_REGISTRATION
+import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES_SCORE
+import ru.itis.androidsummer.data.Category
+import ru.itis.androidsummer.data.Question
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -19,7 +27,9 @@ import kotlin.collections.HashSet
 import kotlin.concurrent.timer
 
 class GameInterface : AppCompatActivity() {
+    private val questionsAdapter = QuestionsAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_interface)
 
@@ -28,28 +38,39 @@ class GameInterface : AppCompatActivity() {
         parse(hashMap)
         //don't delete
 
+        getPack()
+        rv_questions.apply {
+            layoutManager =
+                GridLayoutManager(this@GameInterface, questionsAdapter.getCategorySize() + 1)
+            adapter = questionsAdapter
+        }
+
+        questionsAdapter.setOnItemClickListener {
+                question ->  Toast.makeText(this,"$question",Toast.LENGTH_SHORT).show()
+            Log.d("ClickListener","Tap on: $question")
+        }
+
         //temporary strict category and price!!
         val  category = "sport"
         val price = 100
         var case: List<String> =  hashMap.get(category)?.get(price)?.random() ?:  ArrayList<String>()
-        val question: TextView = findViewById(R.id.question)
         val answer: EditText = findViewById(R.id.enterAnswer)
-        question.setText(case.get(0))
         case.drop(1)
+        val prefs = getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE)
+        val score =  prefs.getInt(APP_PREFERENCES_SCORE,0)
+        val me =  prefs.getString(APP_PREFERENCES_REGISTRATION,resources.getString(R.string.profile_text_default_name))
+        val scopeView = findViewById<TextView>(R.id.count)
+        val folksView = findViewById<TextView>(R.id.people)
+        scopeView.text = score.toString()
+        folksView.text = me
         //i'll fix it later as soon as Temur will have his table
-
 
         var heClick = false
         var hefinallClick = false
         val bar: ProgressBar = findViewById(R.id.progressBar)
 
-
-
-
-
         wantAnswer.setOnClickListener {
             heClick = true
-
         }
 
 
@@ -60,10 +81,12 @@ class GameInterface : AppCompatActivity() {
                 if(!hefinallClick or (bar.progress == 0)) {
                     timer2.text = "Вы не успели ввести ответ!"
                     Toast.makeText(this@GameInterface, "-$x очков!", Toast.LENGTH_SHORT).show()
+                    prefs.edit().putInt(APP_PREFERENCES_SCORE,score - price).apply()
                     cancel()
                     startActivity(Intent(this@GameInterface, MainMenu::class.java))
                 } else {
                     Toast.makeText(this@GameInterface, "+$x очков!", Toast.LENGTH_SHORT).show()
+                    prefs.edit().putInt(APP_PREFERENCES_SCORE,score + price).apply()
                     cancel()
                     startActivity(Intent(this@GameInterface, MainMenu::class.java))
                 }
@@ -84,7 +107,6 @@ class GameInterface : AppCompatActivity() {
         finallAnswer.setOnClickListener{
             hefinallClick = case.contains(answer.text.toString().toLowerCase())
             time2.onFinish()
-            //startActivity(Intent(this, MainMenu::class.java))
         }
 
 
@@ -167,5 +189,56 @@ class GameInterface : AppCompatActivity() {
         } catch (t: Throwable) {
             Toast.makeText(this, t.toString(), Toast.LENGTH_LONG).show()
         }
+    }
+
+    fun getPack() {
+        questionsAdapter.inputList(getCategoryList())
+
+    }
+
+    fun getCategoryList(): List<Category> {
+        var categories: ArrayList<Category> = ArrayList<Category>()
+        var questionList: ArrayList<Question> = ArrayList<Question>()
+
+        questionList.add(Question(100, "ИгрыВопрос1", "ИгрыОтвет1"))
+        questionList.add(Question(200, "ИгрыВопрос2", "ИгрыОтвет2"))
+        questionList.add(Question(300, "ИгрыВопрос3", "ИгрыОтвет3"))
+        questionList.add(Question(400, "ИгрыВопрос4", "ИгрыОтвет4"))
+        questionList.add(Question(500, "ИгрыВопрос5", "ИгрыОтвет5"))
+        questionList.add(Question(600, "ИгрыВопрос6", "ИгрыОтвет6"))
+
+        categories.add(Category("gamese", questionList))
+        questionList = ArrayList<Question>()
+
+        questionList.add(Question(150, "АнимеВопрос1", "АнимеОтвет1"))
+        questionList.add(Question(250, "АнимеВопрос2", "АнимеОтвет2"))
+        questionList.add(Question(350, "АнимеВопрос3", "АнимеОтвет3"))
+        questionList.add(Question(450, "АнимеВопрос4", "АнимеОтвет4"))
+        questionList.add(Question(550, "АнимеВопрос5", "АнимеОтвет5"))
+        questionList.add(Question(650, "АнимеВопрос6", "АнимеОтвет6"))
+        categories.add(Category("Animeee", questionList))
+        questionList = ArrayList<Question>()
+
+        questionList.add(Question(120, "ФильмыВопрос1", "ФильмыОтвет1"))
+        questionList.add(Question(220, "ФильмыВопрос2", "ФильмыОтвет2"))
+        questionList.add(Question(320, "ФильмыВопрос3", "ФильмыОтвет3"))
+        questionList.add(Question(420, "ФильмыВопрос4", "ФильмыОтвет4"))
+        questionList.add(Question(520, "ФильмыВопрос5", "ФильмыОтвет5"))
+        questionList.add(Question(620, "ФильмыВопрос6", "ФильмыОтвет6"))
+        categories.add(Category("Фильмы", questionList))
+
+        questionList = ArrayList<Question>()
+
+        questionList.add(Question(170, "ЯзыкиВопрос1", "ЯзыкиОтвет1"))
+        questionList.add(Question(270, "ЯзыкиВопрос2", "ЯзыкиОтвет2"))
+        questionList.add(Question(370, "ЯзыкиВопрос3", "ЯзыкиОтвет3"))
+        questionList.add(Question(470, "ЯзыкиВопрос4", "ЯзыкиОтвет4"))
+        questionList.add(Question(570, "ЯзыкиВопрос5", "ЯзыкиОтвет5"))
+        questionList.add(Question(670, "ЯзыкиВопрос6", "ЯзыкиОтвет6"))
+        categories.add(Category("Китапee", questionList))
+
+
+
+        return categories
     }
 }

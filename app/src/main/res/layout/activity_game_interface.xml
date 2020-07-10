@@ -7,14 +7,13 @@
     android:background="@color/colorPrimary"
     tools:context=".GameInterface">
 
-    <TextView
-        android:id="@+id/question"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_questions"
         android:layout_width="409dp"
         android:layout_height="175dp"
         android:background="@color/colorAccent"
         android:gravity="center"
         android:shadowColor="#FDFDFD"
-        android:text="какой то вопрос"
         android:textColorHighlight="#090909"
         android:textColorHint="#FFFFFF"
         android:textColorLink="#FDFDFD"
@@ -130,7 +129,7 @@
         android:id="@+id/finallAnswer"
         android:layout_width="146dp"
         android:layout_height="74dp"
-        android:backgroundTint="#4A9C27B0"
+        android:backgroundTint="@color/colorAccent"
         android:text="Ответить"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"

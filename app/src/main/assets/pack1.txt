@@ -1,0 +1,16 @@
+Category:
+Игры
+Price:
+100
+Quest:
+Создатели Left 4 Dead?
+Answer:
+Valve
+;
+Price:
+200
+Quest:
+Создатели Left 4 Dead 2?
+Answer:
+Valve
+;
