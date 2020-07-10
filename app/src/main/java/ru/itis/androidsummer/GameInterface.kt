@@ -28,6 +28,9 @@ import kotlin.concurrent.timer
 
 class GameInterface : AppCompatActivity() {
     private val questionsAdapter = QuestionsAdapter()
+    var rvAnswer:String? = null
+    var rvQuestion:String? = null
+    var rvPrice:Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -47,6 +50,9 @@ class GameInterface : AppCompatActivity() {
 
         questionsAdapter.setOnItemClickListener {
                 question ->  Toast.makeText(this,"$question",Toast.LENGTH_SHORT).show()
+            rvAnswer = question.answer
+            rvQuestion = question.question
+            rvPrice = question.price
         }
 
         //temporary strict category and price!!
@@ -65,7 +71,7 @@ class GameInterface : AppCompatActivity() {
         //i'll fix it later as soon as Temur will have his table
 
         var heClick = false
-        var hefinallClick = false
+        var hefinallClick:Boolean = false
         val bar: ProgressBar = findViewById(R.id.progressBar)
 
         wantAnswer.setOnClickListener {
@@ -73,21 +79,20 @@ class GameInterface : AppCompatActivity() {
         }
 
 
-        val x = price
         val time2 = object : CountDownTimer(20000,1000) {
             override fun onFinish() {
                 //TODO : Возвращение к таблице с вопросами или хз че
                 if(!hefinallClick or (bar.progress == 0)) {
                     timer2.text = "Вы не успели ввести ответ!"
-                    Toast.makeText(this@GameInterface, "-$x очков!", Toast.LENGTH_SHORT).show()
-                    prefs.edit().putInt(APP_PREFERENCES_SCORE,score - price).apply()
+                    Toast.makeText(this@GameInterface, "-$rvPrice очков!", Toast.LENGTH_SHORT).show()
+                    prefs.edit().putInt(APP_PREFERENCES_SCORE,score - rvPrice).apply()
                     cancel()
-                    startActivity(Intent(this@GameInterface, MainMenu::class.java))
+                    //startActivity(Intent(this@GameInterface, MainMenu::class.java))
                 } else {
-                    Toast.makeText(this@GameInterface, "+$x очков!", Toast.LENGTH_SHORT).show()
-                    prefs.edit().putInt(APP_PREFERENCES_SCORE,score + price).apply()
+                    Toast.makeText(this@GameInterface, "+$rvPrice очков!", Toast.LENGTH_SHORT).show()
+                    prefs.edit().putInt(APP_PREFERENCES_SCORE,score + rvPrice).apply()
                     cancel()
-                    startActivity(Intent(this@GameInterface, MainMenu::class.java))
+                    //startActivity(Intent(this@GameInterface, MainMenu::class.java))
                 }
 
             }
@@ -104,7 +109,7 @@ class GameInterface : AppCompatActivity() {
         }
 
         finallAnswer.setOnClickListener{
-            hefinallClick = case.contains(answer.text.toString().toLowerCase())
+            hefinallClick = (answer.text.toString() == rvAnswer)
             time2.onFinish()
         }
 
@@ -199,41 +204,41 @@ class GameInterface : AppCompatActivity() {
         var categories: ArrayList<Category> = ArrayList<Category>()
         var questionList: ArrayList<Question> = ArrayList<Question>()
 
-        questionList.add(Question(100, "ИгрыВопрос1", "ИгрыОтвет1"))
-        questionList.add(Question(200, "ИгрыВопрос2", "ИгрыОтвет2"))
-        questionList.add(Question(300, "ИгрыВопрос3", "ИгрыОтвет3"))
-        questionList.add(Question(400, "ИгрыВопрос4", "ИгрыОтвет4"))
-        questionList.add(Question(500, "ИгрыВопрос5", "ИгрыОтвет5"))
-        questionList.add(Question(600, "ИгрыВопрос6", "ИгрыОтвет6"))
+        questionList.add(Question(100, "ИгрыВопрос1", "1"))
+        questionList.add(Question(200, "ИгрыВопрос2", "1"))
+        questionList.add(Question(300, "ИгрыВопрос3", "1"))
+        questionList.add(Question(400, "ИгрыВопрос4", "1"))
+        questionList.add(Question(500, "ИгрыВопрос5", "1"))
+        questionList.add(Question(600, "ИгрыВопрос6", "1"))
 
         categories.add(Category("gamese", questionList))
         questionList = ArrayList<Question>()
 
-        questionList.add(Question(150, "АнимеВопрос1", "АнимеОтвет1"))
-        questionList.add(Question(250, "АнимеВопрос2", "АнимеОтвет2"))
-        questionList.add(Question(350, "АнимеВопрос3", "АнимеОтвет3"))
-        questionList.add(Question(450, "АнимеВопрос4", "АнимеОтвет4"))
-        questionList.add(Question(550, "АнимеВопрос5", "АнимеОтвет5"))
-        questionList.add(Question(650, "АнимеВопрос6", "АнимеОтвет6"))
+        questionList.add(Question(150, "АнимеВопрос1", "1"))
+        questionList.add(Question(250, "АнимеВопрос2", "1"))
+        questionList.add(Question(350, "АнимеВопрос3", "1"))
+        questionList.add(Question(450, "АнимеВопрос4", "1"))
+        questionList.add(Question(550, "АнимеВопрос5", "1"))
+        questionList.add(Question(650, "АнимеВопрос6", "1"))
         categories.add(Category("Animeee", questionList))
         questionList = ArrayList<Question>()
 
-        questionList.add(Question(120, "ФильмыВопрос1", "ФильмыОтвет1"))
-        questionList.add(Question(220, "ФильмыВопрос2", "ФильмыОтвет2"))
-        questionList.add(Question(320, "ФильмыВопрос3", "ФильмыОтвет3"))
-        questionList.add(Question(420, "ФильмыВопрос4", "ФильмыОтвет4"))
-        questionList.add(Question(520, "ФильмыВопрос5", "ФильмыОтвет5"))
-        questionList.add(Question(620, "ФильмыВопрос6", "ФильмыОтвет6"))
+        questionList.add(Question(120, "ФильмыВопрос1", "1"))
+        questionList.add(Question(220, "ФильмыВопрос2", "1"))
+        questionList.add(Question(320, "ФильмыВопрос3", "1"))
+        questionList.add(Question(420, "ФильмыВопрос4", "1"))
+        questionList.add(Question(520, "ФильмыВопрос5", "1"))
+        questionList.add(Question(620, "ФильмыВопрос6", "1"))
         categories.add(Category("Фильмы", questionList))
 
         questionList = ArrayList<Question>()
 
-        questionList.add(Question(170, "ЯзыкиВопрос1", "ЯзыкиОтвет1"))
-        questionList.add(Question(270, "ЯзыкиВопрос2", "ЯзыкиОтвет2"))
-        questionList.add(Question(370, "ЯзыкиВопрос3", "ЯзыкиОтвет3"))
-        questionList.add(Question(470, "ЯзыкиВопрос4", "ЯзыкиОтвет4"))
-        questionList.add(Question(570, "ЯзыкиВопрос5", "ЯзыкиОтвет5"))
-        questionList.add(Question(670, "ЯзыкиВопрос6", "ЯзыкиОтвет6"))
+        questionList.add(Question(170, "ЯзыкиВопрос1", "1"))
+        questionList.add(Question(270, "ЯзыкиВопрос2", "1"))
+        questionList.add(Question(370, "ЯзыкиВопрос3", "1"))
+        questionList.add(Question(470, "ЯзыкиВопрос4", "1"))
+        questionList.add(Question(570, "ЯзыкиВопрос5", "1"))
+        questionList.add(Question(670, "ЯзыкиВопрос6", "1"))
         categories.add(Category("Китапee", questionList))
 
 
