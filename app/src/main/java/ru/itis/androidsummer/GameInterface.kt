@@ -36,7 +36,6 @@ class GameInterface : AppCompatActivity() {
 
         //that's necessary
         val hashMap = HashMap<String,TreeMap<Int,HashSet<List<String>>>>()
-        parseQuestion()
         //don't delete
 
         getPack()
@@ -191,11 +190,10 @@ class GameInterface : AppCompatActivity() {
         try {
             val parser: XmlPullParser = resources.getXml(R.xml.quizes)
             while (parser.eventType != XmlPullParser.END_DOCUMENT) {
-                if (parser.name == "category") {
+                if (parser.eventType == XmlPullParser.START_TAG && parser.name == "category") {
                     val category = parser.getAttributeValue(0)
                     categories.add(Category(category, ArrayList<Question>()))
-                } else if (parser.eventType == XmlPullParser.START_TAG
-                    && parser.name == "quiz") {
+                } else if (parser.eventType == XmlPullParser.START_TAG && parser.name == "quiz") {
                     var price: Int = 0
                     var question = ""
                     var right = ""
@@ -205,10 +203,6 @@ class GameInterface : AppCompatActivity() {
                                 "price" -> price = parser.getAttributeValue(0).toInt()
                                 "question_itself" -> question = parser.getAttributeValue(0)
                                 "right_variant" -> right = parser.getAttributeValue(0)
-                                /*{
-                        for (i: Int in 0..(parser.attributeCount - 1)) {
-                            array.add(parser.getAttributeValue(i).toLowerCase())
-                        }*/
                             }
                         }
                         parser.next()
@@ -224,7 +218,7 @@ class GameInterface : AppCompatActivity() {
     }
 
     fun getPack() {
-        questionsAdapter.inputList(getCategoryList())
+        questionsAdapter.inputList(parseQuestion())
 
     }
 
