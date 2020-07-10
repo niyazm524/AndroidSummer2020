@@ -1,5 +1,6 @@
 package ru.itis.androidsummer
 
+import android.content.res.Resources
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -103,7 +104,7 @@ class CategoriesViewHolder(override val containerView: View) :
         if (index != null) {
             tv_text.text = category.questions.getOrNull(index)?.price?.toString() ?: "n"
             tv_text.isClickable = true
-            tv_text.setTextColor(Color.BLUE)
+            tv_text.setTextColor(Color.DKGRAY)
 
         } else {
             tv_text.text = category.title
