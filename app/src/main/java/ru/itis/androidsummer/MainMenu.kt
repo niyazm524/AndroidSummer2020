@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
+import kotlinx.android.synthetic.main.main_menu.*
 
 
 class MainMenu : AppCompatActivity() {
@@ -15,20 +16,22 @@ class MainMenu : AppCompatActivity() {
         
         setContentView(R.layout.main_menu)
         
-        val startButton = findViewById<Button>(R.id.main_menu_button_start) 
-        val profileButton = findViewById<Button>(R.id.main_menu_button_rating)
-        val settingsButton = findViewById<ImageButton>(R.id.main_menu_button_settings)
-        val helpButton = findViewById<ImageButton>(R.id.main_menu_button_help)
-        startButton.setOnClickListener {
+//        val startButton = findViewById<Button>(R.id.main_menu_button_start)
+//        val profileButton = findViewById<ImageButton>(R.id.main_menu_button_rules)
+//        val settingsButton = findViewById<ImageButton>(R.id.main_menu_button_settings)
+//        val helpButton = findViewById<Button>(R.id.main_menu_button_rules)
+        //лишнее и путает, нафег надо
+
+        main_menu_button_start.setOnClickListener {
             startActivity(Intent(this, GameInterface::class.java))
         }
-        helpButton.setOnClickListener {
+        main_menu_button_rules.setOnClickListener {
             startActivity(Intent(this, Help::class.java))
         }
-        settingsButton.setOnClickListener {
+        main_menu_button_settings.setOnClickListener {
             //startActivity(Intent(this, ?::class.java))
         }
-        profileButton.setOnClickListener {
+        main_menu_button_profile.setOnClickListener {
             startActivity(Intent(this, Profile::class.java))
         }
     }

@@ -1,18 +1,22 @@
 <resources>
     <string name="app_name">Oigame</string>
-    <string name="main_menu_start">start</string>
-    <string name="main_menu_rating">profile</string>
+    <string name="main_menu_start">Начать</string>
+    <string name="main_menu_button_rules">Правила</string>
 
-    <string name="registration_name_request">Enter your name, please</string>
-    <string name="registration_name_example">Your name</string>
-    <string name="registration_button_name_setting">Alright, let"'"s go</string>
-    <string name="registration_text_hello">Hello," "</string>
+    <string name="registration_name_request">Введи свое имя, по братски</string>
+    <string name="registration_name_example">Твое имя</string>
+    <string name="registration_button_name_setting">Ну что, погнали</string>
+    <string name="registration_text_hello">Салам," "</string>
 
-    <string name="profile_text_default_score">No score yet</string>
-    <string name="profile_text_default_name">Steve</string>
-    <string name="profile_button_sign_out">Change the Name</string>
-    <string name="profile_button_reset_score">Reset the score</string>
-    <string name="profile_button_score_reset_notification">You have reset the score</string>
+    <string name="profile_text_default_score">Количество текущих очков:\n У тебя еще нет очков :(</string>
+    //?тут имеется в виду рейтинг или набранных за 1 игру или че не пойму
+    <string name="profile_text_default_name">Алеша</string>
+    <string name="profile_text_user_can_settings">Ты можешь:</string>
+    <string name="profile_button_sign_out">Сменить имя</string>
+    <string name="profile_button_reset_score">Сбросить свои очки</string>
+    <string name="profile_button_score_reset_notification">Ты сбросил свои очки!</string>
+    //?не поняла, к чему это прикреплено, спросить у Булата (после сброса тост что ли о сбрасывании?)
+
 
     <string name="help_text_info">   У каждого игрока имеется свой персональный счет.
     В начале игры у всех игроков по 0 очков.\n\n
