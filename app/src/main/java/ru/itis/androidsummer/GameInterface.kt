@@ -61,6 +61,7 @@ class GameInterface : AppCompatActivity() {
         count.text = "Очки:$score"
         people.text = "ИГРОКИ: \n$me"
         numberOfRound.text = "Раунд:" + (countRound)
+        people.visibility = View.VISIBLE
         //i'll fix it later as soon as Temur will have his table
 
         var heClick = false
@@ -104,6 +105,7 @@ class GameInterface : AppCompatActivity() {
                 numberOfRound.visibility = View.VISIBLE
                 countRound++
                 numberOfRound.text = "Раунд:" + (countRound)
+                people.visibility = View.VISIBLE
 
             }
             @SuppressLint("SetTextI18n")
@@ -161,6 +163,7 @@ class GameInterface : AppCompatActivity() {
             progressBar.visibility = View.VISIBLE
             timer.visibility = View.VISIBLE
             numberOfRound.text = "Раунд:" + (countRound)
+            people.visibility = View.INVISIBLE
         }
 
 
