@@ -30,12 +30,14 @@ class Profile : AppCompatActivity() {
         signOut.setOnClickListener {
             sharedPreferences.edit().remove(APP_PREFERENCES_REGISTRATION).apply()
             startActivity(Intent(this, Registration::class.java))
+            finish()
         }
         resetScore.setOnClickListener {
             sharedPreferences.edit().putInt(APP_PREFERENCES_SCORE,0).apply()
             score.text = "0"
             Toast.makeText(applicationContext, R.string.profile_button_score_reset_notification,
                 Toast.LENGTH_LONG).show()
+            finish()
         }
 
 
