@@ -142,7 +142,7 @@
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="412dp"
+        android:layout_width="0dp"
         android:layout_height="9dp"
         android:background="#8D3AA3D6"
         android:max="20"
