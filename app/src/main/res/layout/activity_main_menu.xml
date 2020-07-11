@@ -72,5 +72,17 @@
         app:layout_constraintVertical_bias="0.114"
         app:srcCompat="@drawable/settings_black_18dp" />
 
+    <Button
+        android:id="@+id/btn_toServer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="/TestServer/"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

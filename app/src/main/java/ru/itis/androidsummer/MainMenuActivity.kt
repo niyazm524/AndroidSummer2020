@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main_menu.*
+import ru.itis.androidsummer.net.LobbyActivity
 
 
 class MainMenuActivity : AppCompatActivity() {
@@ -24,6 +25,13 @@ class MainMenuActivity : AppCompatActivity() {
         iv_main_menu_profile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
+
+
+        btn_toServer.setOnClickListener{
+            val serverActivity = Intent(this,LobbyActivity::class.java)
+            startActivity(serverActivity)
+        }
+
     }
 }
 
