@@ -73,6 +73,8 @@ class GameInterface : AppCompatActivity() {
             heClick = true
         }
 
+        enterAnswer.text.isEmpty()
+
         fun resetQuestion(){
             heClick = false
             heFinalClick = false

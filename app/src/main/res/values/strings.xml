@@ -15,7 +15,8 @@
     <string name="profile_button_sign_out">Сменить имя</string>
     <string name="profile_button_reset_score">Сбросить свои очки</string>
     <string name="profile_button_score_reset_notification">Ты сбросил свои очки!</string>
-    //?не поняла, к чему это прикреплено, спросить у Булата (после сброса тост что ли о сбрасывании?)
+    //?не поняла, к чему это прикреплено, спросить у Булата (после сброса тост что ли о
+    сбрасывании?)
 
 
     <string name="help_text_info">   У каждого игрока имеется свой персональный счет.
@@ -29,4 +30,9 @@
       а также право на выбор следующего вопроса. В случае неправильного ответа эту сумму снимают с его счёта.
     Победителем считается игрок, набравший наибольшее количество очков.
     </string>
+
+
+    <string name="lobby_btn_start">Старт</string>
+    <string name="lobby_btn_host">Хост</string>
+    <string name="lobby_btn_connect">Присоедениться</string>
 </resources>
