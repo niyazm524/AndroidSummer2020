@@ -21,12 +21,6 @@
         </activity>
         <activity android:name=".Registration"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.EDIT" />
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.SEND"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity android:name=".MainMenu"
             android:screenOrientation="portrait">
@@ -39,30 +33,12 @@
         </activity>
         <activity android:name=".Profile"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.EDIT" />
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.SEND"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity android:name=".GameInterface"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.EDIT" />
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.SEND"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity android:name=".Help"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.EDIT" />
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.SEND"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
     </application>
 
