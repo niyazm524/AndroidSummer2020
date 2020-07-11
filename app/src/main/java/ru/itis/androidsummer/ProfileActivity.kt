@@ -17,11 +17,6 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         val sharedPreferences = getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE)
-//        val signOut = findViewById<Button>(R.id.profile_button_sign_out)
-//        val resetScore = findViewById<Button>(R.id.profile_button_reset_score)
-//        val name = findViewById<TextView>(R.id.profile_text_name)
-//        val score = findViewById<TextView>(R.id.profile_text_score)
-        //лишнее и путает, нафег надо
 
         tv_profile_name.text = "Твое имя: "+ sharedPreferences.getString(APP_PREFERENCES_REGISTRATION,
             resources.getString(R.string.profile_text_default_name)
@@ -41,10 +36,5 @@ class ProfileActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG).show()
             finish()
         }
-
-
-
-
-
     }
 }
