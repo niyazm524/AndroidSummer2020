@@ -31,37 +31,17 @@
     <TextView
         android:id="@+id/tv_help2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text="     У каждого игрока имеется свой персональный счет.
-В начале игры у всех игроков по 0 очков.\n\n
-     Начинается всё с того, что игрок выбирает вопрос из игрового табло.
-На табло 5 тем по 5 вопросов в каждой - всего 25 вопросов.
-В первом раунде вопросы в каждой теме стоят соответственно 100, 200, 300, 400 и 500 очков.\n\n
-     Звучит выбранный вопрос, и, после этого, игрокам дается несколько секунд на размышление.
-Кто знает ответ на вопрос и первый нажимает на кнопку «ответить», тот и будет отвечать.
-За правильный ответ на вопрос игрок получает столько очков, сколько стоил этот вопрос,
-  а также право на выбор следующего вопроса. В случае неправильного ответа эту сумму снимают с его счёта.
-Победителем считается игрок, набравший наибольшее количество очков.
-"
+        android:text="@string/help_text_info"
         android:textColor="#000000"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/1"
-        app:layout_constraintVertical_bias="0.224" />
-
-    <!--<ImageButton
-        android:onClick="main"
-        android:id="@+id/imageButton"
-        android:layout_width="59dp"
-        android:layout_height="49dp"
-        app:srcCompat="@drawable/abc_vector_test"
-        tools:layout_editor_absoluteX="5dp"
-        tools:layout_editor_absoluteY="3dp"
-        tools:ignore="MissingConstraints,OnClick" />-->
+        app:layout_constraintTop_toBottomOf="@id/tv_help" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
