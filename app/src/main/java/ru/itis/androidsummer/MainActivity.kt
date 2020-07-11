@@ -1,6 +1,5 @@
 package ru.itis.androidsummer
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,17 +9,9 @@ import kotlinx.android.synthetic.main.main_menu.*
 
 
 class MainActivity : AppCompatActivity() {
-    @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
         setContentView(R.layout.main_menu)
-        
-//        val startButton = findViewById<Button>(R.id.main_menu_button_start)
-//        val profileButton = findViewById<ImageButton>(R.id.main_menu_button_rules)
-//        val settingsButton = findViewById<ImageButton>(R.id.main_menu_button_settings)
-//        val helpButton = findViewById<Button>(R.id.main_menu_button_rules)
-        //лишнее и путает, нафег надо
 
         main_menu_button_start.setOnClickListener {
             startActivity(Intent(this, GameInterface::class.java))
@@ -36,4 +27,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
