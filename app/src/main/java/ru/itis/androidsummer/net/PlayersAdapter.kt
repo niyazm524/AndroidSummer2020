@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.item_player.*
 import ru.itis.androidsummer.R
 import ru.itis.androidsummer.data.Player
 
-class PlayersAdapter :
+class PlayersAdapter() :
     RecyclerView.Adapter<PlayersViewHolder>() {
     private var itemClickListener: ((Player) -> Unit)? = null
 
