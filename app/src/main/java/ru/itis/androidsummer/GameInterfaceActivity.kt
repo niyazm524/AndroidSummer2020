@@ -90,11 +90,11 @@ class GameInterfaceActivity : AppCompatActivity() {
         val time2 = object : CountDownTimer(20000, 1000) {
             override fun onFinish() {
                 //TODO : Возвращение к таблице с вопросами или хз че
-                if (!heFinalClick or (progressBar.progress == 0)) {
+                if  (progressBar.progress == 0) {
                     tv_timer2.text = "Вы не успели ввести ответ!"
                     Toast.makeText(
                         this@GameInterfaceActivity,
-                        "-$rvPrice очков!",
+                        "Вы не успели ввести ответ!\n-$rvPrice очков!",
                         Toast.LENGTH_SHORT
                     ).show()
                     prefs.edit().putInt(APP_PREFERENCES_SCORE, score - rvPrice).apply()
@@ -111,6 +111,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                     //startActivity(Intent(this@GameInterface, MainMenu::class.java))
                 }
                 resetQuestion()
+                cancel()
                 makeInvisibleAnswerPart()
                 rv_questions.visibility = View.VISIBLE
                 tv_count.visibility = View.VISIBLE
