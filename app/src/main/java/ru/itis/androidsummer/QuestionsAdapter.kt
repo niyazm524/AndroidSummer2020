@@ -57,19 +57,17 @@ class QuestionsAdapter : RecyclerView.Adapter<CategoriesViewHolder>() {
 
 
     override fun onBindViewHolder(holder: CategoriesViewHolder, position: Int) {
-        var index = position
-        var i = 0
-        while(i < categories.size){
-            val size = categories[i].questions.size +1
-            if(index >= size){
-                index -= size
-                i++
-            } else{
-                break
-            }
-        }
+        var index = 0
+        val categoryCount = getCategoryCount()
+        var category = position
+
+                while (category >= categoryCount){
+                    category -= categoryCount
+                    index++
+                }
+
         holder.bind(
-            categories[i], (index - 1).let { if(it < 0) null else it },this::onItemClick
+            categories[category], (index - 1).let { if(it < 0) null else it },this::onItemClick
         )
     }
 

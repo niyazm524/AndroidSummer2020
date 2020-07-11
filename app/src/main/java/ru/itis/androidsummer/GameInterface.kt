@@ -2,6 +2,7 @@ package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -41,7 +42,7 @@ class GameInterface : AppCompatActivity() {
         getPack()
         rv_questions.apply {
             layoutManager =
-                GridLayoutManager(this@GameInterface, questionsAdapter.getCategorySize() + 1)
+                GridLayoutManager(this@GameInterface, questionsAdapter.getCategoryCount(),GridLayoutManager.HORIZONTAL,false)
             adapter = questionsAdapter
         }
 
