@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.item_server.*
 import ru.itis.androidsummer.R
 import ru.itis.androidsummer.data.Server
 
-class ServersAdapter() :
+class ServersAdapter :
     RecyclerView.Adapter<ServersViewHolder>() {
     private var itemClickListener: ((Server) -> Unit)? = null
     var servers:List<Server> = ArrayList()

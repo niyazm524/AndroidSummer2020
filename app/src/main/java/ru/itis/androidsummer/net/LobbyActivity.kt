@@ -17,8 +17,8 @@ import ru.itis.androidsummer.R
  class LobbyActivity : AppCompatActivity() {
     private val currentServerPort:String = ""
     private val currentServerId:Long = 0
-    var mNearDiscovery:NearDiscovery? = null
-    var mNearConnect:NearConnect? = null
+    private var mNearDiscovery:NearDiscovery? = null
+    private var mNearConnect:NearConnect? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -132,7 +132,7 @@ import ru.itis.androidsummer.R
              }
 
              override fun onPeersUpdate(host: Set<Host>) {
-                 Toast.makeText(this@LobbyActivity,"PeersUpdate : ${host.toString()}",Toast.LENGTH_SHORT).show()
+                 Toast.makeText(this@LobbyActivity,"PeersUpdate : ${host}",Toast.LENGTH_SHORT).show()
              }
 
 
