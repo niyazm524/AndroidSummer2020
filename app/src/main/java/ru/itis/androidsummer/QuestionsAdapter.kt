@@ -83,24 +83,24 @@ class CategoriesViewHolder(override val containerView: View) :
     RecyclerView.ViewHolder(containerView), LayoutContainer {
 
     fun bind(category: Category, index: Int?, listener: (Question) -> Unit) {
-        tv_text.setOnClickListener {
+        tv_help2.setOnClickListener {
             if (index != null) {
                 category.questions.getOrNull(index)?.let { question ->
                     listener(question)
                 }
-                tv_text.visibility = View.INVISIBLE
+                tv_help2.visibility = View.INVISIBLE
             }
         }
 
-        tv_text.textSize = 25F
+        tv_help2.textSize = 25F
         if (index != null) {
-            tv_text.text = category.questions.getOrNull(index)?.price?.toString() ?: "n"
-            tv_text.isClickable = true
-            tv_text.setTextColor(Color.DKGRAY)
+            tv_help2.text = category.questions.getOrNull(index)?.price?.toString() ?: "n"
+            tv_help2.isClickable = true
+            tv_help2.setTextColor(Color.DKGRAY)
         } else {
-            tv_text.text = category.title
-            tv_text.background = null
-            tv_text.textSize = 14F
+            tv_help2.text = category.title
+            tv_help2.background = null
+            tv_help2.textSize = 14F
         }
     }
 

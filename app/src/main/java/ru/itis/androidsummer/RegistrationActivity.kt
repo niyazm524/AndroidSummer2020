@@ -1,6 +1,5 @@
 package ru.itis.androidsummer
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,17 +7,16 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import org.xmlpull.v1.XmlPullParser
 import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES
 import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES_REGISTRATION
 import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES_SCORE
 
-class Registration : AppCompatActivity() {
+class RegistrationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.registration)
-        val userName = findViewById<EditText>(R.id.registration_text_users_name)
-        val button = findViewById<Button>(R.id.registration_button_correct)
+        setContentView(R.layout.activity_registration)
+        val userName = findViewById<EditText>(R.id.et_registration_users_name)
+        val button = findViewById<Button>(R.id.btn_registration_correct)
         val sharedPreferences = getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE)
         val edit = sharedPreferences.edit()
         button.setOnClickListener{
@@ -36,7 +34,7 @@ class Registration : AppCompatActivity() {
                         .getString(APP_PREFERENCES_REGISTRATION,
                             resources.getString(R.string.profile_text_default_name)),
                                 Toast.LENGTH_LONG).show()
-            startActivity(Intent(this, MainMenu::class.java))
+            startActivity(Intent(this, MainMenuActivity::class.java))
             finish()
         }
     }

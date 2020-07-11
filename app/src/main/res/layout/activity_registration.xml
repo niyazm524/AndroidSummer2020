@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/profile_text_name"
+        android:id="@+id/tv_profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
@@ -22,7 +22,7 @@
         app:layout_constraintVertical_bias="0.3" />
 
     <EditText
-        android:id="@+id/registration_text_users_name"
+        android:id="@+id/et_registration_users_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -31,11 +31,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_text_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_profile_name"
         app:layout_constraintVertical_bias="0.100000024" />
 
     <Button
-        android:id="@+id/registration_button_correct"
+        android:id="@+id/btn_registration_correct"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
         android:backgroundTint="@color/colorAccent"
@@ -45,7 +45,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registration_text_users_name"
+        app:layout_constraintTop_toBottomOf="@+id/et_registration_users_name"
         app:layout_constraintVertical_bias="0.2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

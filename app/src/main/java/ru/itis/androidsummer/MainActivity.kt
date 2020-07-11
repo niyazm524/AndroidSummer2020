@@ -11,13 +11,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.splash_activity)
+        setContentView(R.layout.activity_splash)
         sharedPreferences =
             getSharedPreferences(Companion.APP_PREFERENCES, Context.MODE_PRIVATE)
         if(sharedPreferences.contains(Companion.APP_PREFERENCES_REGISTRATION)){
-            startActivity(Intent(this, MainMenu::class.java))
+            startActivity(Intent(this, MainMenuActivity::class.java))
         } else{
-            startActivity(Intent(this, Registration::class.java))
+            startActivity(Intent(this, RegistrationActivity::class.java))
         }
     }
 
