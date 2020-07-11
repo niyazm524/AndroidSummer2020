@@ -4,15 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.edit
 import kotlinx.android.synthetic.main.profile.*
-import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES
-import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES_REGISTRATION
-import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES_SCORE
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_REGISTRATION
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
 
 class Profile : AppCompatActivity() {
     @SuppressLint("SetTextI18n")

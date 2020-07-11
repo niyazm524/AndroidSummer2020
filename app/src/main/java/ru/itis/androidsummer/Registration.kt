@@ -1,6 +1,5 @@
 package ru.itis.androidsummer
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,10 +7,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import org.xmlpull.v1.XmlPullParser
-import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES
-import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES_REGISTRATION
-import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES_SCORE
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_REGISTRATION
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
 
 class Registration : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +34,7 @@ class Registration : AppCompatActivity() {
                         .getString(APP_PREFERENCES_REGISTRATION,
                             resources.getString(R.string.profile_text_default_name)),
                                 Toast.LENGTH_LONG).show()
-            startActivity(Intent(this, MainMenu::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
     }

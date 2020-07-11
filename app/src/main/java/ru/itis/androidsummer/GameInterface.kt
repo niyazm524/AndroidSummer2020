@@ -2,21 +2,19 @@ package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_game_interface.*
 import org.xmlpull.v1.XmlPullParser
-import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES
-import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES_REGISTRATION
-import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES_SCORE
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_REGISTRATION
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
 import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.data.Question
 import java.util.*
@@ -66,12 +64,13 @@ class GameInterface : AppCompatActivity() {
         //i'll fix it later as soon as Temur will have his table
 
         var heClick = false
-        var heFinalClick:Boolean = false
-        val bar: ProgressBar = findViewById(R.id.progressBar)
+        var heFinalClick = false
 
         wantAnswer.setOnClickListener {
             heClick = true
         }
+
+
 
         fun resetQuestion(){
             heClick = false
@@ -86,14 +85,14 @@ class GameInterface : AppCompatActivity() {
         val time2 = object : CountDownTimer(20000,1000) {
             override fun onFinish() {
                 //TODO : Возвращение к таблице с вопросами или хз че
-                if(!heFinalClick or (bar.progress == 0)) {
+                if (progressBar.progress == 0) {
                     timer2.text = "Вы не успели ввести ответ!"
-                    Toast.makeText(this@GameInterface, "-$rvPrice очков!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@GameInterface, "Вы не успели ввести ответ!\n-$rvPrice очков!", Toast.LENGTH_SHORT).show()
                     prefs.edit().putInt(APP_PREFERENCES_SCORE,score - rvPrice).apply()
                     cancel()
 
                     //startActivity(Intent(this@GameInterface, MainMenu::class.java))
-                } else {
+                } else if(heFinalClick) {
                     Toast.makeText(this@GameInterface, "+$rvPrice очков!", Toast.LENGTH_SHORT).show()
                     prefs.edit().putInt(APP_PREFERENCES_SCORE,score + rvPrice).apply()
                     cancel()
@@ -111,10 +110,12 @@ class GameInterface : AppCompatActivity() {
             }
             @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
+                progressBar.progress = progressBar.max
                 timer2.text = "Осталось времени:" + millisUntilFinished / 1000
-                var progress = (millisUntilFinished/1000).toInt()
-                bar.progress = (bar.max - progress)
+                progressBar.progress =  (millisUntilFinished/1000).toInt()
                 if(heFinalClick) {
+                    progressBar.progress = progressBar.max
+                    cancel()
                     onFinish()
                 }
             }
@@ -123,6 +124,13 @@ class GameInterface : AppCompatActivity() {
 
         finallAnswer.setOnClickListener{
             heFinalClick = (answer.text.toString() == rvAnswer)
+            if (enterAnswer.text.isEmpty()) {
+                Toast.makeText(this@GameInterface, "Вы не ввели ответ!\n-$rvPrice очков!", Toast.LENGTH_SHORT).show()
+                //в будущем можно будет апгрейдить и не давать отвечать пока не введет ответ или что нибудь еще помимо тоста
+            }else
+            if(!heFinalClick) {
+                Toast.makeText(this@GameInterface, "Неправильный ответ!\n-$rvPrice очков!", Toast.LENGTH_SHORT).show()
+            }
             time2.onFinish()
             progressBar.visibility = View.INVISIBLE
             timer2.visibility = View.INVISIBLE
@@ -130,22 +138,24 @@ class GameInterface : AppCompatActivity() {
         }
 
 
+
         val time = object : CountDownTimer(20000,1000) {
             override fun onTick(millisUntilFinished: Long) {
+                progressBar.progress = progressBar.max
                 timer.text = "Осталось времени:" + millisUntilFinished / 1000
                 if(heClick) {
+                    progressBar.progress = progressBar.max
 //                    time2.start()
                     makeVisibleAnswerPart()
                     onFinish()
                     time2.start()
                     cancel()
                 }
-                val progress = (millisUntilFinished/1000).toInt()
-                bar.progress = (bar.max - progress)
+                progressBar.progress =  (millisUntilFinished/1000).toInt()
             }
 
             override fun onFinish() {
-                if(!heClick or (bar.progress == 0)) {
+                if(!heClick or (progressBar.progress == 0)) {
                     timer.text = "Время вышло!"
                 }
             }
@@ -166,6 +176,9 @@ class GameInterface : AppCompatActivity() {
             numberOfRound.text = "Раунд:" + (countRound)
             people.visibility = View.INVISIBLE
         }
+
+
+
 
 
     }
