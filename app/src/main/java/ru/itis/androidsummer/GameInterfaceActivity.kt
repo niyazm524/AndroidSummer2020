@@ -2,14 +2,12 @@ package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_game_interface.*
@@ -24,7 +22,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
-class GameInterface : AppCompatActivity() {
+class GameInterfaceActivity : AppCompatActivity() {
 
     private val questionsAdapter = QuestionsAdapter()
     var rvAnswer:String? = null
@@ -42,7 +40,7 @@ class GameInterface : AppCompatActivity() {
         getPack()
         rv_questions.apply {
             layoutManager =
-                GridLayoutManager(this@GameInterface, questionsAdapter.getCategoryCount(),GridLayoutManager.HORIZONTAL,false)
+                GridLayoutManager(this@GameInterfaceActivity, questionsAdapter.getCategoryCount(),GridLayoutManager.HORIZONTAL,false)
             adapter = questionsAdapter
         }
 
@@ -52,24 +50,24 @@ class GameInterface : AppCompatActivity() {
         val price = 100
         var countRound = 1
         var case: List<String> =  hashMap.get(category)?.get(price)?.random() ?:  ArrayList<String>()
-        val answer: EditText = findViewById(R.id.enterAnswer)
+        val answer: EditText = findViewById(R.id.et_enterAnswer)
         case.drop(1)
         val prefs = getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE)
         val score =  prefs.getInt(APP_PREFERENCES_SCORE,0)
         val me =  prefs.getString(APP_PREFERENCES_REGISTRATION,resources.getString(R.string.profile_text_default_name)) + "(ты)"
 //        val scopeView = findViewById<TextView>(R.id.count)
 //        val folksView = findViewById<TextView>(R.id.people)
-        count.text = "Очки:$score"
-        people.text = "ИГРОКИ: \n$me"
-        numberOfRound.text = "Раунд:" + (countRound)
-        people.visibility = View.VISIBLE
+        tv_count.text = "Очки:$score"
+        tv_people.text = "ИГРОКИ: \n$me"
+        tv_numberOfRound.text = "Раунд:" + (countRound)
+        tv_people.visibility = View.VISIBLE
         //i'll fix it later as soon as Temur will have his table
 
         var heClick = false
         var heFinalClick:Boolean = false
         val bar: ProgressBar = findViewById(R.id.progressBar)
 
-        wantAnswer.setOnClickListener {
+        btn_wantAnswer.setOnClickListener {
             heClick = true
         }
 
@@ -79,7 +77,7 @@ class GameInterface : AppCompatActivity() {
             rvAnswer = null
             rvQuestion = null
             rvPrice = 0
-            enterAnswer.setText("")
+            et_enterAnswer.setText("")
         }
 
 
@@ -87,14 +85,14 @@ class GameInterface : AppCompatActivity() {
             override fun onFinish() {
                 //TODO : Возвращение к таблице с вопросами или хз че
                 if(!heFinalClick or (bar.progress == 0)) {
-                    timer2.text = "Вы не успели ввести ответ!"
-                    Toast.makeText(this@GameInterface, "-$rvPrice очков!", Toast.LENGTH_SHORT).show()
+                    tv_timer2.text = "Вы не успели ввести ответ!"
+                    Toast.makeText(this@GameInterfaceActivity, "-$rvPrice очков!", Toast.LENGTH_SHORT).show()
                     prefs.edit().putInt(APP_PREFERENCES_SCORE,score - rvPrice).apply()
                     cancel()
 
                     //startActivity(Intent(this@GameInterface, MainMenu::class.java))
                 } else {
-                    Toast.makeText(this@GameInterface, "+$rvPrice очков!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@GameInterfaceActivity, "+$rvPrice очков!", Toast.LENGTH_SHORT).show()
                     prefs.edit().putInt(APP_PREFERENCES_SCORE,score + rvPrice).apply()
                     cancel()
                     //startActivity(Intent(this@GameInterface, MainMenu::class.java))
@@ -102,16 +100,16 @@ class GameInterface : AppCompatActivity() {
                 resetQuestion()
                 makeInvisibleAnswerPart()
                 rv_questions.visibility = View.VISIBLE
-                count.visibility = View.VISIBLE
-                numberOfRound.visibility = View.VISIBLE
+                tv_count.visibility = View.VISIBLE
+                tv_numberOfRound.visibility = View.VISIBLE
                 countRound++
-                numberOfRound.text = "Раунд:" + (countRound)
-                people.visibility = View.VISIBLE
+                tv_numberOfRound.text = "Раунд:" + (countRound)
+                tv_people.visibility = View.VISIBLE
 
             }
             @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
-                timer2.text = "Осталось времени:" + millisUntilFinished / 1000
+                tv_timer2.text = "Осталось времени:" + millisUntilFinished / 1000
                 var progress = (millisUntilFinished/1000).toInt()
                 bar.progress = (bar.max - progress)
                 if(heFinalClick) {
@@ -121,18 +119,18 @@ class GameInterface : AppCompatActivity() {
 
         }
 
-        finallAnswer.setOnClickListener{
+        btn_finallAnswer.setOnClickListener{
             heFinalClick = (answer.text.toString() == rvAnswer)
             time2.onFinish()
             progressBar.visibility = View.INVISIBLE
-            timer2.visibility = View.INVISIBLE
+            tv_timer2.visibility = View.INVISIBLE
 //            timer.visibility = View.INVISIBLE
         }
 
 
         val time = object : CountDownTimer(20000,1000) {
             override fun onTick(millisUntilFinished: Long) {
-                timer.text = "Осталось времени:" + millisUntilFinished / 1000
+                tv_timer.text = "Осталось времени:" + millisUntilFinished / 1000
                 if(heClick) {
 //                    time2.start()
                     makeVisibleAnswerPart()
@@ -146,14 +144,14 @@ class GameInterface : AppCompatActivity() {
 
             override fun onFinish() {
                 if(!heClick or (bar.progress == 0)) {
-                    timer.text = "Время вышло!"
+                    tv_timer.text = "Время вышло!"
                 }
             }
         }
 //        time.start()
         questionsAdapter.setOnItemClickListener {
                 question ->  Toast.makeText(this,"$question",Toast.LENGTH_SHORT).show()
-            wantAnswer.visibility = View.VISIBLE
+            btn_wantAnswer.visibility = View.VISIBLE
             rv_questions.visibility = View.INVISIBLE
             tv_textquestion.visibility = View.VISIBLE
             rvAnswer = question.answer
@@ -162,9 +160,9 @@ class GameInterface : AppCompatActivity() {
             tv_textquestion.text = rvQuestion
             time.start()
             progressBar.visibility = View.VISIBLE
-            timer.visibility = View.VISIBLE
-            numberOfRound.text = "Раунд:" + (countRound)
-            people.visibility = View.INVISIBLE
+            tv_timer.visibility = View.VISIBLE
+            tv_numberOfRound.text = "Раунд:" + (countRound)
+            tv_people.visibility = View.INVISIBLE
         }
 
 
@@ -172,24 +170,24 @@ class GameInterface : AppCompatActivity() {
 
 
     private fun makeVisibleAnswerPart(){
-        count.visibility = View.VISIBLE
-        numberOfRound.visibility = View.VISIBLE
-        wantAnswer.visibility = View.INVISIBLE
-        timer.visibility = View.INVISIBLE
-        enterAnswer.visibility = View.VISIBLE
-        finallAnswer.visibility = View.VISIBLE
-        people.visibility = View.VISIBLE
-        timer2.visibility = View.VISIBLE
+        tv_count.visibility = View.VISIBLE
+        tv_numberOfRound.visibility = View.VISIBLE
+        btn_wantAnswer.visibility = View.INVISIBLE
+        tv_timer.visibility = View.INVISIBLE
+        et_enterAnswer.visibility = View.VISIBLE
+        btn_finallAnswer.visibility = View.VISIBLE
+        tv_people.visibility = View.VISIBLE
+        tv_timer2.visibility = View.VISIBLE
     }
 
     private fun makeInvisibleAnswerPart(){
-        count.visibility = View.INVISIBLE
-        numberOfRound.visibility = View.INVISIBLE
+        tv_count.visibility = View.INVISIBLE
+        tv_numberOfRound.visibility = View.INVISIBLE
 //        timer.visibility = View.VISIBLE
-        enterAnswer.visibility = View.INVISIBLE
-        finallAnswer.visibility = View.INVISIBLE
-        people.visibility = View.INVISIBLE
-        timer2.visibility = View.INVISIBLE
+        et_enterAnswer.visibility = View.INVISIBLE
+        btn_finallAnswer.visibility = View.INVISIBLE
+        tv_people.visibility = View.INVISIBLE
+        tv_timer2.visibility = View.INVISIBLE
         tv_textquestion.visibility = View.INVISIBLE
     }
 
