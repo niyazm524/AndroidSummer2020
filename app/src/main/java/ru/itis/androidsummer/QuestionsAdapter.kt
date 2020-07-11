@@ -1,12 +1,9 @@
 package ru.itis.androidsummer
 
-import android.content.res.Resources
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_cell.*
@@ -19,11 +16,11 @@ class QuestionsAdapter : RecyclerView.Adapter<CategoriesViewHolder>() {
     private var itemClickListener: ((Question) -> Unit)? = null
 
 
-    fun inputCategory(category:Category){
+    fun inputCategory(category: Category) {
         categories.add(category)
     }
 
-    fun inputList(category:List<Category>){
+    fun inputList(category: List<Category>) {
         category.forEach {
             inputCategory(it)
         }
@@ -35,7 +32,6 @@ class QuestionsAdapter : RecyclerView.Adapter<CategoriesViewHolder>() {
         )
     }
 
-
     override fun getItemCount(): Int {
         var count = 0
         for (category in categories) {
@@ -44,32 +40,27 @@ class QuestionsAdapter : RecyclerView.Adapter<CategoriesViewHolder>() {
         return count
     }
 
-    fun getCategorySize(): Int{
+    fun getCategorySize(): Int {
         return categories[0].questions.size
     }
 
-    fun getCategoryCount(): Int{
+    fun getCategoryCount(): Int {
         return categories.size
     }
 
 
-
-
-
     override fun onBindViewHolder(holder: CategoriesViewHolder, position: Int) {
-        var index = position
-        var i = 0
-        while(i < categories.size){
-            val size = categories[i].questions.size +1
-            if(index >= size){
-                index -= size
-                i++
-            } else{
-                break
-            }
+        var index = 0
+        val categoryCount = getCategoryCount()
+        var category = position
+
+        while (category >= categoryCount) {
+            category -= categoryCount
+            index++
         }
+
         holder.bind(
-            categories[i], (index - 1).let { if(it < 0) null else it },this::onItemClick
+            categories[category], (index - 1).let { if (it < 0) null else it }, this::onItemClick
         )
     }
 
@@ -78,7 +69,7 @@ class QuestionsAdapter : RecyclerView.Adapter<CategoriesViewHolder>() {
 
     }
 
-    fun setOnItemClickListener(listener: (question:Question) -> Unit) {
+    fun setOnItemClickListener(listener: (question: Question) -> Unit) {
         itemClickListener = listener
     }
 
@@ -89,26 +80,23 @@ class QuestionsAdapter : RecyclerView.Adapter<CategoriesViewHolder>() {
 }
 
 class CategoriesViewHolder(override val containerView: View) :
-    RecyclerView.ViewHolder(containerView),
-    LayoutContainer {
-    fun bind(category: Category, index: Int?,listener: (Question) -> Unit) {
+    RecyclerView.ViewHolder(containerView), LayoutContainer {
+
+    fun bind(category: Category, index: Int?, listener: (Question) -> Unit) {
         tv_text.setOnClickListener {
             if (index != null) {
-                category.questions.getOrNull(index)?.let { it1 ->
-                    listener(
-                        it1
-                    )
+                category.questions.getOrNull(index)?.let { question ->
+                    listener(question)
                 }
                 tv_text.visibility = View.INVISIBLE
             }
-
         }
+
         tv_text.textSize = 25F
         if (index != null) {
             tv_text.text = category.questions.getOrNull(index)?.price?.toString() ?: "n"
             tv_text.isClickable = true
             tv_text.setTextColor(Color.DKGRAY)
-
         } else {
             tv_text.text = category.title
             tv_text.background = null

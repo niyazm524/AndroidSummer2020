@@ -2,6 +2,7 @@ package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -41,7 +42,7 @@ class GameInterface : AppCompatActivity() {
         getPack()
         rv_questions.apply {
             layoutManager =
-                GridLayoutManager(this@GameInterface, questionsAdapter.getCategorySize() + 1)
+                GridLayoutManager(this@GameInterface, questionsAdapter.getCategoryCount(),GridLayoutManager.HORIZONTAL,false)
             adapter = questionsAdapter
         }
 
@@ -55,7 +56,7 @@ class GameInterface : AppCompatActivity() {
         case.drop(1)
         val prefs = getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE)
         val score =  prefs.getInt(APP_PREFERENCES_SCORE,0)
-        val me =  prefs.getString(APP_PREFERENCES_REGISTRATION,resources.getString(R.string.profile_text_default_name))
+        val me =  prefs.getString(APP_PREFERENCES_REGISTRATION,resources.getString(R.string.profile_text_default_name)) + "(ты)"
 //        val scopeView = findViewById<TextView>(R.id.count)
 //        val folksView = findViewById<TextView>(R.id.people)
         count.text = "Очки:$score"

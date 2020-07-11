@@ -5,4 +5,5 @@
     <color name="colorAccent">#914343</color>
     <color name="colorQuestionItemBackground">#8C9EFF</color>
     <color name="colorQuestionItemBorder">#943D5AFE</color>
+    <color name="justBlack">#0B0000</color>
 </resources>
