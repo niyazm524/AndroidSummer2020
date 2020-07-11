@@ -21,7 +21,7 @@ class ProfileActivity : AppCompatActivity() {
         tv_profile_name.text = "Твое имя: "+ sharedPreferences.getString(APP_PREFERENCES_REGISTRATION,
             resources.getString(R.string.profile_text_default_name)
         )
-        tv_profile_score.text = "Текущее количество очков:"+ sharedPreferences.getInt(APP_PREFERENCES_SCORE,
+        tv_profile_score.text = "Количество очков:"+ sharedPreferences.getInt(APP_PREFERENCES_SCORE,
             0
         ).toString()
         btn_profile_sign_Out.setOnClickListener {
@@ -37,4 +37,5 @@ class ProfileActivity : AppCompatActivity() {
             finish()
         }
     }
+    //тут я кароче еще менять буду, тут ненормально
 }
