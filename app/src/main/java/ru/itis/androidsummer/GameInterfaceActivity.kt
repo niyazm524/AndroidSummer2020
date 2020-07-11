@@ -53,7 +53,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         val category = "sport"
         val price = 100
         var countRound = 1
-        var case: List<String> = hashMap.get(category)?.get(price)?.random() ?: ArrayList<String>()
+        var case: List<String> = hashMap[category]?.get(price)?.random() ?: ArrayList<String>()
         val answer: EditText = findViewById(R.id.et_enterAnswer)
         case.drop(1)
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
@@ -124,8 +124,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
                 tv_timer2.text = "Осталось времени:" + millisUntilFinished / 1000
-                val progress = (millisUntilFinished / 1000).toInt()
-                progressBar.progress = (progressBar.max - progress)
+                progressBar.progress = (millisUntilFinished / 1000).toInt()
                 if (heFinalClick) {
                     progressBar.progress = progressBar.max
                     cancel()
@@ -168,8 +167,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                     time2.start()
                     cancel()
                 }
-                val progress = (millisUntilFinished / 1000).toInt()
-                progressBar.progress = progress
+                progressBar.progress = (millisUntilFinished / 1000).toInt()
             }
 
             override fun onFinish() {
