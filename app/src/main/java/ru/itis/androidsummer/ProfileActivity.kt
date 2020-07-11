@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_profile.*
-import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES
-import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES_REGISTRATION
-import ru.itis.androidsummer.MainActivity.Companion.APP_PREFERENCES_SCORE
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_REGISTRATION
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
 
 class ProfileActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
@@ -17,11 +17,6 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         val sharedPreferences = getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE)
-//        val signOut = findViewById<Button>(R.id.profile_button_sign_out)
-//        val resetScore = findViewById<Button>(R.id.profile_button_reset_score)
-//        val name = findViewById<TextView>(R.id.profile_text_name)
-//        val score = findViewById<TextView>(R.id.profile_text_score)
-        //лишнее и путает, нафег надо
 
         tv_profile_name.text = "Твое имя: "+ sharedPreferences.getString(APP_PREFERENCES_REGISTRATION,
             resources.getString(R.string.profile_text_default_name)
@@ -41,10 +36,5 @@ class ProfileActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG).show()
             finish()
         }
-
-
-
-
-
     }
 }
