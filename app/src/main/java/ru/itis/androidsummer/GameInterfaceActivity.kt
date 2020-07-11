@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_game_interface.*
@@ -27,6 +26,7 @@ class GameInterfaceActivity : AppCompatActivity() {
     var rvAnswer: String? = null
     var rvQuestion: String? = null
     var rvPrice: Int = 0
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -53,8 +53,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         val category = "sport"
         val price = 100
         var countRound = 1
-        var case: List<String> = hashMap[category]?.get(price)?.random() ?: ArrayList<String>()
-        val answer: EditText = findViewById(R.id.et_enterAnswer)
+        val case: List<String> = hashMap[category]?.get(price)?.random() ?: ArrayList()
         case.drop(1)
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         val score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
@@ -62,11 +61,9 @@ class GameInterfaceActivity : AppCompatActivity() {
             APP_PREFERENCES_REGISTRATION,
             resources.getString(R.string.profile_text_default_name)
         ) + "(ты)"
-//        val scopeView = findViewById<TextView>(R.id.count)
-//        val folksView = findViewById<TextView>(R.id.people)
-        tv_count.text = "Очки:$score"
+        tv_count.text = "Счет:$score"
         tv_people.text = "ИГРОКИ: \n$me"
-        tv_numberOfRound.text = "Раунд:" + (countRound)
+        tv_numberOfRound.text = "Раунд:$countRound"
         tv_people.visibility = View.VISIBLE
         //i'll fix it later as soon as Temur will have his table
 
@@ -89,7 +86,6 @@ class GameInterfaceActivity : AppCompatActivity() {
 
         val time2 = object : CountDownTimer(20000, 1000) {
             override fun onFinish() {
-                //TODO : Возвращение к таблице с вопросами или хз че
                 if (!heFinalClick or (progressBar.progress == 0)) {
                     tv_timer2.text = "Вы не успели ввести ответ!"
                     Toast.makeText(
@@ -99,7 +95,6 @@ class GameInterfaceActivity : AppCompatActivity() {
                     ).show()
                     prefs.edit().putInt(APP_PREFERENCES_SCORE, score - rvPrice).apply()
                     cancel()
-                    //startActivity(Intent(this@GameInterface, MainMenu::class.java))
                 } else if (heFinalClick) {
                     Toast.makeText(
                         this@GameInterfaceActivity,
@@ -108,7 +103,6 @@ class GameInterfaceActivity : AppCompatActivity() {
                     ).show()
                     prefs.edit().putInt(APP_PREFERENCES_SCORE, score + rvPrice).apply()
                     cancel()
-                    //startActivity(Intent(this@GameInterface, MainMenu::class.java))
                 }
                 resetQuestion()
                 makeInvisibleAnswerPart()
@@ -116,7 +110,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                 tv_count.visibility = View.VISIBLE
                 tv_numberOfRound.visibility = View.VISIBLE
                 countRound++
-                tv_numberOfRound.text = "Раунд:" + (countRound)
+                tv_numberOfRound.text = "Раунд:$countRound"
                 tv_people.visibility = View.VISIBLE
 
             }
@@ -135,7 +129,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
         btn_finallAnswer.setOnClickListener {
-            heFinalClick = (answer.text.toString() == rvAnswer)
+            heFinalClick = (et_enterAnswer.text.toString() == rvAnswer)
             if (et_enterAnswer.text.isEmpty()) {
                 Toast.makeText(this, "Вы не ввели ответ!\n-$rvPrice очков!", Toast.LENGTH_SHORT)
                     .show()
@@ -151,7 +145,6 @@ class GameInterfaceActivity : AppCompatActivity() {
             time2.onFinish()
             progressBar.visibility = View.INVISIBLE
             tv_timer2.visibility = View.INVISIBLE
-//            timer.visibility = View.INVISIBLE
         }
 
 
@@ -161,7 +154,6 @@ class GameInterfaceActivity : AppCompatActivity() {
                 progressBar.progress = progressBar.max
                 if (heClick) {
                     progressBar.progress = progressBar.max
-//                    time2.start()
                     makeVisibleAnswerPart()
                     onFinish()
                     time2.start()
@@ -173,10 +165,10 @@ class GameInterfaceActivity : AppCompatActivity() {
             override fun onFinish() {
                 if (!heClick or (progressBar.progress == 0)) {
                     tv_timer.text = "Время вышло!"
+
                 }
             }
         }
-//        time.start()
         questionsAdapter.setOnItemClickListener { question ->
             Toast.makeText(this, "$question", Toast.LENGTH_SHORT).show()
             btn_wantAnswer.visibility = View.VISIBLE
@@ -189,7 +181,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             time.start()
             progressBar.visibility = View.VISIBLE
             tv_timer.visibility = View.VISIBLE
-            tv_numberOfRound.text = "Раунд:" + (countRound)
+            tv_numberOfRound.text = "Раунд:$countRound"
             tv_people.visibility = View.INVISIBLE
         }
     }
@@ -209,7 +201,6 @@ class GameInterfaceActivity : AppCompatActivity() {
     private fun makeInvisibleAnswerPart() {
         tv_count.visibility = View.INVISIBLE
         tv_numberOfRound.visibility = View.INVISIBLE
-//        timer.visibility = View.VISIBLE
         et_enterAnswer.visibility = View.INVISIBLE
         btn_finallAnswer.visibility = View.INVISIBLE
         tv_people.visibility = View.INVISIBLE
@@ -226,9 +217,9 @@ class GameInterfaceActivity : AppCompatActivity() {
             while (parser.eventType != XmlPullParser.END_DOCUMENT) {
                 if (parser.eventType == XmlPullParser.START_TAG && parser.name == "category") {
                     val category = parser.getAttributeValue(0)
-                    categories.add(Category(category, ArrayList<Question>()))
+                    categories.add(Category(category, ArrayList()))
                 } else if (parser.eventType == XmlPullParser.START_TAG && parser.name == "quiz") {
-                    var price: Int = 0
+                    var price = 0
                     var question = ""
                     var right = ""
                     while (parser.eventType != XmlPullParser.END_TAG || parser.name != "quiz") {
@@ -253,49 +244,5 @@ class GameInterfaceActivity : AppCompatActivity() {
 
     fun getPack() {
         questionsAdapter.inputList(parseQuestion())
-    }
-
-    fun getCategoryList(): List<Category> {
-        var categories: ArrayList<Category> = ArrayList<Category>()
-        var questionList: ArrayList<Question> = ArrayList<Question>()
-
-        questionList.add(Question(100, "ИгрыВопрос1", "1"))
-        questionList.add(Question(200, "ИгрыВопрос2", "1"))
-        questionList.add(Question(300, "ИгрыВопрос3", "1"))
-        questionList.add(Question(400, "ИгрыВопрос4", "1"))
-        questionList.add(Question(500, "ИгрыВопрос5", "1"))
-
-
-        categories.add(Category("Game", questionList))
-        questionList = ArrayList<Question>()
-
-        questionList.add(Question(150, "АнимеВопрос1", "1"))
-        questionList.add(Question(250, "АнимеВопрос2", "1"))
-        questionList.add(Question(350, "АнимеВопрос3", "1"))
-        questionList.add(Question(450, "АнимеВопрос4", "1"))
-        questionList.add(Question(550, "АнимеВопрос5", "1"))
-
-        categories.add(Category("Anime", questionList))
-        questionList = ArrayList<Question>()
-
-        questionList.add(Question(120, "ФильмыВопрос1", "1"))
-        questionList.add(Question(220, "ФильмыВопрос2", "1"))
-        questionList.add(Question(320, "ФильмыВопрос3", "1"))
-        questionList.add(Question(420, "ФильмыВопрос4", "1"))
-        questionList.add(Question(520, "ФильмыВопрос5", "1"))
-
-        categories.add(Category("Фильмы", questionList))
-
-        questionList = ArrayList<Question>()
-
-        questionList.add(Question(170, "ЯзыкиВопрос1", "1"))
-        questionList.add(Question(270, "ЯзыкиВопрос2", "1"))
-        questionList.add(Question(370, "ЯзыкиВопрос3", "1"))
-        questionList.add(Question(470, "ЯзыкиВопрос4", "1"))
-        questionList.add(Question(570, "ЯзыкиВопрос5", "1"))
-
-        categories.add(Category("book", questionList))
-
-        return categories
     }
 }
