@@ -6,21 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".net.LobbyActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_serverList"
-        android:layout_width="408dp"
-        android:layout_height="379dp"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl_servers"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_serverList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_playerList"
-        android:layout_width="411dp"
+        android:layout_width="0dp"
         android:layout_height="259dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_serverList" />
+        app:layout_constraintTop_toBottomOf="@+id/srl_servers" />
 
     <Button
         android:id="@+id/btn_connect"

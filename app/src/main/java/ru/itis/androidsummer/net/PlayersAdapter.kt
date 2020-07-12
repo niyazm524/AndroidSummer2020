@@ -4,28 +4,26 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_player.*
 import ru.itis.androidsummer.R
 import ru.itis.androidsummer.data.Player
 
-class PlayersAdapter() :
-    RecyclerView.Adapter<PlayersViewHolder>() {
+class PlayersAdapter :
+    ListAdapter<Player, PlayersViewHolder>(PlayersDiffCallback()) {
     private var itemClickListener: ((Player) -> Unit)? = null
-
-    var players: List<Player> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PlayersViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_player, parent, false)
     )
 
-    override fun getItemCount() = players.count()
-
-    override fun getItemId(position: Int) = players[position].id
+    override fun getItemId(position: Int) = getItem(position).id
 
     override fun onBindViewHolder(holder: PlayersViewHolder, position: Int) {
-        holder.bind(players[position], this::onItemClick)
+        holder.bind(getItem(position), this::onItemClick)
     }
 
     private fun onItemClick(player: Player) {
@@ -54,4 +52,10 @@ class PlayersViewHolder(override val containerView: View) :
 
     }
 
+}
+
+class PlayersDiffCallback : DiffUtil.ItemCallback<Player>() {
+    override fun areItemsTheSame(oldItem: Player, newItem: Player): Boolean = oldItem.id == newItem.id
+
+    override fun areContentsTheSame(oldItem: Player, newItem: Player): Boolean = oldItem == newItem
 }

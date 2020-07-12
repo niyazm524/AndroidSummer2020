@@ -1,5 +1,7 @@
 package ru.itis.androidsummer.net
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
@@ -12,19 +14,27 @@ import com.adroitandroid.near.discovery.NearDiscovery
 import com.adroitandroid.near.model.Host
 import kotlinx.android.synthetic.main.activity_lobby.*
 import ru.itis.androidsummer.R
+import ru.itis.androidsummer.SplashActivity
+import ru.itis.androidsummer.data.Server
+import ru.itis.androidsummer.net.server.ServerService
 
 
- class LobbyActivity : AppCompatActivity() {
+class LobbyActivity : AppCompatActivity() {
     private val currentServerPort:String = ""
     private val currentServerId:Long = 0
-    var mNearDiscovery:NearDiscovery? = null
-    var mNearConnect:NearConnect? = null
+    private lateinit var mNearDiscovery:NearDiscovery
+    private lateinit var mNearConnect:NearConnect
+    private val playersAdapter = PlayersAdapter()
+    private val serversAdapter = ServersAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lobby)
-        val playersAdapter = PlayersAdapter()
-        val serversAdapter = ServersAdapter()
+        val prefs = getSharedPreferences(SplashActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
+        val me = prefs.getString(
+            SplashActivity.APP_PREFERENCES_REGISTRATION,
+            resources.getString(R.string.profile_text_default_name)
+        ) ?: "Unknown"
 
         mNearDiscovery = NearDiscovery.Builder()
             .setContext(this)
@@ -35,18 +45,7 @@ import ru.itis.androidsummer.R
             .setPort(1337) // optional
             .build()
 
-         mNearConnect = NearConnect.Builder()
-            .fromDiscovery(mNearDiscovery!!)
-            .setContext(this)
-            .setListener(getNearConnectListener(), Looper.getMainLooper())
-            .setPort(1337) // optional
-            .build()
-
-
         initDiscovery()
-
-
-
 
 
         rv_playerList.apply {
@@ -62,9 +61,15 @@ import ru.itis.androidsummer.R
         }
 
 
-
+        srl_servers.setOnRefreshListener {
+            if(mNearDiscovery.isDiscovering) {
+                mNearDiscovery.stopDiscovery()
+            }
+            srl_servers.isRefreshing = true
+            mNearDiscovery.startDiscovery()
+        }
         serversAdapter.setOnItemClickListener {
-
+            
         }
 
         playersAdapter.setOnItemClickListener {
@@ -76,7 +81,9 @@ import ru.itis.androidsummer.R
         }
 
         btn_host.setOnClickListener {
-
+            startService(Intent(this, ServerService::class.java))
+            mNearDiscovery.makeDiscoverable(me)
+            Toast.makeText(this, "Теперь ты хостер", Toast.LENGTH_SHORT).show()
         }
 
         btn_startgame.setOnClickListener {
@@ -85,13 +92,21 @@ import ru.itis.androidsummer.R
 
     }
 
-    private fun initDiscovery(){
+    private fun initDiscovery() {
         Toast.makeText(this,"Start Init",Toast.LENGTH_SHORT).show()
-        mNearDiscovery!!.startDiscovery()
-        mNearConnect!!.startReceiving()
-        Log.d("ServerPart","${mNearDiscovery!!.allAvailablePeers}")
-        Log.d("ServerPart","${mNearConnect!!.peers}")
+        mNearDiscovery.startDiscovery()
+        srl_servers.isRefreshing = true
+        mNearConnect.startReceiving()
+        Log.d("ServerPart","${mNearDiscovery.allAvailablePeers}")
+        Log.d("ServerPart","${mNearConnect.peers}")
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mNearDiscovery.stopDiscovery()
+        mNearDiscovery.makeNonDiscoverable()
+        mNearConnect.stopReceiving(true)
     }
 
     private fun getNearConnectListener(): NearConnect.Listener {
@@ -124,15 +139,22 @@ import ru.itis.androidsummer.R
              }
 
              override fun onDiscoveryFailure(e: Throwable) {
+                 srl_servers.isRefreshing = false
                  Toast.makeText(this@LobbyActivity,"DiscoveryFailure: ${e.message}",Toast.LENGTH_SHORT).show()
              }
 
              override fun onDiscoveryTimeout() {
+                 srl_servers.isRefreshing = false
                  Toast.makeText(this@LobbyActivity,"DiscoveryTimeout",Toast.LENGTH_SHORT).show()
              }
 
-             override fun onPeersUpdate(host: Set<Host>) {
-                 Toast.makeText(this@LobbyActivity,"PeersUpdate : ${host.toString()}",Toast.LENGTH_SHORT).show()
+             override fun onPeersUpdate(hosts: Set<Host>) {
+                 serversAdapter.submitList(
+                     hosts.toList().map { host ->
+                         Server(name = host.name, address = host.hostAddress, id = host.hostAddress.hashCode().toLong())
+                     }
+                 )
+                 Toast.makeText(this@LobbyActivity,"PeersUpdate : ${hosts.toString()}",Toast.LENGTH_SHORT).show()
              }
 
 
