@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Oigame</string>
+    <string name="rules">Правила</string>
     <string name="main_menu_start">Начать</string>
     <string name="main_menu_button_rules">Правила</string>
 
@@ -16,6 +17,8 @@
     <string name="profile_button_reset_score">Сбросить свои очки</string>
     <string name="profile_button_score_reset_notification">Ты сбросил свои очки!</string>
     //?не поняла, к чему это прикреплено, спросить у Булата (после сброса тост что ли о сбрасывании?)
+
+
 
 
     <string name="help_text_info">   У каждого игрока имеется свой персональный счет.
