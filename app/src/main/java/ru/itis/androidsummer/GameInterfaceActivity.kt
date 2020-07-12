@@ -62,7 +62,6 @@ class GameInterfaceActivity : AppCompatActivity() {
         tv_people.text = "ИГРОКИ: \n$me"
         tv_numberOfRound.text = "Раунд:$countRound"
         tv_people.visibility = View.VISIBLE
-        //i'll fix it later as soon as Temur will have his table
 
         var heClick = false
         var heFinalClick = false
@@ -243,6 +242,8 @@ class GameInterfaceActivity : AppCompatActivity() {
         return categories
     }
 
+
+
     fun getPack() {
         questionsAdapter.inputList(parseQuestion(parseSiq(assets.open("limp.siq"))))
     }
@@ -261,18 +262,19 @@ class GameInterfaceActivity : AppCompatActivity() {
                     var right = ""
                     while (!(parser.eventType == XmlPullParser.END_TAG && parser.name == "question")) {
                         if(parser.eventType == XmlPullParser.START_TAG) {
-                            if ( parser.name == "question") {
-                                price = parser.getAttributeValue(0).toInt()
-                                parser.next()
-                            } else if (parser.name == "atom") {
-                                //question = parser.getAttributeValue(0)
-                                parser.next()
-                                parser.text
-                                question = parser.text
-                            } else if (parser.name == "answer") {
-                                //right = parser.getAttributeValue(0)
-                                parser.next()
-                                right = parser.text//.encodeToByteArray().contentToString()
+                            when (parser.name) {
+                                "question" -> {
+                                    price = parser.getAttributeValue(0).toInt()
+                                    parser.next()
+                                }
+                                "atom" -> {
+                                    parser.next()
+                                    question = parser.text
+                                }
+                                "answer" -> {
+                                    parser.next()
+                                    right = parser.text//.encodeToByteArray().contentToString()
+                                }
                             }
                         }
                         parser.next()
@@ -281,7 +283,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                     //Toast.makeText(this,price.toString()+question+ "|" + right,Toast.LENGTH_LONG).show()
 
                     //костыль, удалить при первой возможности!!
-                    if (i<7)
+                    if (i<8)
                         i++
                     else
                         break
