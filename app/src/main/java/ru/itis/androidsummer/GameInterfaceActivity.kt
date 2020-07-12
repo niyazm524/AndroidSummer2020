@@ -10,12 +10,17 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_game_interface.*
 import org.xmlpull.v1.XmlPullParser
+import org.xmlpull.v1.XmlPullParserFactory
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_REGISTRATION
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
 import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.data.Question
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.nio.charset.Charset
 import java.util.*
+import java.util.zip.ZipInputStream
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
@@ -32,9 +37,6 @@ class GameInterfaceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_interface)
 
-        //that's necessary
-        val hashMap = HashMap<String, TreeMap<Int, HashSet<List<String>>>>()
-        //don't delete
 
         getPack()
         rv_questions.apply {
@@ -49,12 +51,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
 
-        //temporary strict category and price!!
-        val category = "sport"
-        val price = 100
         var countRound = 1
-        val case: List<String> = hashMap[category]?.get(price)?.random() ?: ArrayList()
-        case.drop(1)
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         val score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
         val me = prefs.getString(
@@ -247,6 +244,78 @@ class GameInterfaceActivity : AppCompatActivity() {
     }
 
     fun getPack() {
-        questionsAdapter.inputList(parseQuestion())
+        questionsAdapter.inputList(parseQuestion(parseSiq(assets.open("limp.siq"))))
     }
+    private fun parseQuestion(parser: XmlPullParser): List<Category> {
+        val categories =  ArrayList<Category>()
+        var i = 0
+        try {
+            while (parser.eventType != XmlPullParser.END_DOCUMENT) {
+                if (parser.eventType == XmlPullParser.START_TAG && parser.name == "theme") {
+                    val category = parser.getAttributeValue(0)
+                    categories.add(Category(category, ArrayList<Question>()))
+                    parser.next()
+                } else if(parser.eventType == XmlPullParser.START_TAG && parser.name == "question") {
+                    var price = 0
+                    var question = ""
+                    var right = ""
+                    while (!(parser.eventType == XmlPullParser.END_TAG && parser.name == "question")) {
+                        if (parser.eventType == XmlPullParser.START_TAG && parser.name == "question") {
+                            price = parser.getAttributeValue(0).toInt()
+                            parser.next()
+                        } else if (parser.eventType == XmlPullParser.START_TAG && parser.name == "atom") {
+                            //question = parser.getAttributeValue(0)
+                            parser.next()
+                            parser.text
+                            question = parser.text
+                        } else if (parser.eventType == XmlPullParser.START_TAG && parser.name == "answer") {
+                            //right = parser.getAttributeValue(0)
+                            parser.next()
+                            right = parser.text//.encodeToByteArray().contentToString()
+                        } else {
+                            parser.next()
+                        }
+                    }
+                    categories.last().transformIntoArray().add(Question(price,question,right))
+                    //Toast.makeText(this,price.toString()+question+ "|" + right,Toast.LENGTH_LONG).show()
+                    //костыль
+                    if (i<7)
+                        i++
+                    else
+                        break
+                } else
+                    parser.next()
+            }
+        } catch (t: Throwable) {
+            Toast.makeText(this, t.toString(), Toast.LENGTH_LONG).show()
+        }
+        return categories
+    }
+    fun parseSiq(file: InputStream): XmlPullParser {
+        val factory = XmlPullParserFactory.newInstance()
+        val parser = factory.newPullParser()
+        try {
+            val stream = ZipInputStream(file)
+            var zip = stream.nextEntry
+            while (zip != null) {
+                if(zip.name =="content.xml") {
+                    val streamReader: InputStreamReader = stream.reader(Charset.forName("UTF-8"))
+                    parser.setInput(streamReader)
+                    /* var i = streamReader.read()
+                     while(i  != -1){
+                         string += i.toChar()
+                         i = streamReader.read()
+                         break
+                     }*/
+                    break
+                }
+                stream.closeEntry()
+                zip = stream.nextEntry
+            }
+        } catch (t: Exception){
+            Toast.makeText(this,t.toString(),Toast.LENGTH_LONG).show()
+        }
+        return parser
+    }
+
 }
