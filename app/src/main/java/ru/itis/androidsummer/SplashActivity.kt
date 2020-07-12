@@ -14,7 +14,8 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
         sharedPreferences =
             getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        if(sharedPreferences.contains(APP_PREFERENCES_REGISTRATION)){
+        val name = sharedPreferences.getString(APP_PREFERENCES_REGISTRATION,null)
+        if(!name.isNullOrEmpty()){
             startActivity(Intent(this, MainMenuActivity::class.java))
         } else{
             startActivity(Intent(this, RegistrationActivity::class.java))
