@@ -20,7 +20,11 @@ import ru.itis.androidsummer.R
     private var mNearDiscovery:NearDiscovery? = null
     private var mNearConnect:NearConnect? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+     companion object {
+         const val SERVER_TAG: String = "ServerPart"
+     }
+
+     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lobby)
         val playersAdapter = PlayersAdapter()
@@ -89,27 +93,27 @@ import ru.itis.androidsummer.R
         Toast.makeText(this,"Start Init",Toast.LENGTH_SHORT).show()
         mNearDiscovery!!.startDiscovery()
         mNearConnect!!.startReceiving()
-        Log.d("ServerPart","${mNearDiscovery!!.allAvailablePeers}")
-        Log.d("ServerPart","${mNearConnect!!.peers}")
+        Log.d(SERVER_TAG,"${mNearDiscovery!!.allAvailablePeers}")
+        Log.d(SERVER_TAG,"${mNearConnect!!.peers}")
 
     }
 
     private fun getNearConnectListener(): NearConnect.Listener {
             return object:NearConnect.Listener{
                 override fun onReceive(bytes: ByteArray, sender: Host) {
-                    Toast.makeText(this@LobbyActivity,"onReceive: ${sender.hostAddress}",Toast.LENGTH_SHORT).show()
+                    Log.d(SERVER_TAG,"onReceive: ${sender.hostAddress}")
                 }
 
                 override fun onSendComplete(jobId: Long) {
-                    Toast.makeText(this@LobbyActivity,"onSendComplete: $jobId",Toast.LENGTH_SHORT).show()
+                    Log.d(SERVER_TAG,"onSendComplete: $jobId")
                 }
 
                 override fun onSendFailure(e: Throwable?, jobId: Long) {
-                    Toast.makeText(this@LobbyActivity,"onSendFailure: (${e?.message ?: "SendFailure"})  ($jobId)",Toast.LENGTH_SHORT).show()
+                    Log.d(SERVER_TAG,"onSendFailure: (${e?.message ?: "SendFailure"}")
                 }
 
                 override fun onStartListenFailure(e: Throwable?) {
-                    Toast.makeText(this@LobbyActivity,"nStartListenFailure: ${e?.message ?: "ListenFailure"}",Toast.LENGTH_SHORT).show()
+                    Log.d(SERVER_TAG,"nStartListenFailure: ${e?.message ?: "ListenFailure"}")
                 }
 
             }
@@ -120,23 +124,25 @@ import ru.itis.androidsummer.R
     private fun getNearDiscoveryListener() : NearDiscovery.Listener{
          return object:NearDiscovery.Listener{
              override fun onDiscoverableTimeout() {
-                 Toast.makeText(this@LobbyActivity,"DiscoverableTimeout",Toast.LENGTH_SHORT).show()
+                 Log.d(SERVER_TAG,"DiscoverableTimeout")
              }
 
              override fun onDiscoveryFailure(e: Throwable) {
-                 Toast.makeText(this@LobbyActivity,"DiscoveryFailure: ${e.message}",Toast.LENGTH_SHORT).show()
+                 Log.d(SERVER_TAG,"DiscoveryFailure: ${e.message}")
              }
 
              override fun onDiscoveryTimeout() {
-                 Toast.makeText(this@LobbyActivity,"DiscoveryTimeout",Toast.LENGTH_SHORT).show()
+                 Log.d(SERVER_TAG,"DiscoveryTimeout")
              }
 
              override fun onPeersUpdate(host: Set<Host>) {
-                 Toast.makeText(this@LobbyActivity,"PeersUpdate : ${host}",Toast.LENGTH_SHORT).show()
+                 Log.d(SERVER_TAG,"PeersUpdate : $host")
              }
 
 
          }
     }
 
-}
+
+
+ }
