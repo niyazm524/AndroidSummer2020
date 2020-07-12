@@ -2,41 +2,40 @@ package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_game_interface.*
-import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_REGISTRATION
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
-import ru.itis.androidsummer.data.Category
-import ru.itis.androidsummer.data.Question
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.nio.charset.Charset
-import java.util.*
-import java.util.zip.ZipInputStream
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-import kotlin.collections.HashSet
+import ru.itis.androidsummer.parsers.ContentsXmlParser
+import ru.itis.androidsummer.parsers.SiqParser
+import java.io.ByteArrayInputStream
 
 class GameInterfaceActivity : AppCompatActivity() {
 
     private val questionsAdapter = QuestionsAdapter()
+    private val siqParser = SiqParser()
+    private lateinit var contentsXmlParser: ContentsXmlParser
+
     var rvAnswer: String? = null
     var rvQuestion: String? = null
     var rvPrice: Int = 0
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_interface)
 
+        val factory = XmlPullParserFactory.newInstance()
+        val parser = factory.newPullParser()
+        contentsXmlParser = ContentsXmlParser(parser)
 
         getPack()
         rv_questions.apply {
@@ -62,6 +61,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         tv_people.text = "ИГРОКИ: \n$me"
         tv_numberOfRound.text = "Раунд:$countRound"
         tv_people.visibility = View.VISIBLE
+        //i'll fix it later as soon as Temur will have his table
 
         var heClick = false
         var heFinalClick = false
@@ -208,118 +208,10 @@ class GameInterfaceActivity : AppCompatActivity() {
         tv_textquestion.visibility = View.INVISIBLE
     }
 
-
-    //don't ye dare touch it!!
-    private fun parseQuestion(): List<Category> {
-        val categories = ArrayList<Category>()
-        try {
-            val parser: XmlPullParser = resources.getXml(R.xml.quizes)
-            while (parser.eventType != XmlPullParser.END_DOCUMENT) {
-                if (parser.eventType == XmlPullParser.START_TAG && parser.name == "category") {
-                    val category = parser.getAttributeValue(0)
-                    categories.add(Category(category, ArrayList()))
-                } else if (parser.eventType == XmlPullParser.START_TAG && parser.name == "quiz") {
-                    var price = 0
-                    var question = ""
-                    var right = ""
-                    while (parser.eventType != XmlPullParser.END_TAG || parser.name != "quiz") {
-                        if (parser.eventType == XmlPullParser.START_TAG) {
-                            when (parser.name) {
-                                "price" -> price = parser.getAttributeValue(0).toInt()
-                                "question_itself" -> question = parser.getAttributeValue(0)
-                                "right_variant" -> right = parser.getAttributeValue(0)
-                            }
-                        }
-                        parser.next()
-                    }
-                    categories.last().transformIntoArray().add(Question(price, question, right))
-                }
-                parser.next()
-            }
-        } catch (t: Throwable) {
-            Toast.makeText(this, t.toString(), Toast.LENGTH_LONG).show()
-        }
-        return categories
-    }
-
-
-
     fun getPack() {
-        questionsAdapter.inputList(parseQuestion(parseSiq(assets.open("limp.siq"))))
-    }
-    private fun parseQuestion(parser: XmlPullParser): List<Category> {
-        val categories =  ArrayList<Category>()
-        var i = 0
-        try {
-            while (parser.eventType != XmlPullParser.END_DOCUMENT) {
-                if (parser.eventType == XmlPullParser.START_TAG && parser.name == "theme") {
-                    val category = parser.getAttributeValue(0)
-                    categories.add(Category(category, ArrayList<Question>()))
-                    parser.next()
-                } else if(parser.eventType == XmlPullParser.START_TAG && parser.name == "question") {
-                    var price = 0
-                    var question = ""
-                    var right = ""
-                    while (!(parser.eventType == XmlPullParser.END_TAG && parser.name == "question")) {
-                        if(parser.eventType == XmlPullParser.START_TAG) {
-                            when (parser.name) {
-                                "question" -> {
-                                    price = parser.getAttributeValue(0).toInt()
-                                    parser.next()
-                                }
-                                "atom" -> {
-                                    parser.next()
-                                    question = parser.text
-                                }
-                                "answer" -> {
-                                    parser.next()
-                                    right = parser.text//.encodeToByteArray().contentToString()
-                                }
-                            }
-                        }
-                        parser.next()
-                    }
-                    categories.last().transformIntoArray().add(Question(price,question,right))
-                    //Toast.makeText(this,price.toString()+question+ "|" + right,Toast.LENGTH_LONG).show()
-
-                    //костыль, удалить при первой возможности!!
-                    if (i<8)
-                        i++
-                    else
-                        break
-                } else
-                    parser.next()
-            }
-        } catch (t: Throwable) {
-            Toast.makeText(this, t.toString(), Toast.LENGTH_LONG).show()
-        }
-        return categories
-    }
-    fun parseSiq(file: InputStream): XmlPullParser {
-        val factory = XmlPullParserFactory.newInstance()
-        val parser = factory.newPullParser()
-        try {
-            val stream = ZipInputStream(file)
-            var zip = stream.nextEntry
-            while (zip != null) {
-                if(zip.name =="content.xml") {
-                    val streamReader: InputStreamReader = stream.reader(Charset.forName("UTF-8"))
-                    parser.setInput(streamReader)
-                    /* var i = streamReader.read()
-                     while(i  != -1){
-                         string += i.toChar()
-                         i = streamReader.read()
-                         break
-                     }*/
-                    break
-                }
-                stream.closeEntry()
-                zip = stream.nextEntry
-            }
-        } catch (t: Exception){
-            Toast.makeText(this,t.toString(),Toast.LENGTH_LONG).show()
-        }
-        return parser
+        val contentsBytes = siqParser.parseSiq(assets.open("limp2.siq"))
+        val categories = contentsXmlParser.parseQuestion(ByteArrayInputStream(contentsBytes))
+        questionsAdapter.inputList(categories)
     }
 
 }
