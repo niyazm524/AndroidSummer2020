@@ -15,11 +15,11 @@ class RegistrationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
         val sharedPreferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        val edit = sharedPreferences.edit()
         btn_registration_correct.setOnClickListener {
+            val edit = sharedPreferences.edit()
             var correctName = false
-            val user = et_registration_users_name.text.toString()
-            if (user.isNotEmpty() and !user.contains(" ")) {
+            val user = et_registration_users_name.text.toString().trim()
+            if (user.isNotEmpty()) {
                 edit.putString(APP_PREFERENCES_REGISTRATION, user).apply()
                 correctName = true
             } else {
@@ -42,5 +42,7 @@ class RegistrationActivity : AppCompatActivity() {
                 finish()
             }
         }
+
+
     }
 }

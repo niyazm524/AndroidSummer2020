@@ -25,7 +25,6 @@ class ProfileActivity : AppCompatActivity() {
             0
         ).toString()
         btn_profile_sign_Out.setOnClickListener {
-            sharedPreferences.edit().remove(APP_PREFERENCES_REGISTRATION).apply()
             startActivity(Intent(this, RegistrationActivity::class.java))
             finish()
         }
