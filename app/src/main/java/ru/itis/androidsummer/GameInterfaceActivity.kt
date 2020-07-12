@@ -255,48 +255,4 @@ class GameInterfaceActivity : AppCompatActivity() {
     fun getPack() {
         questionsAdapter.inputList(parseQuestion())
     }
-
-    fun getCategoryList(): List<Category> {
-        var categories: ArrayList<Category> = ArrayList<Category>()
-        var questionList: ArrayList<Question> = ArrayList<Question>()
-
-        questionList.add(Question(100, "ИгрыВопрос1", "1"))
-        questionList.add(Question(200, "ИгрыВопрос2", "1"))
-        questionList.add(Question(300, "ИгрыВопрос3", "1"))
-        questionList.add(Question(400, "ИгрыВопрос4", "1"))
-        questionList.add(Question(500, "ИгрыВопрос5", "1"))
-
-
-        categories.add(Category("Game", questionList))
-        questionList = ArrayList<Question>()
-
-        questionList.add(Question(150, "АнимеВопрос1", "1"))
-        questionList.add(Question(250, "АнимеВопрос2", "1"))
-        questionList.add(Question(350, "АнимеВопрос3", "1"))
-        questionList.add(Question(450, "АнимеВопрос4", "1"))
-        questionList.add(Question(550, "АнимеВопрос5", "1"))
-
-        categories.add(Category("Anime", questionList))
-        questionList = ArrayList<Question>()
-
-        questionList.add(Question(120, "ФильмыВопрос1", "1"))
-        questionList.add(Question(220, "ФильмыВопрос2", "1"))
-        questionList.add(Question(320, "ФильмыВопрос3", "1"))
-        questionList.add(Question(420, "ФильмыВопрос4", "1"))
-        questionList.add(Question(520, "ФильмыВопрос5", "1"))
-
-        categories.add(Category("Фильмы", questionList))
-
-        questionList = ArrayList<Question>()
-
-        questionList.add(Question(170, "ЯзыкиВопрос1", "1"))
-        questionList.add(Question(270, "ЯзыкиВопрос2", "1"))
-        questionList.add(Question(370, "ЯзыкиВопрос3", "1"))
-        questionList.add(Question(470, "ЯзыкиВопрос4", "1"))
-        questionList.add(Question(570, "ЯзыкиВопрос5", "1"))
-
-        categories.add(Category("book", questionList))
-
-        return categories
-    }
 }
