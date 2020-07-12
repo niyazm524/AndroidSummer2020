@@ -1,6 +1,5 @@
 package ru.itis.androidsummer
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
