@@ -214,7 +214,9 @@ class GameInterfaceActivity : AppCompatActivity() {
 
     fun getPack() {
         val contentsBytes = siqParser.parseSiq(assets.open("limp.siq"))
-        val categories = contentsXmlParser.parseQuestion(ByteArrayInputStream(contentsBytes))
+        val stream = ByteArrayInputStream(contentsBytes)
+        val categories = contentsXmlParser.parseQuestion(stream)
+        stream.close()
         val randomCategories = pickRandomQuestions(categories,3,4 )
         questionsAdapter.inputList(randomCategories)
     }

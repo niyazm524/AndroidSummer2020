@@ -49,7 +49,6 @@ class ContentsXmlParser(private val parser: XmlPullParser) {
             } else
                 parser.next()
         }
-        streamReader.close()
         return categories
     }
 }
