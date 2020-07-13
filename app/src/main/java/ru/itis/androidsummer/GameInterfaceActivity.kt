@@ -13,9 +13,13 @@ import org.xmlpull.v1.XmlPullParserFactory
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_REGISTRATION
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
+import ru.itis.androidsummer.data.Category
+import ru.itis.androidsummer.data.Question
 import ru.itis.androidsummer.parsers.ContentsXmlParser
 import ru.itis.androidsummer.parsers.SiqParser
 import java.io.ByteArrayInputStream
+import java.util.*
+import kotlin.collections.ArrayList
 
 class GameInterfaceActivity : AppCompatActivity() {
 
@@ -211,7 +215,27 @@ class GameInterfaceActivity : AppCompatActivity() {
     fun getPack() {
         val contentsBytes = siqParser.parseSiq(assets.open("limp.siq"))
         val categories = contentsXmlParser.parseQuestion(ByteArrayInputStream(contentsBytes))
-        questionsAdapter.inputList(categories)
+        val randomCategories = pickRandomQuestions(categories,3,4 )
+        questionsAdapter.inputList(randomCategories)
+    }
+    private fun pickRandomQuestions(categoryList: List<Category>, maxQuestions: Int, maxCategories: Int): List<Category>{
+        val newCategoryList = ArrayList<Category>()
+        var maxIndex = maxCategories-1
+        if (categoryList.size<maxCategories)
+            maxIndex = categoryList.size-1
+        for (index in 0..maxIndex){
+            val newQuestionArray = ArrayList<Question>()
+            val questionArray = categoryList[index].transformIntoArray()
+            var maxIndex2 = maxQuestions
+            if (questionArray.size < maxQuestions) {
+                maxIndex2 = questionArray.size
+            }
+            for (index2 in 1..maxIndex2){
+                newQuestionArray.add(questionArray.random())
+            }
+            newCategoryList.add(Category(categoryList[index].title,newQuestionArray))
+        }
+        return newCategoryList
     }
 
 

@@ -46,11 +46,6 @@ class ContentsXmlParser(private val parser: XmlPullParser) {
                 }
                 if (isTextQuestion)
                     categories.last().transformIntoArray().add(Question(price, question, right))
-                //костыль
-                if (i < 7)
-                    i++
-                else
-                    break
             } else
                 parser.next()
         }
