@@ -1,7 +1,6 @@
 package ru.itis.androidsummer.net.server
 
 import java.net.ServerSocket
-import kotlin.concurrent.thread
 
 class GameServer : Thread() {
     private var isRunning = true
@@ -9,7 +8,7 @@ class GameServer : Thread() {
     private val clients = mutableListOf<GameClient>()
 
     override fun run() {
-        while (isRunning) {
+        while (isRunning && !isInterrupted) {
             val client = serverSocket.accept()
             val gameClient = GameClient(this, client)
             clients.add(gameClient)

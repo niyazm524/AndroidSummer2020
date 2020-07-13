@@ -9,23 +9,24 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.adroitandroid.near.connect.NearConnect
 import com.adroitandroid.near.discovery.NearDiscovery
 import com.adroitandroid.near.model.Host
 import kotlinx.android.synthetic.main.activity_lobby.*
 import ru.itis.androidsummer.R
 import ru.itis.androidsummer.SplashActivity
 import ru.itis.androidsummer.data.Server
+import ru.itis.androidsummer.net.client.PlayerClient
 import ru.itis.androidsummer.net.server.ServerService
+import kotlin.concurrent.thread
 
 
 class LobbyActivity : AppCompatActivity() {
     private val currentServerPort:String = ""
     private val currentServerId:Long = 0
     private lateinit var mNearDiscovery:NearDiscovery
-    private lateinit var mNearConnect:NearConnect
     private val playersAdapter = PlayersAdapter()
     private val serversAdapter = ServersAdapter()
+    private lateinit var client: PlayerClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +70,9 @@ class LobbyActivity : AppCompatActivity() {
             mNearDiscovery.startDiscovery()
         }
         serversAdapter.setOnItemClickListener {
-            
+            client = PlayerClient(it.address)
+            client.start()
+            Toast.makeText(this, "connection in process", Toast.LENGTH_SHORT).show()
         }
 
         playersAdapter.setOnItemClickListener {
@@ -77,7 +80,9 @@ class LobbyActivity : AppCompatActivity() {
         }
 
         btn_connect.setOnClickListener {
-
+            thread {
+                client.sendMessage("hello")
+            }
         }
 
         btn_host.setOnClickListener {
@@ -96,9 +101,7 @@ class LobbyActivity : AppCompatActivity() {
         Toast.makeText(this,"Start Init",Toast.LENGTH_SHORT).show()
         mNearDiscovery.startDiscovery()
         srl_servers.isRefreshing = true
-        mNearConnect.startReceiving()
         Log.d("ServerPart","${mNearDiscovery.allAvailablePeers}")
-        Log.d("ServerPart","${mNearConnect.peers}")
 
     }
 
@@ -106,28 +109,6 @@ class LobbyActivity : AppCompatActivity() {
         super.onStop()
         mNearDiscovery.stopDiscovery()
         mNearDiscovery.makeNonDiscoverable()
-        mNearConnect.stopReceiving(true)
-    }
-
-    private fun getNearConnectListener(): NearConnect.Listener {
-            return object:NearConnect.Listener{
-                override fun onReceive(bytes: ByteArray, sender: Host) {
-                    Toast.makeText(this@LobbyActivity,"onReceive: ${sender.hostAddress}",Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onSendComplete(jobId: Long) {
-                    Toast.makeText(this@LobbyActivity,"onSendComplete: $jobId",Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onSendFailure(e: Throwable?, jobId: Long) {
-                    Toast.makeText(this@LobbyActivity,"onSendFailure: (${e?.message ?: "SendFailure"})  ($jobId)",Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onStartListenFailure(e: Throwable?) {
-                    Toast.makeText(this@LobbyActivity,"nStartListenFailure: ${e?.message ?: "ListenFailure"}",Toast.LENGTH_SHORT).show()
-                }
-
-            }
     }
 
 
