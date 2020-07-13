@@ -67,7 +67,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                     Toast.makeText(this,R.string.game_text_wrong_xml_structure,Toast.LENGTH_LONG).show()
                 else -> Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show()
             }
-            onBackPressed()
+            finish()
         }
         var countRound = 1
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
