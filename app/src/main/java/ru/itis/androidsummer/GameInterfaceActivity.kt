@@ -15,10 +15,8 @@ import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_REGISTRATI
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
 import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.data.Question
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-import kotlin.collections.HashSet
+
 
 class GameInterfaceActivity : AppCompatActivity() {
 
@@ -75,7 +73,6 @@ class GameInterfaceActivity : AppCompatActivity() {
 
         val time2 = object : CountDownTimer(20000, 1000) {
             override fun onFinish() {
-                //TODO : Возвращение к таблице с вопросами или хз че
                 if  (progressBar.progress == 0) {
                     tv_timer2.text = "Вы не успели ввести ответ!"
                     Toast.makeText(
@@ -100,14 +97,10 @@ class GameInterfaceActivity : AppCompatActivity() {
                 }
                 resetQuestion()
                 cancel()
-                makeInvisibleAnswerPart()
-                rv_questions.visibility = View.VISIBLE
-                tv_count.visibility = View.VISIBLE
-                tv_numberOfRound.visibility = View.VISIBLE
                 countRound++
                 tv_numberOfRound.text = "Раунд:$countRound"
-                tv_people.visibility = View.VISIBLE
-
+                makeInvisibleAnswerPart()
+                //надо будет добавить что-то для вывода результатов когда вопросы заканчиваются
             }
 
             @SuppressLint("SetTextI18n")
@@ -165,7 +158,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             override fun onFinish() {
                 if (!heClick or (progressBar.progress == 0)) {
                     tv_timer.text = "Время вышло!"
-
+                    //надо будет что-то добавить когда сеть сделаем(чтобы не оставался в том же положении)
                 }
             }
         }
@@ -199,13 +192,15 @@ class GameInterfaceActivity : AppCompatActivity() {
     }
 
     private fun makeInvisibleAnswerPart() {
-        tv_count.visibility = View.INVISIBLE
-        tv_numberOfRound.visibility = View.INVISIBLE
+        tv_count.visibility = View.VISIBLE
+        tv_numberOfRound.visibility = View.VISIBLE
         et_enterAnswer.visibility = View.INVISIBLE
         btn_finallAnswer.visibility = View.INVISIBLE
-        tv_people.visibility = View.INVISIBLE
+        tv_people.visibility = View.VISIBLE
         tv_timer2.visibility = View.INVISIBLE
         tv_textquestion.visibility = View.INVISIBLE
+        progressBar.visibility = View.INVISIBLE
+        rv_questions.visibility = View.VISIBLE
     }
 
 
