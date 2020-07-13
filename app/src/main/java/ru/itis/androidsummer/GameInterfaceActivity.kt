@@ -2,6 +2,7 @@ package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_game_interface.*
+import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_REGISTRATION
@@ -18,6 +20,8 @@ import ru.itis.androidsummer.data.Question
 import ru.itis.androidsummer.parsers.ContentsXmlParser
 import ru.itis.androidsummer.parsers.SiqParser
 import java.io.ByteArrayInputStream
+import java.io.FileNotFoundException
+import java.lang.IndexOutOfBoundsException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -41,7 +45,8 @@ class GameInterfaceActivity : AppCompatActivity() {
         val parser = factory.newPullParser()
         contentsXmlParser = ContentsXmlParser(parser)
 
-        getPack()
+        try{
+        getPack("limp.siq")
         rv_questions.apply {
             layoutManager =
                 GridLayoutManager(
@@ -52,7 +57,19 @@ class GameInterfaceActivity : AppCompatActivity() {
                 )
             adapter = questionsAdapter
         }
-
+        } catch (e: FileNotFoundException){
+            Toast.makeText(this,R.string.game_text_no_file_exception,Toast.LENGTH_LONG).show()
+            startActivity(Intent(this, MainMenuActivity::class.java))
+        } catch (e: XmlPullParserException){
+            Toast.makeText(this,R.string.game_text_wrong_siq_exception,Toast.LENGTH_LONG).show()
+            startActivity(Intent(this, MainMenuActivity::class.java))
+        } catch (e:IndexOutOfBoundsException){
+            Toast.makeText(this,R.string.game_text_wrong_xml_structure,Toast.LENGTH_LONG).show()
+            startActivity(Intent(this, MainMenuActivity::class.java))
+        } catch (e: Throwable){
+            Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show()
+            startActivity(Intent(this, MainMenuActivity::class.java))
+        }
 
         var countRound = 1
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
@@ -212,12 +229,12 @@ class GameInterfaceActivity : AppCompatActivity() {
         tv_textquestion.visibility = View.INVISIBLE
     }
 
-    fun getPack() {
-        val contentsBytes = siqParser.parseSiq(assets.open("limp.siq"))
+    private fun getPack(filename: String) {
+        val contentsBytes = siqParser.parseSiq(assets.open(filename))
         val stream = ByteArrayInputStream(contentsBytes)
         val categories = contentsXmlParser.parseQuestion(stream)
         stream.close()
-        val randomCategories = pickRandomQuestions(categories,3,4 )
+        val randomCategories = pickRandomQuestions(categories, 3, 4)
         questionsAdapter.inputList(randomCategories)
     }
     private fun pickRandomQuestions
