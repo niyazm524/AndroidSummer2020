@@ -11,12 +11,6 @@ class SiqParser {
             while (zip != null) {
                 if (zip.name == "content.xml") {
                     contentsBytes = stream.readBytes()
-                    /* var i = streamReader.read()
-                     while(i  != -1){
-                         string += i.toChar()
-                         i = streamReader.read()
-                         break
-                     }*/
                     break
                 }
                 stream.closeEntry()

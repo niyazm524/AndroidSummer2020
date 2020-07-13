@@ -11,7 +11,6 @@ class ContentsXmlParser(private val parser: XmlPullParser) {
         val streamReader = InputStreamReader(contentsStream)
         parser.setInput(streamReader)
         val categories = ArrayList<Category>()
-        var i = 0
         while (parser.eventType != XmlPullParser.END_DOCUMENT) {
             if (parser.eventType == XmlPullParser.START_TAG && parser.name == "theme") {
                 val category = parser.getAttributeValue(0)
@@ -21,6 +20,7 @@ class ContentsXmlParser(private val parser: XmlPullParser) {
                 var price = 0
                 var question = ""
                 var right = ""
+                //костыль: пока только текстовые вопросы
                 var isTextQuestion = true
                 while (!(parser.eventType == XmlPullParser.END_TAG && parser.name == "question")) {
                     if (parser.eventType == XmlPullParser.START_TAG) {
@@ -49,6 +49,7 @@ class ContentsXmlParser(private val parser: XmlPullParser) {
             } else
                 parser.next()
         }
+        streamReader.close()
         return categories
     }
 }
