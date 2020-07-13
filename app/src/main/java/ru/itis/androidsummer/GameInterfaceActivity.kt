@@ -223,12 +223,19 @@ class GameInterfaceActivity : AppCompatActivity() {
     private fun pickRandomQuestions
                 (categoryList: List<Category>, maxQuestions: Int, maxCategories: Int): List<Category>{
         val newCategoryList = ArrayList<Category>()
-        var maxIndex = maxCategories-1
+        var maxIndex = maxCategories
+        val arrayOfCategoriesNames = ArrayList<String>(maxCategories)
         if (categoryList.size<maxCategories)
-            maxIndex = categoryList.size-1
-        for (index in 0..maxIndex){
+            maxIndex = categoryList.size
+        for (index in 1..maxIndex){
             val newQuestionArray = ArrayList<Question>()
-            val questionArray = categoryList[index].transformIntoArray()
+            var category = categoryList.random()
+            while (category.transformIntoArray().size == 0
+                || arrayOfCategoriesNames.contains(category.title)){
+                category = categoryList.random()
+            }
+            arrayOfCategoriesNames.add(category.title)
+            val questionArray = category.transformIntoArray()
             var maxIndex2 = maxQuestions
             if (questionArray.size < maxQuestions) {
                 maxIndex2 = questionArray.size
@@ -236,7 +243,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             for (index2 in 1..maxIndex2){
                 newQuestionArray.add(questionArray.random())
             }
-            newCategoryList.add(Category(categoryList[index].title,
+            newCategoryList.add(Category(category.title,
                 newQuestionArray.sortedBy { question -> question.price }))
         }
         return newCategoryList
