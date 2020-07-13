@@ -46,7 +46,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         contentsXmlParser = ContentsXmlParser(parser)
 
         try{
-        getPack("limps.siq")
+        getPack("limp.siq")
         rv_questions.apply {
             layoutManager =
                 GridLayoutManager(
