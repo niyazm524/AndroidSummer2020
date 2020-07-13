@@ -92,15 +92,15 @@ class CategoriesViewHolder(override val containerView: View) :
             }
         }
 
-        tv_help2.textSize = 25F
+        tv_help2.textSize = 30F
         if (index != null) {
             tv_help2.text = category.questions.getOrNull(index)?.price?.toString() ?: "n"
             tv_help2.isClickable = true
-            tv_help2.setTextColor(Color.DKGRAY)
+            tv_help2.setTextColor(Color.WHITE)
         } else {
             tv_help2.text = category.title
             tv_help2.background = null
-            tv_help2.textSize = 14F
+            tv_help2.textSize = 16F
         }
     }
 

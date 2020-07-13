@@ -41,12 +41,14 @@ class GameInterfaceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_interface)
 
+
         val factory = XmlPullParserFactory.newInstance()
         val parser = factory.newPullParser()
         contentsXmlParser = ContentsXmlParser(parser)
 
         try{
         getPack("limp.siq")
+
         rv_questions.apply {
             layoutManager =
                 GridLayoutManager(
@@ -57,6 +59,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                 )
             adapter = questionsAdapter
         }
+
         } catch (e: Throwable){
             when (e) {
                 is XmlPullParserException ->
@@ -69,9 +72,10 @@ class GameInterfaceActivity : AppCompatActivity() {
             }
             finish()
         }
+
         var countRound = 1
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        val score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
+        var score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
         val me = prefs.getString(
             APP_PREFERENCES_REGISTRATION,
             resources.getString(R.string.profile_text_default_name)
@@ -101,17 +105,17 @@ class GameInterfaceActivity : AppCompatActivity() {
 
         val time2 = object : CountDownTimer(20000, 1000) {
             override fun onFinish() {
-
                 //TODO : Возвращение к таблице с вопросами или хз че
                 if  (progressBar.progress == 0) {
-
                     tv_timer2.text = "Вы не успели ввести ответ!"
                     Toast.makeText(
                         this@GameInterfaceActivity,
                         "Вы не успели ввести ответ!\n-$rvPrice очков!",
                         Toast.LENGTH_SHORT
                     ).show()
-                    prefs.edit().putInt(APP_PREFERENCES_SCORE, score - rvPrice).apply()
+                    score-=rvPrice
+                    prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
+                    tv_count.text = "Счет:$score"
                     cancel()
                 } else if (heFinalClick) {
                     Toast.makeText(
@@ -119,7 +123,9 @@ class GameInterfaceActivity : AppCompatActivity() {
                         "+$rvPrice очков!",
                         Toast.LENGTH_SHORT
                     ).show()
-                    prefs.edit().putInt(APP_PREFERENCES_SCORE, score + rvPrice).apply()
+                    score+=rvPrice
+                    prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
+                    tv_count.text = "Счет:$score"
                     cancel()
                 }
                 resetQuestion()
@@ -148,19 +154,24 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
         btn_finallAnswer.setOnClickListener {
-            heFinalClick = (et_enterAnswer.text.toString() == rvAnswer)
+            heFinalClick = (et_enterAnswer.text.toString().toLowerCase().trim()
+                    == rvAnswer.toString().toLowerCase().trim())
             if (et_enterAnswer.text.isEmpty()) {
                 Toast.makeText(this, "Вы не ввели ответ!\n-$rvPrice очков!", Toast.LENGTH_SHORT)
                     .show()
+                score-=rvPrice
+                prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
                 //в будущем можно будет апгрейдить и не давать отвечать пока не введет ответ или что нибудь еще помимо тоста
-            } else
-                if (!heFinalClick) {
+            } else if (!heFinalClick) {
                     Toast.makeText(
                         this,
                         "Неправильный ответ!\n-$rvPrice очков!",
                         Toast.LENGTH_SHORT
                     ).show()
+                    score-=rvPrice
+                    prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
                 }
+            tv_count.text = "Счет:$score"
             time2.onFinish()
             progressBar.visibility = View.INVISIBLE
             tv_timer2.visibility = View.INVISIBLE
@@ -264,5 +275,11 @@ class GameInterfaceActivity : AppCompatActivity() {
         return newCategoryList
     }
 
+
+    override fun onBackPressed() {
+        val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+        prefs.edit().putInt(APP_PREFERENCES_SCORE,0).apply()
+        this.onBackPressedDispatcher.onBackPressed()
+    }
 
 }

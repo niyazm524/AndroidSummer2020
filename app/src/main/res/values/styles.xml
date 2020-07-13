@@ -1,10 +1,38 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorUp</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@drawable/gradient</item>
+        <item name="android:fontFamily">@font/comfortaa</item>
+<!--        <style name="oigame">-->
+
+<!--            <item name="android:textSize">-->
+<!--                40sp-->
+<!--            </item>-->
+
+<!--            <item name="android:shadowColor">-->
+<!--                #40000000-->
+<!--            </item>-->
+
+<!--            <item name="android:shadowDx">-->
+<!--                0-->
+<!--            </item>-->
+
+<!--            <item name="android:shadowDy">-->
+<!--                4-->
+<!--            </item>-->
+
+<!--            <item name="android:shadowRadius">-->
+<!--                4-->
+<!--            </item>-->
+
+<!--        </style>-->
+<!--        <item name="button">@style/Widget.AppCompat.Button</item>-->
     </style>
 
 </resources>
