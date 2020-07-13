@@ -46,7 +46,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         contentsXmlParser = ContentsXmlParser(parser)
 
         try{
-        getPack("limp.siq")
+        getPack("limps.siq")
         rv_questions.apply {
             layoutManager =
                 GridLayoutManager(
@@ -67,7 +67,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                     Toast.makeText(this,R.string.game_text_wrong_xml_structure,Toast.LENGTH_LONG).show()
                 else -> Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show()
             }
-            startActivity(Intent(this, MainMenuActivity::class.java))
+            onBackPressed()
         }
         var countRound = 1
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
