@@ -4,16 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     tools:context=".SplashActivity">
 
     <TextView
         android:id="@+id/tv_profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
         android:text="@string/registration_name_request"
-        android:textColor="@color/colorAccent"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -28,6 +25,7 @@
         android:ems="10"
         android:hint="@string/registration_name_example"
         android:inputType="textPersonName"
+        android:textColor="@color/colorAccent"
         android:maxLength="16"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,8 +35,8 @@
 
     <Button
         android:id="@+id/btn_registration_correct"
-        android:layout_width="wrap_content"
-        android:layout_height="55dp"
+        android:layout_width="191dp"
+        android:layout_height="102dp"
         android:backgroundTint="@color/colorAccent"
         android:text="@string/registration_button_name_setting"
         android:textColor="#ffffff"
