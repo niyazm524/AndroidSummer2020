@@ -21,25 +21,31 @@ class ContentsXmlParser(private val parser: XmlPullParser) {
                 var price = 0
                 var question = ""
                 var right = ""
+                var isTextQuestion = true
                 while (!(parser.eventType == XmlPullParser.END_TAG && parser.name == "question")) {
-                    if (parser.eventType == XmlPullParser.START_TAG && parser.name == "question") {
-                        price = parser.getAttributeValue(0).toInt()
-                        parser.next()
-                    } else if (parser.eventType == XmlPullParser.START_TAG && parser.name == "atom") {
-                        //question = parser.getAttributeValue(0)
-                        parser.next()
-                        parser.text
-                        question = parser.text
-                    } else if (parser.eventType == XmlPullParser.START_TAG && parser.name == "answer") {
-                        //right = parser.getAttributeValue(0)
-                        parser.next()
-                        right = parser.text//.encodeToByteArray().contentToString()
-                    } else {
-                        parser.next()
+                    if (parser.eventType == XmlPullParser.START_TAG) {
+                        when (parser.name) {
+                            "question" -> {
+                                price = parser.getAttributeValue(0).toInt()
+                                parser.next()
+                            }
+                            "atom" -> {
+                                if (parser.attributeCount >= 1){
+                                    isTextQuestion = false
+                                }
+                                parser.next()
+                                question = parser.text
+                            }
+                            "answer" -> {
+                                parser.next()
+                                right = parser.text
+                            }
+                        }
                     }
+                    parser.next()
                 }
-                categories.last().transformIntoArray().add(Question(price, question, right))
-                //Toast.makeText(this,price.toString()+question+ "|" + right,Toast.LENGTH_LONG).show()
+                if (isTextQuestion)
+                    categories.last().transformIntoArray().add(Question(price, question, right))
                 //костыль
                 if (i < 7)
                     i++

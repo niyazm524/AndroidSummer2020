@@ -214,4 +214,5 @@ class GameInterfaceActivity : AppCompatActivity() {
         questionsAdapter.inputList(categories)
     }
 
+
 }
