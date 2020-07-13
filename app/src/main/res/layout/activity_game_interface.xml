@@ -6,20 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".GameInterfaceActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_questions"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsc_question"
         android:layout_width="0dp"
-        android:layout_height="175dp"
-        android:gravity="center"
-        android:shadowColor="#FDFDFD"
-        android:textColorHighlight="#090909"
-        android:textColorHint="#FFFFFF"
-        android:textColorLink="#FDFDFD"
-        android:textSize="30sp"
+        android:layout_height="176dp"
+        android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.064"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_questions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:shadowColor="#FDFDFD"
+            android:textColorHighlight="#090909"
+            android:textColorHint="#FFFFFF"
+            android:textColorLink="#FDFDFD"
+            android:textSize="30sp"
+            tools:visibility="visible" />
+    </androidx.core.widget.NestedScrollView>
 
     <Button
         android:id="@+id/btn_wantAnswer"
@@ -152,7 +160,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_timer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_questions"
+        app:layout_constraintTop_toBottomOf="@+id/nsc_question"
         tools:visibility="visible" />
 
     <TextView

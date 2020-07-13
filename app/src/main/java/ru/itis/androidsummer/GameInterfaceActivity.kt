@@ -63,6 +63,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
         rv_questions.apply {
+            isNestedScrollingEnabled = false
             layoutManager =
                 GridLayoutManager(
                     this@GameInterfaceActivity,
