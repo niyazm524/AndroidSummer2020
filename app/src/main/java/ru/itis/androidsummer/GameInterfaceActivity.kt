@@ -57,20 +57,18 @@ class GameInterfaceActivity : AppCompatActivity() {
                 )
             adapter = questionsAdapter
         }
-        } catch (e: FileNotFoundException){
-            Toast.makeText(this,R.string.game_text_no_file_exception,Toast.LENGTH_LONG).show()
-            startActivity(Intent(this, MainMenuActivity::class.java))
-        } catch (e: XmlPullParserException){
-            Toast.makeText(this,R.string.game_text_wrong_siq_exception,Toast.LENGTH_LONG).show()
-            startActivity(Intent(this, MainMenuActivity::class.java))
-        } catch (e:IndexOutOfBoundsException){
-            Toast.makeText(this,R.string.game_text_wrong_xml_structure,Toast.LENGTH_LONG).show()
-            startActivity(Intent(this, MainMenuActivity::class.java))
         } catch (e: Throwable){
-            Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show()
+            when (e) {
+                is XmlPullParserException ->
+                    Toast.makeText(this,R.string.game_text_wrong_siq_exception,Toast.LENGTH_LONG).show()
+                is FileNotFoundException ->
+                    Toast.makeText(this,R.string.game_text_no_file_exception,Toast.LENGTH_LONG).show()
+                is IndexOutOfBoundsException ->
+                    Toast.makeText(this,R.string.game_text_wrong_xml_structure,Toast.LENGTH_LONG).show()
+                else -> Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show()
+            }
             startActivity(Intent(this, MainMenuActivity::class.java))
         }
-
         var countRound = 1
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         val score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
