@@ -26,6 +26,7 @@
         android:hint="@string/registration_name_example"
         android:inputType="textPersonName"
         android:textColor="@color/colorAccent"
+        android:maxLength="16"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
