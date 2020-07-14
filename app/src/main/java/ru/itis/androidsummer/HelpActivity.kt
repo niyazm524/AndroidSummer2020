@@ -11,7 +11,7 @@ class HelpActivity : AppCompatActivity(){
         setContentView(R.layout.activity_help)
 
         iv_help_back_to_menu.setOnClickListener {
-            startActivity(Intent(this,MainMenuActivity::class.java))
+            finish()
         }
     }
 }

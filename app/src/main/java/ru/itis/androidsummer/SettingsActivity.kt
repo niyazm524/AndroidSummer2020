@@ -38,7 +38,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         iv_settings_back_to_menu.setOnClickListener {
-            startActivity(Intent(this,MainMenuActivity::class.java))
+            finish()
         }
         //когда сеть будет, отсюда можно что нибудь с хостами я хз
         //можно добавить смену на темную тему

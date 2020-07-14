@@ -49,7 +49,7 @@ class ProfileActivity : AppCompatActivity() {
         tv_profile_place_in_rating.underline()
 
         iv_profile_back_to_menu.setOnClickListener {
-            startActivity(Intent(this, MainMenuActivity::class.java))
+            finish()
         }
 
         iv_profile_rating.setOnClickListener {
