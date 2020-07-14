@@ -2,7 +2,6 @@ package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
@@ -21,9 +20,6 @@ import ru.itis.androidsummer.parsers.ContentsXmlParser
 import ru.itis.androidsummer.parsers.SiqParser
 import java.io.ByteArrayInputStream
 import java.io.FileNotFoundException
-import java.lang.IndexOutOfBoundsException
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class GameInterfaceActivity : AppCompatActivity() {
@@ -47,8 +43,24 @@ class GameInterfaceActivity : AppCompatActivity() {
         val parser = factory.newPullParser()
         contentsXmlParser = ContentsXmlParser(parser)
 
-        try{
-        getPack("limp.siq")
+        try {
+            val categories = getPack("limp.siq")
+            questionsAdapter.inputList(categories)
+        } catch (e: Throwable) {
+            when (e) {
+                is XmlPullParserException ->
+                    Toast.makeText(this, R.string.game_text_wrong_siq_exception, Toast.LENGTH_LONG)
+                        .show()
+                is FileNotFoundException ->
+                    Toast.makeText(this, R.string.game_text_no_file_exception, Toast.LENGTH_LONG)
+                        .show()
+                is IndexOutOfBoundsException ->
+                    Toast.makeText(this, R.string.game_text_wrong_xml_structure, Toast.LENGTH_LONG)
+                        .show()
+                else -> Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
+            }
+            finish()
+        }
 
         rv_questions.apply {
             layoutManager =
@@ -59,19 +71,6 @@ class GameInterfaceActivity : AppCompatActivity() {
                     false
                 )
             adapter = questionsAdapter
-        }
-
-        } catch (e: Throwable){
-            when (e) {
-                is XmlPullParserException ->
-                    Toast.makeText(this,R.string.game_text_wrong_siq_exception,Toast.LENGTH_LONG).show()
-                is FileNotFoundException ->
-                    Toast.makeText(this,R.string.game_text_no_file_exception,Toast.LENGTH_LONG).show()
-                is IndexOutOfBoundsException ->
-                    Toast.makeText(this,R.string.game_text_wrong_xml_structure,Toast.LENGTH_LONG).show()
-                else -> Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show()
-            }
-            finish()
         }
 
         var countRound = 1
@@ -106,14 +105,14 @@ class GameInterfaceActivity : AppCompatActivity() {
 
         val time2 = object : CountDownTimer(20000, 1000) {
             override fun onFinish() {
-                if  (progressBar.progress == 0) {
+                if (progressBar.progress == 0) {
                     tv_timer2.text = "Вы не успели ввести ответ!"
                     Toast.makeText(
                         this@GameInterfaceActivity,
                         "Вы не успели ввести ответ!\n-$rvPrice очков!",
                         Toast.LENGTH_SHORT
                     ).show()
-                    score-=rvPrice
+                    score -= rvPrice
                     prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
                     tv_count.text = "Счет:$score"
                     cancel()
@@ -123,7 +122,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                         "+$rvPrice очков!",
                         Toast.LENGTH_SHORT
                     ).show()
-                    score+=rvPrice
+                    score += rvPrice
                     prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
                     tv_count.text = "Счет:$score"
                     cancel()
@@ -155,18 +154,18 @@ class GameInterfaceActivity : AppCompatActivity() {
             if (et_enterAnswer.text.isEmpty()) {
                 Toast.makeText(this, "Вы не ввели ответ!\n-$rvPrice очков!", Toast.LENGTH_SHORT)
                     .show()
-                score-=rvPrice
+                score -= rvPrice
                 prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
                 //в будущем можно будет апгрейдить и не давать отвечать пока не введет ответ или что нибудь еще помимо тоста
             } else if (!heFinalClick) {
-                    Toast.makeText(
-                        this,
-                        "Неправильный ответ!\n-$rvPrice очков!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    score-=rvPrice
-                    prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
-                }
+                Toast.makeText(
+                    this,
+                    "Неправильный ответ!\n-$rvPrice очков!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                score -= rvPrice
+                prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
+            }
             tv_count.text = "Счет:$score"
             time2.onFinish()
             progressBar.visibility = View.INVISIBLE
@@ -236,26 +235,30 @@ class GameInterfaceActivity : AppCompatActivity() {
         rv_questions.visibility = View.VISIBLE
     }
 
-    private fun getPack(filename: String) {
+    private fun getPack(filename: String): List<Category> {
         val contentsBytes = siqParser.parseSiq(assets.open(filename))
         val stream = ByteArrayInputStream(contentsBytes)
         val categories = contentsXmlParser.parseQuestion(stream)
         stream.close()
-        val randomCategories = pickRandomQuestions(categories, 3, 4)
-        questionsAdapter.inputList(randomCategories)
+        return pickRandomQuestions(categories, 3, 4)
     }
-    private fun pickRandomQuestions
-                (categoryList: List<Category>, maxQuestions: Int, maxCategories: Int): List<Category>{
+
+    private fun pickRandomQuestions(
+        categoryList: List<Category>,
+        maxQuestions: Int,
+        maxCategories: Int
+    ): List<Category> {
         val newCategoryList = ArrayList<Category>()
         var maxIndex = maxCategories
         val arrayOfCategoriesNames = ArrayList<String>(maxCategories)
-        if (categoryList.size<maxCategories)
+        if (categoryList.size < maxCategories)
             maxIndex = categoryList.size
-        for (index in 1..maxIndex){
+        for (index in 1..maxIndex) {
             val newQuestionArray = ArrayList<Question>()
             var category = categoryList.random()
             while (category.transformIntoArray().size == 0
-                || arrayOfCategoriesNames.contains(category.title)){
+                || arrayOfCategoriesNames.contains(category.title)
+            ) {
                 category = categoryList.random()
             }
             arrayOfCategoriesNames.add(category.title)
@@ -264,18 +267,20 @@ class GameInterfaceActivity : AppCompatActivity() {
             if (questionArray.size < maxQuestions) {
                 maxIndex2 = questionArray.size
             }
-            for (index2 in 1..maxIndex2){
+            for (index2 in 1..maxIndex2) {
                 newQuestionArray.add(questionArray.random())
             }
-            newCategoryList.add(Category(category.title,
-                newQuestionArray.sortedBy { question -> question.price }))
+            newCategoryList.add(
+                Category(category.title,
+                    newQuestionArray.sortedBy { question -> question.price })
+            )
         }
         return newCategoryList
     }
 
     override fun onBackPressed() {
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        prefs.edit().putInt(APP_PREFERENCES_SCORE,0).apply()
+        prefs.edit().putInt(APP_PREFERENCES_SCORE, 0).apply()
         this.onBackPressedDispatcher.onBackPressed()
     }
 
