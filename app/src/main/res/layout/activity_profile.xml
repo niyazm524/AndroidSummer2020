@@ -8,69 +8,125 @@
 
     <TextView
         android:id="@+id/tv_profile_name"
-        android:layout_width="315dp"
-        android:layout_height="68dp"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:gravity="center"
         android:text="@string/profile_text_default_name"
-        android:textSize="25sp"
+        android:textColor="@color/justBlack"
+        android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.081" />
+        app:layout_constraintVertical_bias="0.22" />
 
     <TextView
         android:id="@+id/tv_profile_score"
-        android:layout_width="332dp"
-        android:layout_height="117dp"
+        android:layout_width="327dp"
+        android:layout_height="63dp"
         android:gravity="center"
         android:text="@string/profile_text_default_score"
+        android:textColor="@color/justBlack"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.063"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.234" />
-
-    <Button
-        android:id="@+id/btn_profile_sign_Out"
-        android:layout_width="142sp"
-        android:layout_height="60sp"
-        android:background="@color/colorAccent"
-        android:text="@string/profile_button_sign_out"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.46"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_profile_score"
-        app:layout_constraintVertical_bias="0.36" />
-
-    <Button
-        android:id="@+id/btn_profile_reset_score"
-        android:layout_width="142sp"
-        android:layout_height="60sp"
-        android:background="@color/colorAccent"
-        android:text="@string/profile_button_reset_score"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.46"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_profile_sign_Out"
-        app:layout_constraintVertical_bias="0.246" />
+        app:layout_constraintVertical_bias="0.435" />
 
     <TextView
-        android:id="@+id/tv_profile_user_can_settings"
-        android:layout_width="225dp"
-        android:layout_height="58dp"
+        android:id="@+id/tv_profile_victory_count"
+        android:layout_width="217sp"
+        android:layout_height="37sp"
         android:layout_marginTop="37dp"
-        android:text="@string/profile_text_user_can_settings"
+        android:gravity="center"
+        android:text="@string/tv_profile_victory_count_default"
+        android:textColor="@color/justBlack"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.067"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.417" />
+        app:layout_constraintVertical_bias="0.605" />
+
+    <ImageView
+        android:id="@+id/iv_profile_back_to_menu"
+        android:layout_width="67dp"
+        android:layout_height="77dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.038"
+        app:srcCompat="@drawable/arrow_left_24px" />
+
+    <ImageView
+        android:id="@+id/iv_profile_rating"
+        android:layout_width="50dp"
+        android:layout_height="46dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.903"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.068"
+        app:srcCompat="@drawable/emoji_events_black_18dp" />
+
+    <TextView
+        android:id="@+id/tv_profile_name_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:gravity="center"
+        android:text="@string/profile_text_name_score"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_profile_score" />
+
+    <TextView
+        android:id="@+id/tv_profile_name_victory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1sp"
+        android:gravity="center"
+        android:text="@string/tv_profile_text_name_victory_count"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_profile_victory_count" />
+
+    <TextView
+        android:id="@+id/tv_profile_place_in_rating"
+        android:layout_width="217sp"
+        android:layout_height="37sp"
+        android:gravity="center"
+        android:text="0"
+        android:textSize="25sp"
+        android:textColor="@color/justBlack"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.775" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1sp"
+        android:text="@string/profile_text_place_in_rating"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_profile_place_in_rating"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
