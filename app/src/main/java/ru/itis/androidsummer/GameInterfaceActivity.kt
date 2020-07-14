@@ -44,8 +44,8 @@ class GameInterfaceActivity : AppCompatActivity() {
         contentsXmlParser = ContentsXmlParser(parser)
 
         try {
-            val categories = getPack("limp.siq")
-            questionsAdapter.inputList(categories)
+            val categories = getPack("limp.siq", randomize = false)
+            questionsAdapter.inputList(skipUnsupportedCategories(categories))
         } catch (e: Throwable) {
             when (e) {
                 is XmlPullParserException ->
@@ -63,6 +63,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
         rv_questions.apply {
+            isNestedScrollingEnabled = false
             layoutManager =
                 GridLayoutManager(
                     this@GameInterfaceActivity,
@@ -235,13 +236,22 @@ class GameInterfaceActivity : AppCompatActivity() {
         rv_questions.visibility = View.VISIBLE
     }
 
-    private fun getPack(filename: String): List<Category> {
+    private fun getPack(filename: String, randomize: Boolean = true): List<Category> {
         val contentsBytes = siqParser.parseSiq(assets.open(filename))
         val stream = ByteArrayInputStream(contentsBytes)
         val categories = contentsXmlParser.parseQuestion(stream)
         stream.close()
-        return pickRandomQuestions(categories, 3, 4)
+        return if (randomize) {
+            pickRandomQuestions(categories, 3, 4)
+        } else {
+            categories
+        }
     }
+
+    private fun skipUnsupportedCategories(categories: List<Category>) =
+        categories.filter { category ->
+            category.questions.size > 1
+        }
 
     private fun pickRandomQuestions(
         categoryList: List<Category>,
