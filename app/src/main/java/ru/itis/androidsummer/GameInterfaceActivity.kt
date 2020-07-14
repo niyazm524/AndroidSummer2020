@@ -2,37 +2,53 @@ package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_game_interface.*
-import org.xmlpull.v1.XmlPullParser
+import org.xmlpull.v1.XmlPullParserException
+import org.xmlpull.v1.XmlPullParserFactory
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_REGISTRATION
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
 import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.data.Question
+import ru.itis.androidsummer.parsers.ContentsXmlParser
+import ru.itis.androidsummer.parsers.SiqParser
+import java.io.ByteArrayInputStream
+import java.io.FileNotFoundException
+import java.lang.IndexOutOfBoundsException
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-import kotlin.collections.HashSet
 
 class GameInterfaceActivity : AppCompatActivity() {
 
     private val questionsAdapter = QuestionsAdapter()
+    private val siqParser = SiqParser()
+    private lateinit var contentsXmlParser: ContentsXmlParser
+
     var rvAnswer: String? = null
     var rvQuestion: String? = null
     var rvPrice: Int = 0
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_interface)
 
-        getPack()
+
+        val factory = XmlPullParserFactory.newInstance()
+        val parser = factory.newPullParser()
+        contentsXmlParser = ContentsXmlParser(parser)
+
+        try{
+        getPack("limp.siq")
+
         rv_questions.apply {
             layoutManager =
                 GridLayoutManager(
@@ -43,6 +59,20 @@ class GameInterfaceActivity : AppCompatActivity() {
                 )
             adapter = questionsAdapter
         }
+
+        } catch (e: Throwable){
+            when (e) {
+                is XmlPullParserException ->
+                    Toast.makeText(this,R.string.game_text_wrong_siq_exception,Toast.LENGTH_LONG).show()
+                is FileNotFoundException ->
+                    Toast.makeText(this,R.string.game_text_no_file_exception,Toast.LENGTH_LONG).show()
+                is IndexOutOfBoundsException ->
+                    Toast.makeText(this,R.string.game_text_wrong_xml_structure,Toast.LENGTH_LONG).show()
+                else -> Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show()
+            }
+            finish()
+        }
+
         var countRound = 1
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         var score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
@@ -208,39 +238,43 @@ class GameInterfaceActivity : AppCompatActivity() {
         tv_textquestion.visibility = View.INVISIBLE
     }
 
-
-    //don't ye dare touch it!!
-    private fun parseQuestion(): List<Category> {
-        val categories = ArrayList<Category>()
-        try {
-            val parser: XmlPullParser = resources.getXml(R.xml.quizes)
-            while (parser.eventType != XmlPullParser.END_DOCUMENT) {
-                if (parser.eventType == XmlPullParser.START_TAG && parser.name == "category") {
-                    val category = parser.getAttributeValue(0)
-                    categories.add(Category(category, ArrayList()))
-                } else if (parser.eventType == XmlPullParser.START_TAG && parser.name == "quiz") {
-                    var price = 0
-                    var question = ""
-                    var right = ""
-                    while (parser.eventType != XmlPullParser.END_TAG || parser.name != "quiz") {
-                        if (parser.eventType == XmlPullParser.START_TAG) {
-                            when (parser.name) {
-                                "price" -> price = parser.getAttributeValue(0).toInt()
-                                "question_itself" -> question = parser.getAttributeValue(0)
-                                "right_variant" -> right = parser.getAttributeValue(0)
-                            }
-                        }
-                        parser.next()
-                    }
-                    categories.last().transformIntoArray().add(Question(price, question, right))
-                }
-                parser.next()
-            }
-        } catch (t: Throwable) {
-            Toast.makeText(this, t.toString(), Toast.LENGTH_LONG).show()
-        }
-        return categories
+    private fun getPack(filename: String) {
+        val contentsBytes = siqParser.parseSiq(assets.open(filename))
+        val stream = ByteArrayInputStream(contentsBytes)
+        val categories = contentsXmlParser.parseQuestion(stream)
+        stream.close()
+        val randomCategories = pickRandomQuestions(categories, 3, 4)
+        questionsAdapter.inputList(randomCategories)
     }
+    private fun pickRandomQuestions
+                (categoryList: List<Category>, maxQuestions: Int, maxCategories: Int): List<Category>{
+        val newCategoryList = ArrayList<Category>()
+        var maxIndex = maxCategories
+        val arrayOfCategoriesNames = ArrayList<String>(maxCategories)
+        if (categoryList.size<maxCategories)
+            maxIndex = categoryList.size
+        for (index in 1..maxIndex){
+            val newQuestionArray = ArrayList<Question>()
+            var category = categoryList.random()
+            while (category.transformIntoArray().size == 0
+                || arrayOfCategoriesNames.contains(category.title)){
+                category = categoryList.random()
+            }
+            arrayOfCategoriesNames.add(category.title)
+            val questionArray = category.transformIntoArray()
+            var maxIndex2 = maxQuestions
+            if (questionArray.size < maxQuestions) {
+                maxIndex2 = questionArray.size
+            }
+            for (index2 in 1..maxIndex2){
+                newQuestionArray.add(questionArray.random())
+            }
+            newCategoryList.add(Category(category.title,
+                newQuestionArray.sortedBy { question -> question.price }))
+        }
+        return newCategoryList
+    }
+
 
     override fun onBackPressed() {
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
@@ -248,8 +282,4 @@ class GameInterfaceActivity : AppCompatActivity() {
         this.onBackPressedDispatcher.onBackPressed()
     }
 
-
-    fun getPack() {
-        questionsAdapter.inputList(parseQuestion())
-    }
 }
