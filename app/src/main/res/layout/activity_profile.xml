@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/tv_profile_name"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="60sp"
         android:gravity="center"
         android:text="@string/profile_text_default_name"
         android:textColor="@color/justBlack"
@@ -23,8 +23,8 @@
 
     <TextView
         android:id="@+id/tv_profile_score"
-        android:layout_width="327dp"
-        android:layout_height="63dp"
+        android:layout_width="0sp"
+        android:layout_height="37sp"
         android:gravity="center"
         android:text="@string/profile_text_default_score"
         android:textColor="@color/justBlack"
@@ -39,7 +39,7 @@
         android:id="@+id/tv_profile_victory_count"
         android:layout_width="217sp"
         android:layout_height="37sp"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="37sp"
         android:gravity="center"
         android:text="@string/tv_profile_victory_count_default"
         android:textColor="@color/justBlack"
@@ -48,12 +48,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.605" />
+        app:layout_constraintVertical_bias="0.587" />
 
     <ImageView
         android:id="@+id/iv_profile_back_to_menu"
-        android:layout_width="67dp"
-        android:layout_height="77dp"
+        android:layout_width="67sp"
+        android:layout_height="77sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.046"
@@ -64,8 +64,8 @@
 
     <ImageView
         android:id="@+id/iv_profile_rating"
-        android:layout_width="50dp"
-        android:layout_height="46dp"
+        android:layout_width="50sp"
+        android:layout_height="46sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.903"
@@ -78,7 +78,7 @@
         android:id="@+id/tv_profile_name_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="1sp"
         android:gravity="center"
         android:text="@string/profile_text_name_score"
         android:textColor="@color/colorAccent"

@@ -9,7 +9,7 @@
     <string name="registration_button_name_setting">Ну что, погнали</string>
     <string name="registration_text_hello">Салам," "</string>
 
-    <string name="profile_text_default_score">Ты еще ничего не набрал :(</string>
+    <string name="profile_text_default_score">Ты еще ничего не набрал</string>
     //тут имеется суммарное колво набранных очков ever
     <string name="profile_text_name_score">твой счет</string>
     <string name="profile_text_default_name">Алеша</string>

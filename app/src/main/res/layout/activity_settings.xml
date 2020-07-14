@@ -23,7 +23,7 @@
     <Button
         android:id="@+id/btn_settings_sign_Out"
         android:layout_width="326sp"
-        android:layout_height="42sp"
+        android:layout_height="50sp"
         android:background="@color/colorAccent"
         android:text="@string/profile_button_sign_out"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,7 +36,7 @@
     <Button
         android:id="@+id/btn_settings_reset_score"
         android:layout_width="326sp"
-        android:layout_height="42sp"
+        android:layout_height="50sp"
         android:background="@color/colorAccent"
         android:text="@string/profile_button_reset_score"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,15 +48,14 @@
 
     <ImageView
         android:id="@+id/iv_settings_back_to_menu"
-        android:layout_width="67dp"
-        android:layout_height="77dp"
+        android:layout_width="67sp"
+        android:layout_height="77sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.038"
-        app:srcCompat="@drawable/arrow_left_24px"
-         />
+        app:layout_constraintVertical_bias="0.055"
+        app:srcCompat="@drawable/arrow_left_24px" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

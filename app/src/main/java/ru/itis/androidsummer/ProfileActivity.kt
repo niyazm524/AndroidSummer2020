@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_profile.*
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
@@ -19,16 +18,16 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-        val sharedPreferences = getSharedPreferences(APP_PREFERENCES,Context.MODE_PRIVATE)
-        val score = sharedPreferences.getInt(APP_PREFERENCES_WHOLE_SCORE,0)
+        val sharedPreferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+        val score = sharedPreferences.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
 
-        tv_profile_name.text = sharedPreferences.getString(APP_PREFERENCES_REGISTRATION,
+        tv_profile_name.text = sharedPreferences.getString(
+            APP_PREFERENCES_REGISTRATION,
             resources.getString(R.string.profile_text_default_name)
         )
-        tv_profile_victory_count.text = sharedPreferences.getInt(APP_PREFERENCES_VICTORY,0).toString()
-//        tv_profile_score.text = sharedPreferences.getInt(APP_PREFERENCES_SCORE,
-//            0
-//        ).toString()
+        tv_profile_victory_count.text =
+            sharedPreferences.getInt(APP_PREFERENCES_VICTORY, 0).toString()
+
         //нужно будет сохранять количество очков за игру(после завершения)
         // и выводить сюда(они будут постоянными, просто накапливаться), be like:
         if (score == 0) {
@@ -49,8 +48,8 @@ class ProfileActivity : AppCompatActivity() {
         tv_profile_victory_count.underline()
         tv_profile_place_in_rating.underline()
 
-        iv_profile_back_to_menu.setOnClickListener{
-            startActivity(Intent(this,MainMenuActivity::class.java))
+        iv_profile_back_to_menu.setOnClickListener {
+            startActivity(Intent(this, MainMenuActivity::class.java))
         }
 
         iv_profile_rating.setOnClickListener {
@@ -58,6 +57,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
     }
+
     fun TextView.underline() {
         paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
     }
