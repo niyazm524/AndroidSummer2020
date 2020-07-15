@@ -81,10 +81,10 @@ class PackChoosingActivity : AppCompatActivity(){
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode === REQUEST_CODE) {
             if (resultCode === Activity.RESULT_OK) {
-                 externalFileUri= data?.data ?: throw FileNotFoundException()
+                 val externalFileUri= data?.data.toString() ?: throw FileNotFoundException()
                 val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
                 prefs.edit().putBoolean(APP_PREFERENCES_IS_NOT_DEFAULT,true)
-                    .putString(APP_PREFERENCES_QUESTION_PACK,null).apply()
+                    .putString(APP_PREFERENCES_QUESTION_PACK,externalFileUri).apply()
             } else {
                 throw FileNotFoundException()
             }
@@ -95,7 +95,7 @@ class PackChoosingActivity : AppCompatActivity(){
 
     companion object {
         private const val REQUEST_CODE = 9999
-        var externalFileUri: Uri? = null
+
     }
 
 }

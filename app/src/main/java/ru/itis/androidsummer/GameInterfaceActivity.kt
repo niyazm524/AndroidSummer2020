@@ -3,6 +3,7 @@ package ru.itis.androidsummer
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
@@ -254,7 +255,8 @@ class GameInterfaceActivity : AppCompatActivity() {
         lateinit var path: String
         var dataStream: InputStream
         if (prefs.getBoolean(APP_PREFERENCES_IS_NOT_DEFAULT,false)) {
-            dataStream = PackChoosingActivity.externalFileUri?.let { contentResolver.openInputStream(it) }
+            dataStream = prefs.getString(APP_PREFERENCES_QUESTION_PACK, null) ?.let {
+                contentResolver.openInputStream(Uri.parse(it)) }
                 ?: throw FileNotFoundException()
         }else {
             path = prefs.getString(APP_PREFERENCES_QUESTION_PACK, "limpGTA.siq")
