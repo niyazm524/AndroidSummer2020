@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +29,7 @@ class GameInterfaceActivity : AppCompatActivity() {
     private val siqParser = SiqParser()
     private lateinit var contentsXmlParser: ContentsXmlParser
 
+
     var rvAnswer: String? = null
     var rvQuestion: String? = null
     var rvPrice: Int = 0
@@ -42,6 +44,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         val factory = XmlPullParserFactory.newInstance()
         val parser = factory.newPullParser()
         contentsXmlParser = ContentsXmlParser(parser)
+        tv_textquestion.movementMethod = ScrollingMovementMethod()
 
         try {
             val categories = getPack("limp.siq", randomize = false)
