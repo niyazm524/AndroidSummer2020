@@ -19,8 +19,7 @@ class MainMenuActivity : AppCompatActivity() {
             startActivity(Intent(this, HelpActivity::class.java))
         }
         iv_main_menu_settings.setOnClickListener {
-            //startActivity(Intent(this, ?::class.java))
-        }
+            startActivity(Intent(this,SettingsActivity::class.java))        }
         iv_main_menu_profile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
