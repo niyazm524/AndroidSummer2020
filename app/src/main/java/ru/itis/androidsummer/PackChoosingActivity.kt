@@ -52,11 +52,12 @@ class PackChoosingActivity : AppCompatActivity(){
                 resources.getString(R.string.pack_setting_text_pack3),Toast.LENGTH_LONG).show()
         }
         ps_button_pack4.setOnClickListener {
-            prefs.edit().putString(APP_PREFERENCES_QUESTION_PACK,
+            Toast.makeText(this,"Аниме нету",Toast.LENGTH_LONG).show()
+            /* prefs.edit().putString(APP_PREFERENCES_QUESTION_PACK,
                 resources.getString(R.string.pack_setting_text_pack4_file)).putBoolean(
                 APP_PREFERENCES_IS_NOT_DEFAULT,false).apply()
             Toast.makeText(this,resources.getString(R.string.pack_setting_text_you_have_set_a_pack) +
-                resources.getString(R.string.pack_setting_text_pack4),Toast.LENGTH_LONG).show()
+                resources.getString(R.string.pack_setting_text_pack4),Toast.LENGTH_LONG).show()*/
         }
         ps_button_pack5.setOnClickListener {
             prefs.edit().putString(APP_PREFERENCES_QUESTION_PACK,
