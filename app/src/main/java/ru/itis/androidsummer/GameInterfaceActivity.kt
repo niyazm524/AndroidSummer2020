@@ -21,9 +21,9 @@ import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_VICTORY
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_WHOLE_SCORE
 import ru.itis.androidsummer.data.Category
-import ru.itis.androidsummer.data.Question
 import ru.itis.androidsummer.parsers.ContentsXmlParser
 import ru.itis.androidsummer.parsers.SiqParser
+import ru.itis.androidsummer.utils.ProjectUtils.Companion.pickRandomQuestions
 import java.io.*
 
 
@@ -37,12 +37,12 @@ class GameInterfaceActivity : AppCompatActivity() {
     var rvQuestion: String? = null
     var rvPrice: Int = 0
 
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_interface)
-
 
         val factory = XmlPullParserFactory.newInstance()
         val parser = factory.newPullParser()
@@ -50,7 +50,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
 
         try {
-            val categories = getPack( randomize = false)
+            val categories = getPack( randomize = true)
             questionsAdapter.inputList(skipUnsupportedCategories(categories))
 
             rv_questions.apply {
@@ -280,40 +280,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             category.questions.size > 1
         }
 
-    private fun pickRandomQuestions(
-        categoryList: List<Category>,
-        maxQuestions: Int,
-        maxCategories: Int
-    ): List<Category> {
-        val newCategoryList = ArrayList<Category>()
-        var maxIndex = maxCategories
-        val arrayOfCategoriesNames = ArrayList<String>(maxCategories)
-        if (categoryList.size < maxCategories)
-            maxIndex = categoryList.size
-        for (index in 1..maxIndex) {
-            val newQuestionArray = ArrayList<Question>()
-            var category = categoryList.random()
-            while (category.transformIntoArray().size == 0
-                || arrayOfCategoriesNames.contains(category.title)
-            ) {
-                category = categoryList.random()
-            }
-            arrayOfCategoriesNames.add(category.title)
-            val questionArray = category.transformIntoArray()
-            var maxIndex2 = maxQuestions
-            if (questionArray.size < maxQuestions) {
-                maxIndex2 = questionArray.size
-            }
-            for (index2 in 1..maxIndex2) {
-                newQuestionArray.add(questionArray.random())
-            }
-            newCategoryList.add(
-                Category(category.title,
-                    newQuestionArray.sortedBy { question -> question.price })
-            )
-        }
-        return newCategoryList
-    }
+
 
     override fun onBackPressed() {
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
