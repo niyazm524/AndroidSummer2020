@@ -26,7 +26,7 @@ class SingleMultiActivity : AppCompatActivity() {
         }
 
         btn_sm_user_isChoose.setOnClickListener {
-            //TODO(загрузка паков и вывод в табл(я тут хз как все устроено, оставляю вам)
+            //TODO(загрузка паков(я тут хз как все устроено, оставляю вам))
             btn_sm_choose_single.visibility = View.VISIBLE
             btn_sm_choose_multi.visibility = View.VISIBLE
             iv_back_to_pack_choose.visibility = View.VISIBLE
@@ -38,7 +38,7 @@ class SingleMultiActivity : AppCompatActivity() {
         btn_sm_choose_multi.setOnClickListener {
             isMulti = true
             //TODO(сначала лобби с хостом и вот это все, сюда вставите, а потом переход в GameInterfaceActivity
-            // но пока оставлю как ниже)
+            // с выбранными темами, но пока оставлю как ниже)
             startActivity(Intent(this, GameInterfaceActivity::class.java))
         }
 
