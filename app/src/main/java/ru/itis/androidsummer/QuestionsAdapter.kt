@@ -20,7 +20,7 @@ class QuestionsAdapter : RecyclerView.Adapter<CategoriesViewHolder>() {
         categories.add(category)
     }
 
-    fun inputList(category: List<Category>) {
+    fun inputList(category: List<Category>)  {
         category.forEach {
             inputCategory(it)
         }
