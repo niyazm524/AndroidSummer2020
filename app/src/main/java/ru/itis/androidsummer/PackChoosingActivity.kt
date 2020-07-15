@@ -1,13 +1,8 @@
 package ru.itis.androidsummer
 
-import android.R.attr
 import android.app.Activity
-import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,10 +10,8 @@ import kotlinx.android.synthetic.main.activity_pack_selecting.*
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_IS_NOT_DEFAULT
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_QUESTION_PACK
-import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_REGISTRATION
 import java.io.FileNotFoundException
 import java.lang.Exception
-import java.security.AccessController.getContext
 
 
 class PackChoosingActivity : AppCompatActivity(){
@@ -27,31 +20,32 @@ class PackChoosingActivity : AppCompatActivity(){
         setContentView(R.layout.activity_pack_selecting)
         val prefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
 
-        ps_button_start.setOnClickListener {
+        bn_start.setOnClickListener {
             startActivity(Intent(this, GameInterfaceActivity::class.java))
         }
-        ps_button_pack.setOnClickListener {
+        bn_pack1.setOnClickListener {
             prefs.edit().putString(APP_PREFERENCES_QUESTION_PACK,
                 resources.getString(R.string.pack_setting_text_pack1_file)).putBoolean(
                 APP_PREFERENCES_IS_NOT_DEFAULT,false).apply()
             Toast.makeText(this,resources.getString(R.string.pack_setting_text_you_have_set_a_pack) +
                 resources.getString(R.string.pack_setting_text_pack1),Toast.LENGTH_LONG).show()
         }
-        ps_button_pack2.setOnClickListener {
-            //prefs.edit().putString(APP_PREFERENCES_QUESTION_PACK,
-                //resources.getString(R.string.pack_setting_text_pack2_file)).apply()
+        bn_pack2.setOnClickListener {
+            prefs.edit().putString(APP_PREFERENCES_QUESTION_PACK,
+                resources.getString(R.string.pack_setting_text_pack2_file)).putBoolean(
+                APP_PREFERENCES_IS_NOT_DEFAULT,false).apply()
                 Toast.makeText(this,"Аниме нету",Toast.LENGTH_LONG).show()
                 //Toast.makeText(this,resources.getString(R.string.pack_setting_text_you_have_set_a_pack) +
                 //resources.getString(R.string.pack_setting_text_pack2),Toast.LENGTH_LONG).show()
         }
-        ps_button_pack3.setOnClickListener {
+        bn_pack3.setOnClickListener {
             prefs.edit().putString(APP_PREFERENCES_QUESTION_PACK,
                 resources.getString(R.string.pack_setting_text_pack3_file)).putBoolean(
                 APP_PREFERENCES_IS_NOT_DEFAULT,false).apply()
             Toast.makeText(this,resources.getString(R.string.pack_setting_text_you_have_set_a_pack) +
                 resources.getString(R.string.pack_setting_text_pack3),Toast.LENGTH_LONG).show()
         }
-        ps_button_pack4.setOnClickListener {
+        bn_pack4.setOnClickListener {
             Toast.makeText(this,"Аниме нету",Toast.LENGTH_LONG).show()
             /* prefs.edit().putString(APP_PREFERENCES_QUESTION_PACK,
                 resources.getString(R.string.pack_setting_text_pack4_file)).putBoolean(
@@ -59,14 +53,14 @@ class PackChoosingActivity : AppCompatActivity(){
             Toast.makeText(this,resources.getString(R.string.pack_setting_text_you_have_set_a_pack) +
                 resources.getString(R.string.pack_setting_text_pack4),Toast.LENGTH_LONG).show()*/
         }
-        ps_button_pack5.setOnClickListener {
+        bn_pack5.setOnClickListener {
             prefs.edit().putString(APP_PREFERENCES_QUESTION_PACK,
                 resources.getString(R.string.pack_setting_text_pack5_file)).putBoolean(
                 APP_PREFERENCES_IS_NOT_DEFAULT,false).apply()
             Toast.makeText(this,resources.getString(R.string.pack_setting_text_you_have_set_a_pack) +
                 resources.getString(R.string.pack_setting_text_pack5),Toast.LENGTH_LONG).show()
         }
-        ps_button_pack6.setOnClickListener {
+        bn_pack6.setOnClickListener {
             try {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
                 intent.type = "*/*"

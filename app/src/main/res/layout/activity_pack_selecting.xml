@@ -18,7 +18,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/ps_text_highlight"
+                android:id="@+id/tv_highlight1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="casual"
@@ -29,7 +29,7 @@
                 android:textSize="45sp" />
 
             <Button
-                android:id="@+id/ps_button_start"
+                android:id="@+id/bn_start"
                 android:layout_width="match_parent"
                 android:layout_height="69sp"
                 android:layout_marginTop="16dp"
@@ -42,7 +42,7 @@
                 />
 
             <TextView
-                android:id="@+id/ps_text_highlight2"
+                android:id="@+id/tv_highlight2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="casual"
@@ -53,7 +53,7 @@
                 android:textSize="45sp" />
 
             <Button
-                android:id="@+id/ps_button_pack6"
+                android:id="@+id/bn_pack6"
                 android:layout_width="match_parent"
                 android:layout_height="69sp"
                 android:layout_marginTop="16dp"
@@ -64,7 +64,7 @@
                 android:textSize="18sp" />
 
             <Button
-                android:id="@+id/ps_button_pack5"
+                android:id="@+id/bn_pack5"
                 android:layout_width="match_parent"
                 android:layout_height="69sp"
                 android:layout_marginTop="16dp"
@@ -76,7 +76,7 @@
                 />
 
             <Button
-                android:id="@+id/ps_button_pack4"
+                android:id="@+id/bn_pack4"
                 android:layout_width="match_parent"
                 android:layout_height="69sp"
                 android:layout_marginTop="16dp"
@@ -88,7 +88,7 @@
                 />
 
             <Button
-                android:id="@+id/ps_button_pack3"
+                android:id="@+id/bn_pack3"
                 android:layout_width="match_parent"
                 android:layout_height="69sp"
                 android:layout_marginTop="16dp"
@@ -100,7 +100,7 @@
                 />
 
             <Button
-                android:id="@+id/ps_button_pack2"
+                android:id="@+id/bn_pack2"
                 android:layout_width="match_parent"
                 android:layout_height="69sp"
                 android:layout_marginTop="16dp"
@@ -111,7 +111,7 @@
                 android:textSize="18sp" />
 
             <Button
-                android:id="@+id/ps_button_pack"
+                android:id="@+id/bn_pack1"
                 android:layout_width="match_parent"
                 android:layout_height="69sp"
                 android:layout_marginTop="16dp"
