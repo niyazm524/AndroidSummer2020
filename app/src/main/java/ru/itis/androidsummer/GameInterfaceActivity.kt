@@ -193,6 +193,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                     cancel()
                 }
                 progressBar.progress = (millisUntilFinished / 1000).toInt()
+                iv_gi_back_to_menu.visibility = View.INVISIBLE
             }
 
             override fun onFinish() {
@@ -216,6 +217,11 @@ class GameInterfaceActivity : AppCompatActivity() {
             tv_timer.visibility = View.VISIBLE
             tv_numberOfRound.text = "Раунд:$countRound"
             tv_people.visibility = View.INVISIBLE
+        }
+
+        iv_gi_back_to_menu.setOnClickListener {
+            finish()
+            onBackPressed()
         }
 
         //когда игра закончится, нужно будет в  SP сохранить итоговый счет игрока за игру и в профиль, be like:
@@ -245,6 +251,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         tv_textquestion.visibility = View.INVISIBLE
         progressBar.visibility = View.INVISIBLE
         rv_questions.visibility = View.VISIBLE
+        iv_gi_back_to_menu.visibility = View.VISIBLE
     }
 
     private fun getPack(filename: String, randomize: Boolean = true): List<Category> {

@@ -28,6 +28,13 @@
 
     <string name="settings_text">Настройки</string>
 
+    <string name="sm_button_single">Одиночная</string>
+    <string name="sm_button_multi">С друзьями</string>
+    <string name="sm_text_choose_pack">Сначала тебе нужно выбрать пакет с категориями для игры
+    в зависимости от того, что ты предпочитаешь, и загрузить</string>
+    <string name="sm_button_choose_pack">Выбрать</string>
+    <string name="sm_button_user_isChoose">Готово!</string>
+
 
     <string name="help_text_info">   У каждого игрока имеется свой персональный счет.
     В начале игры у всех игроков по 0 очков.\n\n
