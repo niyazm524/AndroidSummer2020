@@ -20,7 +20,7 @@ class QuestionsAdapter : RecyclerView.Adapter<CategoriesViewHolder>() {
         categories.add(category)
     }
 
-    fun inputList(category: List<Category>) {
+    fun inputList(category: List<Category>)  {
         category.forEach {
             inputCategory(it)
         }
@@ -87,22 +87,27 @@ class CategoriesViewHolder(override val containerView: View) :
             if (index != null) {
                 category.questions.getOrNull(index)?.let { question ->
                     listener(question)
+                    question.isAnswer = true
                 }
-                tv_help2.visibility = View.INVISIBLE
+                tv_help2.visibility = View.GONE
             }
+
         }
 
-        tv_help2.textSize = 26F
         if (index != null) {
+            tv_help2.textSize = 26F
             val question = category.questions.getOrNull(index)
-            if (question != null) {
-                tv_help2.text = question.price.toString()
-                tv_help2.isClickable = true
-                tv_help2.setTextColor(Color.WHITE)
-            } else {
-                tv_help2.text = ""
-                tv_help2.isClickable = false
-                tv_help2.background = null
+            if ((question != null)) {
+                if(!question.isAnswer) {
+                    tv_help2.text = question.price.toString()
+                    tv_help2.isClickable = true
+                    tv_help2.setTextColor(Color.WHITE)
+                }
+                else{
+                    tv_help2.visibility = View.GONE
+                }
+            } else{
+                tv_help2.visibility = View.GONE
             }
         } else {
             tv_help2.text = category.title
