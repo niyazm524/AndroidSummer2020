@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme. -->
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
         <!-- Customize your theme here. -->
@@ -10,6 +11,6 @@
         <item name="android:windowBackground">@drawable/gradient</item>
         <item name="android:fontFamily">@font/comfortaa</item>
         <item name="android:windowLightStatusBar">@color/colorPrimaryDark</item>
-    </style>
 
+    </style>
 </resources>
