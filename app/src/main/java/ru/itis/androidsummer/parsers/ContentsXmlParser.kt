@@ -12,9 +12,8 @@ import java.nio.charset.Charset
 
 class ContentsXmlParser(private val parser: XmlPullParser) {
     fun parseQuestion(contentsStream: InputStream): List<Category> {
-        val streamReader = InputStreamReader(contentsStream, Charset.forName("UTF-8BOM"))
+        val streamReader = InputStreamReader(contentsStream, Charset.forName("UTF-8"))
         parser.setInput(streamReader)
-        parser.inputEncoding
         val categories = ArrayList<Category>()
         while (parser.eventType!=XmlPullParser.END_DOCUMENT) {
             if (parser.eventType == XmlPullParser.START_TAG && parser.name == "theme") {
