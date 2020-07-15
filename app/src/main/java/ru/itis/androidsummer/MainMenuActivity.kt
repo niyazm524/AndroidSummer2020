@@ -12,14 +12,14 @@ class MainMenuActivity : AppCompatActivity() {
         
         setContentView(R.layout.activity_main_menu)
 
-        btn_main_menu_start.setOnClickListener {
+        mm_star_button.setOnClickListener {
             startActivity(Intent(this, GameInterfaceActivity::class.java))
         }
-        btn_main_menu_rules.setOnClickListener {
+        mm_help_button.setOnClickListener {
             startActivity(Intent(this, HelpActivity::class.java))
         }
         iv_main_menu_settings.setOnClickListener {
-            //startActivity(Intent(this, ?::class.java))
+            startActivity(Intent(this, PackChoosing::class.java))
         }
         iv_main_menu_profile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
