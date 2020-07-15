@@ -15,6 +15,8 @@ import org.xmlpull.v1.XmlPullParserFactory
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_REGISTRATION
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_VICTORY
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_WHOLE_SCORE
 import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.data.Question
 import ru.itis.androidsummer.parsers.ContentsXmlParser
@@ -80,6 +82,8 @@ class GameInterfaceActivity : AppCompatActivity() {
         var countRound = 1
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         var score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
+        var victory = prefs.getInt(APP_PREFERENCES_VICTORY,0)
+        var wholeScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE,0)
         val me = prefs.getString(
             APP_PREFERENCES_REGISTRATION,
             resources.getString(R.string.profile_text_default_name)
@@ -174,6 +178,9 @@ class GameInterfaceActivity : AppCompatActivity() {
             time2.onFinish()
             progressBar.visibility = View.INVISIBLE
             tv_timer2.visibility = View.INVISIBLE
+            //в конце игры, когда будет выявлен победитель, нужно в SP +1 игроку добавить, be like:
+//            victory++
+//            prefs.edit().putInt(APP_PREFERENCES_VICTORY, victory).apply()
         }
 
 
@@ -213,6 +220,10 @@ class GameInterfaceActivity : AppCompatActivity() {
             tv_numberOfRound.text = "Раунд:$countRound"
             tv_people.visibility = View.INVISIBLE
         }
+
+        //когда игра закончится, нужно будет в  SP сохранить итоговый счет игрока за игру и в профиль, be like:
+//        wholeScore+=score (score предварительно умножить на коэф)
+//        prefs.edit().putInt(APP_PREFERENCES_WHOLE_SCORE, score).apply()
     }
 
 
