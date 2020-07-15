@@ -7,11 +7,12 @@ import android.view.View
 import kotlinx.android.synthetic.main.activity_single_multi.*
 
 class SingleMultiActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_multi)
-        var isSingle = false
-        var isMulti = false
+
+        var isSingle: Boolean
 
         btn_sm_choose_pack.setOnClickListener {
             tv_sm_text_for_user.visibility = View.INVISIBLE
@@ -36,15 +37,21 @@ class SingleMultiActivity : AppCompatActivity() {
         }
 
         btn_sm_choose_multi.setOnClickListener {
-            isMulti = true
+            isSingle = false
             //TODO(сначала лобби с хостом и вот это все, сюда вставите, а потом переход в GameInterfaceActivity
             // с выбранными темами, но пока оставлю как ниже)
-            startActivity(Intent(this, GameInterfaceActivity::class.java))
+            val intent = Intent(this, GameInterfaceActivity::class.java)
+            intent.putExtra("isSingle",isSingle)
+            //TODO(поменять(Диляре желательно) putExtra и вот это все тут после добавления лобби и мультиплеера)
+            startActivity(intent)
         }
 
         btn_sm_choose_single.setOnClickListener {
-            startActivity(Intent(this, GameInterfaceActivity::class.java))
             isSingle = true
+            val intent = Intent(this, GameInterfaceActivity::class.java)
+            intent.putExtra("isSingle",isSingle)
+            startActivity(intent)
+            //TODO(добавить интенты в профиль для рейтинга(которого не будет здесь) и для счета/побед)
         }
 
         iv_back_to_menu.setOnClickListener {
@@ -58,7 +65,7 @@ class SingleMultiActivity : AppCompatActivity() {
             iv_back_to_menu.visibility = View.VISIBLE
             iv_back_to_choose.visibility = View.INVISIBLE
             iv_back_to_pack_choose.visibility = View.INVISIBLE
-            //TODO(делаем ваш рекуклер невидимым тоже)
+            //TODO(делаем ваш рекуклер c выбором паков невидимым тоже)
         }
 
         iv_back_to_pack_choose.setOnClickListener {
