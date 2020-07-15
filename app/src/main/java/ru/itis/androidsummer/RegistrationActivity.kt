@@ -23,12 +23,12 @@ class RegistrationActivity : AppCompatActivity() {
                 edit.putString(APP_PREFERENCES_REGISTRATION, user).apply()
                 correctName = true
             } else {
-                Toast.makeText(this,"Введи корректное имя!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Введи корректное имя!", Toast.LENGTH_SHORT).show()
             }
             if (!sharedPreferences.contains(APP_PREFERENCES_SCORE)) {
                 edit.putInt(APP_PREFERENCES_SCORE, 0).apply()
             }
-            if(correctName) {
+            if (correctName) {
                 Toast.makeText(
                     this,
                     resources.getString(R.string.registration_text_hello) +

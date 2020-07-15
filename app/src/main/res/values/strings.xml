@@ -9,19 +9,24 @@
     <string name="registration_button_name_setting">Ну что, погнали</string>
     <string name="registration_text_hello">Салам," "</string>
 
-    <string name="profile_text_default_score">Количество текущих очков:\n У тебя еще нет очков :(</string>
-    //?тут имеется в виду рейтинг или набранных за 1 игру или че не пойму
+    <string name="profile_text_default_score">Ты еще ничего не набрал</string>
+    //тут имеется суммарное колво набранных очков ever
+    <string name="profile_text_name_score">твой счет</string>
     <string name="profile_text_default_name">Алеша</string>
-    <string name="profile_text_user_can_settings">Ты можешь:</string>
+    <string name="tv_profile_victory_count_default">0</string>
+    <string name="tv_profile_text_name_victory_count">побед</string>
     <string name="profile_button_sign_out">Сменить имя</string>
     <string name="profile_button_reset_score">Сбросить свои очки</string>
     <string name="profile_button_score_reset_notification">Ты сбросил свои очки!</string>
-    //?не поняла, к чему это прикреплено, спросить у Булата (после сброса тост что ли о сбрасывании?)
+    <string name="profile_text_place_in_rating">место в рейтинге</string>
+    //?не поняла, к чему это прикреплено, спросить у Булата (после сброса тост что ли о
+    сбрасывании?)
 
     <string name="game_text_no_file_exception">Данного файла не существует</string>
     <string name="game_text_wrong_siq_exception">Не подходящий siq файл</string>
     <string name="game_text_wrong_xml_structure">Не правильная структура xml файла</string>
 
+    <string name="settings_text">Настройки</string>
     <string name="pack_setting_text_select_pack">Выберите пак вопросов</string>
     <string name="pack_setting_text_you_have_set_a_pack">Вы выбрали набор: " "</string>
     <string name="pack_setting_text_pack1">GTA</string>
