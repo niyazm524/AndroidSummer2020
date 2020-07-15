@@ -50,7 +50,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
 
         try {
-            val categories = getPack( randomize = true)
+            val categories = getPack( randomize = false)
             questionsAdapter.inputList(skipUnsupportedCategories(categories))
 
             rv_questions.apply {
