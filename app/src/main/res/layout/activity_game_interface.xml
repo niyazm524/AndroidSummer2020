@@ -165,15 +165,15 @@
 
     <TextView
         android:id="@+id/tv_textquestion"
-        android:layout_width="408dp"
+        android:layout_width="0dp"
         android:layout_height="175dp"
         android:gravity="center"
-        tools:text="TextView"
         android:textColor="@color/justBlack"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="TextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
