@@ -14,23 +14,14 @@ class MainMenuActivity : AppCompatActivity() {
 
 
         btn_main_menu_start.setOnClickListener {
-            startActivity(Intent(this, GameInterfaceActivity::class.java))
+            startActivity(Intent(this, PackChoosingActivity::class.java))
         }
         btn_main_menu_rules.setOnClickListener {
             startActivity(Intent(this, HelpActivity::class.java))
         }
         iv_main_menu_settings.setOnClickListener {
-            /*
-            Bulat version: startActivity(Intent(this, PackChoosing::class.java))
-            Dilyara version: startActivity(Intent(this, SettingsActivity::class.java))
-             */
-            /* TODO: а как какать (решайте сами, но имхо можно в сеттингс активити добавить кнопку
-                которая открывает активити с выбором пака, но ещё более имхо
-                выбор пака должен быть непосредственно перед началом игры, и затем в
-                GameInterface через putExtra в интент должно передаваться имя файла выбранного пака
-            */
+            startActivity(Intent(this, SettingsActivity::class.java))
 
-            //startActivity(Intent(this, ?::class.java))
         }
         iv_main_menu_profile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))

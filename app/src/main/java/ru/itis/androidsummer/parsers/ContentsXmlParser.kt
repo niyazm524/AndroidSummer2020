@@ -8,10 +8,11 @@ import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.data.Question
 import java.io.InputStream
 import java.io.InputStreamReader
+import java.nio.charset.Charset
 
 class ContentsXmlParser(private val parser: XmlPullParser) {
     fun parseQuestion(contentsStream: InputStream): List<Category> {
-        val streamReader = InputStreamReader(contentsStream)
+        val streamReader = InputStreamReader(contentsStream, Charsets.UTF_8)
         parser.setInput(streamReader)
         val categories = ArrayList<Category>()
         while (parser.eventType!=XmlPullParser.END_DOCUMENT) {

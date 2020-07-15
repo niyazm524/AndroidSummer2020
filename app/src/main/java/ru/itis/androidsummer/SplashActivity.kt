@@ -30,5 +30,6 @@ class SplashActivity : AppCompatActivity() {
         const val APP_PREFERENCES_VICTORY = "userVictory"
         const val APP_PREFERENCES_WHOLE_SCORE = "userWholeScore"
         const val APP_PREFERENCES_QUESTION_PACK = "questionPack"
+        const val APP_PREFERENCES_IS_NOT_DEFAULT = "notDefault"
     }
 }

@@ -2,6 +2,7 @@ package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
@@ -12,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_game_interface.*
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_IS_NOT_DEFAULT
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_QUESTION_PACK
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_REGISTRATION
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
@@ -21,9 +23,7 @@ import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.data.Question
 import ru.itis.androidsummer.parsers.ContentsXmlParser
 import ru.itis.androidsummer.parsers.SiqParser
-import java.io.ByteArrayInputStream
-import java.io.FileNotFoundException
-import java.lang.Exception
+import java.io.*
 
 
 class GameInterfaceActivity : AppCompatActivity() {
@@ -49,8 +49,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
 
         try {
-            val categories = getPack(
-                prefs.getString(APP_PREFERENCES_QUESTION_PACK,"limpGTA.siq"), randomize = false)
+            val categories = getPack( randomize = false)
             questionsAdapter.inputList(skipUnsupportedCategories(categories))
 
             rv_questions.apply {
@@ -65,7 +64,6 @@ class GameInterfaceActivity : AppCompatActivity() {
                 adapter = questionsAdapter
             }
         } catch (e: Throwable) {
-            parser.text
             when (e) {
                 is XmlPullParserException ->
                     Toast.makeText(this, R.string.game_text_wrong_siq_exception, Toast.LENGTH_LONG)
@@ -78,7 +76,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                         .show()
                 else -> Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
             }
-                //finish()
+                finish()
         }
 
         var countRound = 1
@@ -251,10 +249,20 @@ class GameInterfaceActivity : AppCompatActivity() {
         rv_questions.visibility = View.VISIBLE
     }
 
-    private fun getPack(filename: String?, randomize: Boolean = true): List<Category> {
-        if (filename == null)
-            throw FileNotFoundException()
-        val contentsBytes = siqParser.parseSiq(assets.open(filename))
+    private fun getPack(randomize: Boolean = true): List<Category> {
+        val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+        lateinit var path: String
+        var dataStream: InputStream
+        if (prefs.getBoolean(APP_PREFERENCES_IS_NOT_DEFAULT,false)) {
+            dataStream = PackChoosingActivity.externalFileUri?.let { contentResolver.openInputStream(it) }
+                ?: throw FileNotFoundException()
+        }else {
+            path = prefs.getString(APP_PREFERENCES_QUESTION_PACK, "limpGTA.siq")
+                ?: throw FileNotFoundException()
+            dataStream = assets.open(path)
+        }
+        val contentsBytes = siqParser.parseSiq(dataStream)
+        dataStream.close()
         val stream = ByteArrayInputStream(contentsBytes)
         val categories = contentsXmlParser.parseQuestion(stream)
         stream.close()
@@ -308,7 +316,7 @@ class GameInterfaceActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         prefs.edit().putInt(APP_PREFERENCES_SCORE, 0).apply()
-        this.onBackPressedDispatcher.onBackPressed()
+        startActivity(Intent(this, MainMenuActivity::class.java))
     }
 
 }
