@@ -12,7 +12,6 @@ class MainMenuActivity : AppCompatActivity() {
         
         setContentView(R.layout.activity_main_menu)
 
-
         btn_main_menu_start.setOnClickListener {
             startActivity(Intent(this, SingleMultiActivity::class.java))
         }
@@ -21,7 +20,6 @@ class MainMenuActivity : AppCompatActivity() {
         }
         iv_main_menu_settings.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
-
         }
         iv_main_menu_profile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
