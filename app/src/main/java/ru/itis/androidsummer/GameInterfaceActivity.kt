@@ -1,9 +1,10 @@
 package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
-import android.os.Bundle
-import android.os.CountDownTimer
+import android.content.DialogInterface
+import android.os.*
 import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.Toast
@@ -35,6 +36,8 @@ class GameInterfaceActivity : AppCompatActivity() {
     var rvAnswer: String? = null
     var rvQuestion: String? = null
     var rvPrice: Int = 0
+    var correctAnswer: Boolean = false
+    var isChoose = false
 
     var heClick = false
     var heFinalClick = false
@@ -107,7 +110,6 @@ class GameInterfaceActivity : AppCompatActivity() {
         //тут конечно теперь пустовато на экране с таблицей для одиночки, надо будет подумать над этим
 
 
-
         btn_wantAnswer.setOnClickListener {
             heClick = true
         }
@@ -135,16 +137,30 @@ class GameInterfaceActivity : AppCompatActivity() {
                     prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
                     tv_count.text = "Счет:$score"
                     cancel()
-                } else if (heFinalClick) {
-                    Toast.makeText(
-                        this@GameInterfaceActivity,
-                        "+$rvPrice очков!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    score += rvPrice
-                    prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
-                    tv_count.text = "Счет:$score"
-                    cancel()
+                } else {
+                    this.cancel()
+                    correctAnswer = dialogInit()
+                    if (correctAnswer) {
+                        Toast.makeText(
+                            this@GameInterfaceActivity,
+                            "+$rvPrice очков!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        score += rvPrice
+                        prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
+                        tv_count.text = "Счет:$score"
+                        cancel()
+                    } else {
+                        Toast.makeText(
+                            this@GameInterfaceActivity,
+                            "-$rvPrice очков!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        score -= rvPrice
+                        prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
+                        tv_count.text = "Счет:$score"
+                        cancel()
+                    }
                 }
                 resetQuestion()
                 cancel()
@@ -170,23 +186,13 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
         btn_finallAnswer.setOnClickListener {
-            heFinalClick = (et_enterAnswer.text.toString().toLowerCase().trim()
-                    == rvAnswer.toString().toLowerCase().trim())
-            if (et_enterAnswer.text.isEmpty()) {
+            /*if (et_enterAnswer.text.isEmpty()) {
                 Toast.makeText(this, "Вы не ввели ответ!\n-$rvPrice очков!", Toast.LENGTH_SHORT)
                     .show()
                 score -= rvPrice
                 prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
                 //в будущем можно будет апгрейдить и не давать отвечать пока не введет ответ или что нибудь еще помимо тоста
-            } else if (!heFinalClick) {
-                Toast.makeText(
-                    this,
-                    "Неправильный ответ!\n-$rvPrice очков!",
-                    Toast.LENGTH_SHORT
-                ).show()
-                score -= rvPrice
-                prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
-            }
+            }*/
             tv_count.text = "Счет:$score"
             time2.onFinish()
             progressBar.visibility = View.INVISIBLE
@@ -232,7 +238,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                         btn_wantAnswer.visibility = View.INVISIBLE
                         makeInvisibleAnswerPart()
                     }
-                    if(!isSingle){
+                    if (!isSingle) {
                         //TODO(WARNING! СПЕЦИАЛЬНО ДЛЯ ТЕМУРА, СПОНСОРА МОИХ РАННИХ СЕДИН)
                         // тк для него я уже одну проверку сделала вот еще одна:
                         //TODO(здесь нужна проверка, ответил ли вообще кто-то из игроков,
@@ -271,6 +277,11 @@ class GameInterfaceActivity : AppCompatActivity() {
         //TODO(а еще я не знаю где лежат эти тосты, которые показывают категорию,цену,ответ вопроса
         // так вот предлагаю их окончательно не убирать, а сделать красивый тост только с выводом категории и цены)
     }
+
+    fun dialogInit():Boolean{
+        return getDialogValueBack(this@GameInterfaceActivity)
+    }
+
 
 
     private fun makeVisibleAnswerPart() {
@@ -353,6 +364,36 @@ class GameInterfaceActivity : AppCompatActivity() {
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         prefs.edit().putInt(APP_PREFERENCES_SCORE, 0).apply()
         this.onBackPressedDispatcher.onBackPressed()
+    }
+
+    private var resultValue = false
+    private fun getDialogValueBack(context: Context?): Boolean {
+        val handler: Handler = @SuppressLint("HandlerLeak")
+        object : Handler() {
+            override fun handleMessage(mesg: Message?) {
+                throw RuntimeException()
+            }
+        }
+        val alert = AlertDialog.Builder(context,android.R.style.Theme_Material_Light_Dialog_Alert)
+        alert.setTitle("Проверка")
+        alert.setMessage("$rvAnswer")
+
+        alert.setPositiveButton("Правильно"
+        ) { dialog, id ->
+            resultValue = true
+            handler.sendMessage(handler.obtainMessage())
+        }
+        alert.setNegativeButton("Неправильно"
+        ) { dialog, id ->
+            resultValue = false
+            handler.sendMessage(handler.obtainMessage())
+        }
+        alert.show()
+        try {
+            Looper.loop()
+        } catch (e: RuntimeException) {
+        }
+        return resultValue
     }
 
 }
