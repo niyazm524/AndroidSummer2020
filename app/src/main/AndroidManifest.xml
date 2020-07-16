@@ -33,9 +33,6 @@
             android:name=".HelpActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".PackChoosingActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
             android:name=".SingleMultiActivity"
             android:screenOrientation="portrait"></activity>
 
