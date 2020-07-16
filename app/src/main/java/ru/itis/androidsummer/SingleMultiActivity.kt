@@ -94,6 +94,11 @@ class SingleMultiActivity : AppCompatActivity() {
             iv_back_to_choose.visibility = View.INVISIBLE
             iv_back_to_pack_choose.visibility = View.INVISIBLE
             //TODO(делаем ваш рекуклер c выбором паков невидимым тоже)
+            tv_highlight2.visibility = View.INVISIBLE
+            bn_pack1.visibility = View.INVISIBLE
+            bn_pack3.visibility = View.INVISIBLE
+            bn_pack5.visibility = View.INVISIBLE
+            bn_pack6.visibility = View.INVISIBLE
         }
 
         iv_back_to_pack_choose.setOnClickListener {
