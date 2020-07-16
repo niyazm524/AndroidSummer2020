@@ -3,10 +3,10 @@ package ru.itis.androidsummer
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.*
 import android.text.method.ScrollingMovementMethod
 import android.view.View
+import android.view.View.OnLongClickListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -95,6 +95,9 @@ class GameInterfaceActivity : AppCompatActivity() {
         var score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
         var victory = prefs.getInt(APP_PREFERENCES_VICTORY, 0)
         var wholeScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
+        var countCharacter = 0
+        var helpSymbolPrice = 100
+        var helpBotPrice = 200
         val me = prefs.getString(
             APP_PREFERENCES_REGISTRATION,
             resources.getString(R.string.profile_text_default_name)
@@ -109,6 +112,45 @@ class GameInterfaceActivity : AppCompatActivity() {
         if (isSingle) Toast.makeText(this, "Вы выбрали одиночную игру!", Toast.LENGTH_SHORT).show()
         //тут конечно теперь пустовато на экране с таблицей для одиночки, надо будет подумать над этим
 
+        iv_getOneChar.setOnClickListener {
+            Toast.makeText(applicationContext, "Попытка купли", Toast.LENGTH_SHORT).show()
+            val checkScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
+            if(checkScore >= helpSymbolPrice){
+                Toast.makeText(applicationContext, "Символ покупка", Toast.LENGTH_SHORT).show()
+                countCharacter++
+                    if(countCharacter <= (rvAnswer?.lastIndex ?: 0)+1){
+                        prefs.edit().putInt(APP_PREFERENCES_WHOLE_SCORE,checkScore-helpSymbolPrice).apply()
+                    et_enterAnswer.setText(rvAnswer?.subSequence(0,countCharacter))
+                }
+                else{
+                    Toast.makeText(applicationContext, "Все символы есть", Toast.LENGTH_SHORT).show()
+                }
+            }else{
+                Toast.makeText(applicationContext, "Недостаточно баллов, текущее количество:$checkScore", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        iv_getOneChar.setOnLongClickListener{
+            Toast.makeText(applicationContext, "Один символ из ответа", Toast.LENGTH_SHORT).show()
+            true
+        }
+
+        iv_helpCallBot.setOnClickListener {
+            Toast.makeText(applicationContext, "Попытка звонка", Toast.LENGTH_SHORT).show()
+            val checkScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
+            if(checkScore >= helpBotPrice){
+                prefs.edit().putInt(APP_PREFERENCES_WHOLE_SCORE,checkScore-helpBotPrice).apply()
+                Toast.makeText(applicationContext, "Бот звонок", Toast.LENGTH_SHORT).show()
+                //TODO метод тип 1 к 2
+            }else{
+                Toast.makeText(applicationContext, "Недостаточно баллов, текущее количество:$checkScore", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        iv_helpCallBot.setOnLongClickListener {
+            Toast.makeText(applicationContext, "50/50 правильный ответ от бота", Toast.LENGTH_SHORT).show()
+            true
+        }
 
         btn_wantAnswer.setOnClickListener {
             heClick = true
@@ -116,6 +158,7 @@ class GameInterfaceActivity : AppCompatActivity() {
 
         fun resetQuestion() {
             heClick = false
+            countCharacter = 0
             heFinalClick = false
             rvAnswer = null
             rvQuestion = null
@@ -278,6 +321,8 @@ class GameInterfaceActivity : AppCompatActivity() {
         // так вот предлагаю их окончательно не убирать, а сделать красивый тост только с выводом категории и цены)
     }
 
+
+
     fun dialogInit():Boolean{
         return getDialogValueBack(this@GameInterfaceActivity)
     }
@@ -292,6 +337,8 @@ class GameInterfaceActivity : AppCompatActivity() {
         et_enterAnswer.visibility = View.VISIBLE
         btn_finallAnswer.visibility = View.VISIBLE
         tv_timer2.visibility = View.VISIBLE
+        iv_helpCallBot.visibility = View.VISIBLE
+        iv_getOneChar.visibility = View.VISIBLE
     }
 
     private fun makeInvisibleAnswerPart() {
@@ -305,6 +352,8 @@ class GameInterfaceActivity : AppCompatActivity() {
         rv_questions.visibility = View.VISIBLE
         iv_gi_back_to_menu.visibility = View.VISIBLE
         tv_timer.visibility = View.INVISIBLE
+        iv_helpCallBot.visibility = View.INVISIBLE
+        iv_getOneChar.visibility = View.INVISIBLE
     }
 
 
@@ -377,14 +426,11 @@ class GameInterfaceActivity : AppCompatActivity() {
         val alert = AlertDialog.Builder(context,R.style.AlertDialogStyle)
         alert.setTitle("Правильный ответ")
         alert.setMessage("$rvAnswer")
-
-        alert.setPositiveButton("Правильно"
-        ) { dialog, id ->
+        alert.setPositiveButton("Правильно") { dialog, id ->
             resultValue = true
             handler.sendMessage(handler.obtainMessage())
         }
-        alert.setNegativeButton("Неправильно"
-        ) { dialog, id ->
+        alert.setNegativeButton("Неправильно") { dialog, id ->
             resultValue = false
             handler.sendMessage(handler.obtainMessage())
         }
