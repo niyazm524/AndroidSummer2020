@@ -374,8 +374,8 @@ class GameInterfaceActivity : AppCompatActivity() {
                 throw RuntimeException()
             }
         }
-        val alert = AlertDialog.Builder(context,android.R.style.Theme_Material_Light_Dialog_Alert)
-        alert.setTitle("Проверка")
+        val alert = AlertDialog.Builder(context,R.style.AlertDialogStyle)
+        alert.setTitle("Правильный ответ")
         alert.setMessage("$rvAnswer")
 
         alert.setPositiveButton("Правильно"
