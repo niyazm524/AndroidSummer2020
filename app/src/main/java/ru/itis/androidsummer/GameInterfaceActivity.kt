@@ -4,9 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.media.MediaDataSource
+import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -216,9 +220,28 @@ class GameInterfaceActivity : AppCompatActivity() {
             rvPrice = question.price
             tv_textquestion.text = rvQuestion
             //
-            if (ContentsXmlParser.resourceTypes.get(question)==".jpg"){
-                iv_image.setImageBitmap(BitmapFactory.decodeStream(hashThing.get(question)))
+            if (ContentsXmlParser.resourceTypes.get(question)==".jpg" ||
+                ContentsXmlParser.resourceTypes.get(question)==".jpeg"){
+                iv_image.setImageBitmap(BitmapFactory.decodeStream(ByteArrayInputStream(hashThing.get(question)).buffered()))
+                iv_image.setOnClickListener {
+                    iv_image.maxHeight = 500
+                    Toast.makeText(this,"hi",Toast.LENGTH_LONG).show()
+                }
             }
+
+            if (ContentsXmlParser.resourceTypes.get(question)==".mp3"){
+                FileInputStream(InputStream())
+                setDa
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                }
+                MediaPlayer().setDataSource(ByteArrayInputStream(hashThing.get(question)))
+                iv_image.setOnClickListener {
+                    iv_image.maxHeight = 500
+                    Toast.makeText(this,"hi",Toast.LENGTH_LONG).show()
+                }
+            }
+
             //
             time.start()
             progressBar.visibility = View.VISIBLE

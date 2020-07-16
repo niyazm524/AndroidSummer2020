@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.test.*
 import ru.itis.androidsummer.data.Question
 import ru.itis.androidsummer.parsers.ContentsXmlParser
+import java.io.ByteArrayInputStream
 import java.lang.Exception
 
 class Test : AppCompatActivity(){
@@ -16,8 +17,8 @@ class Test : AppCompatActivity(){
 
         setContentView(R.layout.test)
         try{
-            Glide.with(this).load(BitmapFactory.decodeStream(
-                ContentsXmlParser.hashThing.get(Question(300," ","Rhino",false)))).into(imageView)
+            Glide.with(this).load(BitmapFactory.decodeStream(ByteArrayInputStream(
+                ContentsXmlParser.hashThing.get(Question(300,"","Rhino",false))))).into(imageView)
             /*
         imageView.setImageBitmap(BitmapFactory.decodeStream(
             ContentsXmlParser.hashThing.get(Question(300," ","Rhino",false))))*/

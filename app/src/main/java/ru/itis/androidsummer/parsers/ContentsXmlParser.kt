@@ -10,7 +10,7 @@ import java.nio.charset.Charset
 
 class ContentsXmlParser(private val parser: XmlPullParser) {
     companion object {
-        val hashThing: HashMap<Question, InputStream> = HashMap()
+        val hashThing: HashMap<Question, ByteArray> = HashMap()
         val resourceTypes: HashMap<Question, String> = HashMap()
     }
     fun parseQuestion(contentsStream: InputStream): List<Category> {

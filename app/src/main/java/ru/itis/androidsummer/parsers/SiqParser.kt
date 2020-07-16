@@ -8,7 +8,7 @@ import kotlin.collections.HashMap
 
 class SiqParser {
     companion object {
-        val hash: HashMap<String, InputStream> = HashMap()
+        val hash: HashMap<String, ByteArray> = HashMap()
     }
 
     fun parseSiq(file: InputStream): ByteArray? {
@@ -20,7 +20,7 @@ class SiqParser {
                     contentsBytes = stream.readBytes()
                 }else if (zip.name.contains(".jpg") || zip.name.contains(".mp3"))
                     hash.put(zip.name.replaceBefore('/',"").replace("/",""),
-                        stream.buffered())
+                        stream.readBytes())
                 stream.closeEntry()
                 zip = stream.nextEntry
             }
