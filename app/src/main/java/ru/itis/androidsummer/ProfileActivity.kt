@@ -55,6 +55,8 @@ class ProfileActivity : AppCompatActivity() {
         iv_profile_rating.setOnClickListener {
             //переход на страничку с рейтингом, которого пока нет
         }
+        //TODO(сделать разный подсчет очков/побед в зависимости single/multiplayer и рейтинг соотвественно тоже)
+        // (для меня(Диляры) прошу не трогать эту волокиту)
 
     }
 
