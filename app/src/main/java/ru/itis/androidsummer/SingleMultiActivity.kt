@@ -19,28 +19,13 @@ class SingleMultiActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_multi)
 
-        //
-        tv_highlight2.visibility = View.INVISIBLE
-        bn_pack1.visibility = View.INVISIBLE
-        bn_pack3.visibility = View.INVISIBLE
-        bn_pack5.visibility = View.INVISIBLE
-        bn_pack6.visibility = View.INVISIBLE
-        //
+       firstViewWithTextForUser()
 
         var isSingle: Boolean
 
         btn_sm_choose_pack.setOnClickListener {
-            tv_sm_text_for_user.visibility = View.INVISIBLE
-            btn_sm_choose_pack.visibility = View.INVISIBLE
-//            TODO("здесь делайте видимыми категорий паков. я думаю рекуклером и добавить CheckBox'ов,
-//             после чего юзер выбирает(нужна проверка что только 1 пак) и нажимает кнопочку "Готово"")
-            //кнопку btn_sm_user_isChoose в рекуклер не суйте только
-            btn_sm_user_isChoose.visibility = View.VISIBLE
-            iv_back_to_menu.visibility = View.GONE
-            iv_back_to_pack_choose.visibility = View.GONE
-            iv_back_to_choose.visibility = View.VISIBLE
+            packChooseVisibility()
             //
-            tv_highlight2.visibility = View.VISIBLE
             bn_pack1.visibility = View.VISIBLE
             bn_pack3.visibility = View.VISIBLE
             bn_pack5.visibility = View.VISIBLE
@@ -49,14 +34,9 @@ class SingleMultiActivity : AppCompatActivity() {
         }
 
         btn_sm_user_isChoose.setOnClickListener {
-            btn_sm_choose_single.visibility = View.VISIBLE
-            btn_sm_choose_multi.visibility = View.VISIBLE
-            iv_back_to_pack_choose.visibility = View.VISIBLE
-            iv_back_to_choose.visibility = View.GONE
-            iv_back_to_menu.visibility = View.GONE
-            btn_sm_user_isChoose.visibility = View.INVISIBLE
+            //TODO(загрузка паков(я тут хз как все устроено, оставляю вам))
+           singleMultiChooseVisibility()
             //
-            tv_highlight2.visibility = View.INVISIBLE
             bn_pack1.visibility = View.INVISIBLE
             bn_pack3.visibility = View.INVISIBLE
             bn_pack5.visibility = View.INVISIBLE
@@ -75,11 +55,43 @@ class SingleMultiActivity : AppCompatActivity() {
         }
 
         btn_sm_choose_single.setOnClickListener {
+            btn_sm_easy.visibility = View.VISIBLE
+            btn_sm_medium.visibility = View.VISIBLE
+            btn_sm_hard.visibility = View.VISIBLE
+            btn_sm_choose_single.visibility = View.INVISIBLE
+            btn_sm_choose_multi.visibility = View.INVISIBLE
+            iv_back_to_pack_choose.visibility = View.GONE
+            iv_back_to_choose.visibility = View.GONE
+            iv_back_to_menu.visibility = View.GONE
+            btn_sm_user_isChoose.visibility = View.INVISIBLE
+            iv_back_to_sm_choose.visibility = View.VISIBLE
+            tv_sm_text_for_user.text = "Выбери сложность игры:"
+            tv_sm_text_for_user.visibility = View.VISIBLE
+            //TODO(добавить интенты в профиль для рейтинга(которого не будет здесь) и для счета/побед)
+        }
+
+        btn_sm_easy.setOnClickListener {
             isSingle = true
             val intent = Intent(this, GameInterfaceActivity::class.java)
             intent.putExtra("isSingle",isSingle)
+            intent.putExtra("easy",0)
             startActivity(intent)
-            //TODO(добавить интенты в профиль для рейтинга(которого не будет здесь) и для счета/побед)
+        }
+
+        btn_sm_medium.setOnClickListener {
+            isSingle = true
+            val intent = Intent(this, GameInterfaceActivity::class.java)
+            intent.putExtra("isSingle",isSingle)
+            intent.putExtra("medium",1)
+            startActivity(intent)
+        }
+
+        btn_sm_hard.setOnClickListener {
+            isSingle = true
+            val intent = Intent(this, GameInterfaceActivity::class.java)
+            intent.putExtra("isSingle",isSingle)
+            intent.putExtra("hard",2)
+            startActivity(intent)
         }
 
         iv_back_to_menu.setOnClickListener {
@@ -87,32 +99,20 @@ class SingleMultiActivity : AppCompatActivity() {
         }
 
         iv_back_to_choose.setOnClickListener {
-            tv_sm_text_for_user.visibility = View.VISIBLE
-            btn_sm_choose_pack.visibility = View.VISIBLE
-            btn_sm_user_isChoose.visibility = View.INVISIBLE
-            iv_back_to_menu.visibility = View.VISIBLE
-            iv_back_to_choose.visibility = View.INVISIBLE
-            iv_back_to_pack_choose.visibility = View.INVISIBLE
-            //
-            tv_highlight2.visibility = View.INVISIBLE
-            bn_pack1.visibility = View.INVISIBLE
-            bn_pack3.visibility = View.INVISIBLE
-            bn_pack5.visibility = View.INVISIBLE
-            bn_pack6.visibility = View.INVISIBLE
+            firstViewWithTextForUser()
         }
 
         iv_back_to_pack_choose.setOnClickListener {
-            btn_sm_choose_single.visibility = View.INVISIBLE
-            btn_sm_choose_multi.visibility = View.INVISIBLE
-            iv_back_to_pack_choose.visibility = View.INVISIBLE
-            btn_sm_user_isChoose.visibility = View.VISIBLE
-            iv_back_to_choose.visibility = View.VISIBLE
-            //
-            tv_highlight2.visibility = View.VISIBLE
-            bn_pack1.visibility = View.VISIBLE
-            bn_pack3.visibility = View.VISIBLE
-            bn_pack5.visibility = View.VISIBLE
-            bn_pack6.visibility = View.VISIBLE
+            packChooseVisibility()
+        }
+
+        iv_back_to_sm_choose.setOnClickListener {
+            btn_sm_easy.visibility = View.INVISIBLE
+            btn_sm_medium.visibility = View.INVISIBLE
+            btn_sm_hard.visibility = View.INVISIBLE
+            iv_back_to_sm_choose.visibility = View.INVISIBLE
+            iv_back_to_pack_choose.visibility = View.VISIBLE
+            singleMultiChooseVisibility()
         }
 
         //мое
@@ -170,11 +170,55 @@ class SingleMultiActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        startActivity(Intent(this, MainMenuActivity::class.java))
+        finish()
     }
 
     companion object {
         private const val REQUEST_CODE = 9999
     }
 
+    fun firstViewWithTextForUser(){
+        tv_sm_text_for_user.visibility = View.VISIBLE
+        btn_sm_choose_pack.visibility = View.VISIBLE
+        btn_sm_user_isChoose.visibility = View.INVISIBLE
+        iv_back_to_menu.visibility = View.VISIBLE
+        iv_back_to_choose.visibility = View.INVISIBLE
+        iv_back_to_pack_choose.visibility = View.INVISIBLE
+        tv_sm_text_for_user.text = "Сначала тебе нужно выбрать пакет с категориями для игры\n" +
+                "    в зависимости от того, что ты предпочитаешь, и загрузить"
+        //
+        bn_pack1.visibility = View.INVISIBLE
+        bn_pack3.visibility = View.INVISIBLE
+        bn_pack5.visibility = View.INVISIBLE
+        bn_pack6.visibility = View.INVISIBLE
+    }
+    fun packChooseVisibility(){
+        tv_sm_text_for_user.visibility = View.INVISIBLE
+        btn_sm_choose_pack.visibility = View.INVISIBLE
+//            TODO("здесь делайте видимыми категорий паков. я думаю рекуклером и добавить CheckBox'ов,
+//             после чего юзер выбирает(нужна проверка что только 1 пак) и нажимает кнопочку "Готово"")
+        //кнопку btn_sm_user_isChoose в рекуклер не суйте только
+        btn_sm_user_isChoose.visibility = View.VISIBLE
+        iv_back_to_menu.visibility = View.GONE
+        btn_sm_choose_single.visibility = View.INVISIBLE
+        btn_sm_choose_multi.visibility = View.INVISIBLE
+        iv_back_to_pack_choose.visibility = View.INVISIBLE
+        iv_back_to_choose.visibility = View.VISIBLE
+        //
+        bn_pack1.visibility = View.VISIBLE
+        bn_pack3.visibility = View.VISIBLE
+        bn_pack5.visibility = View.VISIBLE
+        bn_pack6.visibility = View.VISIBLE
+    }
+
+    fun singleMultiChooseVisibility(){
+        btn_sm_choose_single.visibility = View.VISIBLE
+        btn_sm_choose_multi.visibility = View.VISIBLE
+        iv_back_to_pack_choose.visibility = View.VISIBLE
+        iv_back_to_choose.visibility = View.GONE
+        btn_sm_user_isChoose.visibility = View.INVISIBLE
+        tv_sm_text_for_user.visibility = View.INVISIBLE
+    }
+
 }
+

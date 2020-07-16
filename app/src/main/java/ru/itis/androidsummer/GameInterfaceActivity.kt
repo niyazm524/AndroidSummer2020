@@ -52,6 +52,7 @@ class GameInterfaceActivity : AppCompatActivity() {
 
         var isSingle = intent.getBooleanExtra("isSingle", false)
         //TODO(поменять(Диляре) тут после добавления лобби и мультиплеера)
+        //TODO(Тимур, вот тут наподобие примера выше вытаскивый сложность, я ее передаю)
 
 
         val factory = XmlPullParserFactory.newInstance()
@@ -104,11 +105,11 @@ class GameInterfaceActivity : AppCompatActivity() {
         tv_people.text = "ИГРОКИ: \n$me"
         tv_numberOfRound.text = "Раунд:$countRound"
         if (!isSingle) {
-            tv_people.visibility = View.VISIBLE
             Toast.makeText(this, "Вы выбрали игру с друзьями!", Toast.LENGTH_SHORT).show()
         }
-        if (isSingle) Toast.makeText(this, "Вы выбрали одиночную игру!", Toast.LENGTH_SHORT).show()
+        if (isSingle) Toast.makeText(this, "Вы выбрали одиночную игру! Уровень:", Toast.LENGTH_SHORT).show()
         //тут конечно теперь пустовато на экране с таблицей для одиночки, надо будет подумать над этим
+        //TODO(сюда в тост вставь сложность после "уровень:")
 
 
 
@@ -155,7 +156,6 @@ class GameInterfaceActivity : AppCompatActivity() {
                 countRound++
                 tv_numberOfRound.text = "Раунд:$countRound"
                 makeInvisibleAnswerPart()
-                if (!isSingle) tv_people.visibility = View.VISIBLE
                 //TODO(надо будет добавить что-то для вывода результатов когда вопросы заканчиваются
                 // + определять победу и набранные очки в зависимости single/multiplayer и мб сложности(для сингл))
             }
@@ -195,6 +195,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             time2.onFinish()
             progressBar.visibility = View.INVISIBLE
             tv_timer2.visibility = View.INVISIBLE
+            tv_people.visibility = View.VISIBLE
             //TODO(в конце игры, когда будет выявлен победитель, нужно в SP +1 игроку добавить, be like:)
 //            victory++
 //            prefs.edit().putInt(APP_PREFERENCES_VICTORY, victory).apply()
@@ -208,7 +209,6 @@ class GameInterfaceActivity : AppCompatActivity() {
                 if (heClick) {
                     progressBar.progress = progressBar.max
                     makeVisibleAnswerPart()
-                    if (!isSingle) tv_people.visibility = View.VISIBLE
                     onFinish()
                     time2.start()
                     cancel()
@@ -235,6 +235,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                         tv_numberOfRound.text = "Раунд:$countRound"
                         btn_wantAnswer.visibility = View.INVISIBLE
                         makeInvisibleAnswerPart()
+                        tv_people.visibility = View.VISIBLE
                     }
                     if(!isSingle){
                         //TODO(WARNING! СПЕЦИАЛЬНО ДЛЯ ТЕМУРА, СПОНСОРА МОИХ РАННИХ СЕДИН)
@@ -265,7 +266,6 @@ class GameInterfaceActivity : AppCompatActivity() {
 
         iv_gi_back_to_menu.setOnClickListener {
             finish()
-            onBackPressed()
         }
 
         //TODO(когда игра закончится, нужно будет в  SP сохранить итоговый счет игрока за игру и в профиль, be like:)
@@ -285,6 +285,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         et_enterAnswer.visibility = View.VISIBLE
         btn_finallAnswer.visibility = View.VISIBLE
         tv_timer2.visibility = View.VISIBLE
+        tv_people.visibility = View.VISIBLE
     }
 
     private fun makeInvisibleAnswerPart() {
@@ -298,6 +299,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         rv_questions.visibility = View.VISIBLE
         iv_gi_back_to_menu.visibility = View.VISIBLE
         tv_timer.visibility = View.INVISIBLE
+        tv_people.visibility = View.VISIBLE
     }
 
     private fun getPack(randomize: Boolean = true): List<Category> {
