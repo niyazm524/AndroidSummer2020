@@ -93,7 +93,7 @@ class SingleMultiActivity : AppCompatActivity() {
             iv_back_to_menu.visibility = View.VISIBLE
             iv_back_to_choose.visibility = View.INVISIBLE
             iv_back_to_pack_choose.visibility = View.INVISIBLE
-            //TODO(делаем ваш рекуклер c выбором паков невидимым тоже)
+            //
             tv_highlight2.visibility = View.INVISIBLE
             bn_pack1.visibility = View.INVISIBLE
             bn_pack3.visibility = View.INVISIBLE
@@ -106,7 +106,6 @@ class SingleMultiActivity : AppCompatActivity() {
             btn_sm_choose_multi.visibility = View.INVISIBLE
             iv_back_to_pack_choose.visibility = View.INVISIBLE
             btn_sm_user_isChoose.visibility = View.VISIBLE
-            //TODO(рекуклер видимым)
             iv_back_to_choose.visibility = View.VISIBLE
             //
             tv_highlight2.visibility = View.VISIBLE
