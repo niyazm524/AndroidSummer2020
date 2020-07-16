@@ -34,7 +34,7 @@
     <string name="pack_setting_text_pack3_file">limpFunny.siq</string>
     <string name="pack_setting_text_pack5">Games</string>
     <string name="pack_setting_text_pack5_file">limpGames.siq</string>
-    <string name="pack_setting_text_custom">Custom one</string>
+    <string name="pack_setting_text_custom">Выбрать свой</string>
     <string name="pack_setting_text_custom_notification">Свой собственный</string>
     <string name="pack_setting_text_start">Продолжить</string>
 
