@@ -25,7 +25,9 @@ import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.parsers.ContentsXmlParser
 import ru.itis.androidsummer.parsers.SiqParser
 import ru.itis.androidsummer.utils.ProjectUtils.Companion.pickRandomQuestions
-import java.io.*
+import java.io.ByteArrayInputStream
+import java.io.FileNotFoundException
+import java.io.InputStream
 
 
 class GameInterfaceActivity : AppCompatActivity() {
@@ -333,7 +335,10 @@ class GameInterfaceActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         prefs.edit().putInt(APP_PREFERENCES_SCORE, 0).apply()
-        startActivity(Intent(this, MainMenuActivity::class.java))
+        startActivity(Intent(this, MainMenuActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        })
+        super.onBackPressed()
     }
 
 }
