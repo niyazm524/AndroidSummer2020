@@ -14,7 +14,7 @@ class MainMenuActivity : AppCompatActivity() {
 
 
         btn_main_menu_start.setOnClickListener {
-            startActivity(Intent(this, PackChoosingActivity::class.java))
+            startActivity(Intent(this, SingleMultiActivity::class.java))
         }
         btn_main_menu_rules.setOnClickListener {
             startActivity(Intent(this, HelpActivity::class.java))

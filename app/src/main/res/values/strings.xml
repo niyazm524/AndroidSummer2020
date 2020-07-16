@@ -26,22 +26,27 @@
     <string name="game_text_wrong_siq_exception">Не подходящий siq файл</string>
     <string name="game_text_wrong_xml_structure">Не правильная структура xml файла</string>
 
-    <string name="settings_text">Настройки</string>
-    <string name="pack_setting_text_start_the_game_text">Добро пожаловать</string>
     <string name="pack_setting_text_select_pack">Выберите пак вопросов</string>
     <string name="pack_setting_text_you_have_set_a_pack">Вы выбрали набор: " "</string>
     <string name="pack_setting_text_pack1">GTA</string>
     <string name="pack_setting_text_pack1_file">limpGTA.siq</string>
-    <string name="pack_setting_text_pack2">Anime</string>
-    <string name="pack_setting_text_pack2_file">limpAnime.siq</string>
     <string name="pack_setting_text_pack3">Funny</string>
     <string name="pack_setting_text_pack3_file">limpFunny.siq</string>
-    <string name="pack_setting_text_pack4">Cafe</string>
-    <string name="pack_setting_text_pack4_file">limpCafe.siq</string>
     <string name="pack_setting_text_pack5">Games</string>
     <string name="pack_setting_text_pack5_file">limpGames.siq</string>
     <string name="pack_setting_text_custom">Custom one</string>
-    <string name="pack_setting_text_start">Начать игру</string>
+    <string name="pack_setting_text_custom_notification">Свой собственный</string>
+    <string name="pack_setting_text_start">Продолжить</string>
+
+
+    <string name="sm_button_single">Одиночная</string>
+    <string name="sm_button_multi">С друзьями</string>
+    <string name="sm_text_choose_pack">Сначала тебе нужно выбрать пакет с категориями для игры
+    в зависимости от того, что ты предпочитаешь, и загрузить</string>
+    <string name="sm_button_choose_pack">Выбрать</string>
+    <string name="sm_button_user_isChoose">Готово!</string>
+
+
 
 
     <string name="help_text_info">   У каждого игрока имеется свой персональный счет.

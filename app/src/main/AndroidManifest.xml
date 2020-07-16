@@ -35,6 +35,10 @@
         <activity
             android:name=".PackChoosingActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".SingleMultiActivity"
+            android:screenOrientation="portrait"></activity>
+
 
         <meta-data
             android:name="preloaded_fonts"
