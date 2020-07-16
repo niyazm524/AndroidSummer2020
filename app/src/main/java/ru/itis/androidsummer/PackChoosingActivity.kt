@@ -34,7 +34,7 @@ class PackChoosingActivity : AppCompatActivity(){
             prefs.edit().putString(APP_PREFERENCES_QUESTION_PACK,
                 resources.getString(R.string.pack_setting_text_pack2_file)).putBoolean(
                 APP_PREFERENCES_IS_NOT_DEFAULT,false).apply()
-                Toast.makeText(this,"Аниме нету",Toast.LENGTH_LONG).show()
+                //Toast.makeText(this,"Аниме нету",Toast.LENGTH_LONG).show()
                 //Toast.makeText(this,resources.getString(R.string.pack_setting_text_you_have_set_a_pack) +
                 //resources.getString(R.string.pack_setting_text_pack2),Toast.LENGTH_LONG).show()
         }
@@ -75,7 +75,7 @@ class PackChoosingActivity : AppCompatActivity(){
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode === REQUEST_CODE) {
             if (resultCode === Activity.RESULT_OK) {
-                 val externalFileUri= data?.data.toString() ?: throw FileNotFoundException()
+                 val externalFileUri= data?.data.toString()
                 val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
                 prefs.edit().putBoolean(APP_PREFERENCES_IS_NOT_DEFAULT,true)
                     .putString(APP_PREFERENCES_QUESTION_PACK,externalFileUri).apply()

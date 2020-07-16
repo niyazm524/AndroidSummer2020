@@ -3,6 +3,7 @@ package ru.itis.androidsummer
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -22,6 +23,7 @@ import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_VICTORY
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_WHOLE_SCORE
 import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.parsers.ContentsXmlParser
+import ru.itis.androidsummer.parsers.ContentsXmlParser.Companion.hashThing
 import ru.itis.androidsummer.parsers.SiqParser
 import ru.itis.androidsummer.utils.ProjectUtils.Companion.pickRandomQuestions
 import java.io.*
@@ -92,7 +94,6 @@ class GameInterfaceActivity : AppCompatActivity() {
         tv_people.text = "ИГРОКИ: \n$me"
         tv_numberOfRound.text = "Раунд:$countRound"
         tv_people.visibility = View.VISIBLE
-        //i'll fix it later as soon as Temur will have his table
 
         var heClick = false
         var heFinalClick = false
@@ -214,6 +215,11 @@ class GameInterfaceActivity : AppCompatActivity() {
             rvQuestion = question.question
             rvPrice = question.price
             tv_textquestion.text = rvQuestion
+            //
+            if (ContentsXmlParser.resourceTypes.get(question)==".jpg"){
+                iv_image.setImageBitmap(BitmapFactory.decodeStream(hashThing.get(question)))
+            }
+            //
             time.start()
             progressBar.visibility = View.VISIBLE
             tv_timer.visibility = View.VISIBLE
@@ -253,7 +259,7 @@ class GameInterfaceActivity : AppCompatActivity() {
     private fun getPack(randomize: Boolean = true): List<Category> {
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         lateinit var path: String
-        var dataStream: InputStream
+        val dataStream: InputStream
         if (prefs.getBoolean(APP_PREFERENCES_IS_NOT_DEFAULT,false)) {
             dataStream = prefs.getString(APP_PREFERENCES_QUESTION_PACK, null) ?.let {
                 contentResolver.openInputStream(Uri.parse(it)) }
