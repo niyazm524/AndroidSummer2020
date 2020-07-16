@@ -36,17 +36,25 @@ class GameInterfaceActivity : AppCompatActivity() {
     var rvQuestion: String? = null
     var rvPrice: Int = 0
 
+    var heClick = false
+    var heFinalClick = false
+
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_interface)
 
+        var isSingle = intent.getBooleanExtra("isSingle", false)
+        //TODO(поменять(Диляре) тут после добавления лобби и мультиплеера)
+
 
         val factory = XmlPullParserFactory.newInstance()
         val parser = factory.newPullParser()
         contentsXmlParser = ContentsXmlParser(parser)
         tv_textquestion.movementMethod = ScrollingMovementMethod()
+
 
         try {
             val categories = getPack("limp.siq", randomize = false)
@@ -82,8 +90,8 @@ class GameInterfaceActivity : AppCompatActivity() {
         var countRound = 1
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         var score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
-        var victory = prefs.getInt(APP_PREFERENCES_VICTORY,0)
-        var wholeScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE,0)
+        var victory = prefs.getInt(APP_PREFERENCES_VICTORY, 0)
+        var wholeScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
         val me = prefs.getString(
             APP_PREFERENCES_REGISTRATION,
             resources.getString(R.string.profile_text_default_name)
@@ -91,11 +99,14 @@ class GameInterfaceActivity : AppCompatActivity() {
         tv_count.text = "Счет:$score"
         tv_people.text = "ИГРОКИ: \n$me"
         tv_numberOfRound.text = "Раунд:$countRound"
-        tv_people.visibility = View.VISIBLE
-        //i'll fix it later as soon as Temur will have his table
+        if (!isSingle) {
+            tv_people.visibility = View.VISIBLE
+            Toast.makeText(this, "Вы выбрали игру с друзьями!", Toast.LENGTH_SHORT).show()
+        }
+        if (isSingle) Toast.makeText(this, "Вы выбрали одиночную игру!", Toast.LENGTH_SHORT).show()
+        //тут конечно теперь пустовато на экране с таблицей для одиночки, надо будет подумать над этим
 
-        var heClick = false
-        var heFinalClick = false
+
 
         btn_wantAnswer.setOnClickListener {
             heClick = true
@@ -140,7 +151,9 @@ class GameInterfaceActivity : AppCompatActivity() {
                 countRound++
                 tv_numberOfRound.text = "Раунд:$countRound"
                 makeInvisibleAnswerPart()
-                //надо будет добавить что-то для вывода результатов когда вопросы заканчиваются
+                if (!isSingle) tv_people.visibility = View.VISIBLE
+                //TODO(надо будет добавить что-то для вывода результатов когда вопросы заканчиваются
+                // + определять победу и набранные очки в зависимости single/multiplayer и мб сложности(для сингл))
             }
 
             @SuppressLint("SetTextI18n")
@@ -178,7 +191,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             time2.onFinish()
             progressBar.visibility = View.INVISIBLE
             tv_timer2.visibility = View.INVISIBLE
-            //в конце игры, когда будет выявлен победитель, нужно в SP +1 игроку добавить, be like:
+            //TODO(в конце игры, когда будет выявлен победитель, нужно в SP +1 игроку добавить, be like:)
 //            victory++
 //            prefs.edit().putInt(APP_PREFERENCES_VICTORY, victory).apply()
         }
@@ -191,17 +204,42 @@ class GameInterfaceActivity : AppCompatActivity() {
                 if (heClick) {
                     progressBar.progress = progressBar.max
                     makeVisibleAnswerPart()
+                    if (!isSingle) tv_people.visibility = View.VISIBLE
                     onFinish()
                     time2.start()
                     cancel()
                 }
                 progressBar.progress = (millisUntilFinished / 1000).toInt()
+                iv_gi_back_to_menu.visibility = View.INVISIBLE
             }
 
             override fun onFinish() {
                 if (!heClick or (progressBar.progress == 0)) {
                     tv_timer.text = "Время вышло!"
-                    //надо будет что-то добавить когда сеть сделаем(чтобы не оставался в том же положении)
+                    if (isSingle) {
+                        score -= rvPrice
+                        prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
+                        tv_count.text = "Счет:$score"
+                        Toast.makeText(
+                            this@GameInterfaceActivity,
+                            "Вы решили не отвечать!\n-$rvPrice очков!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        resetQuestion()
+                        cancel()
+                        countRound++
+                        tv_numberOfRound.text = "Раунд:$countRound"
+                        btn_wantAnswer.visibility = View.INVISIBLE
+                        makeInvisibleAnswerPart()
+                    }
+                    if(!isSingle){
+                        //TODO(WARNING! СПЕЦИАЛЬНО ДЛЯ ТЕМУРА, СПОНСОРА МОИХ РАННИХ СЕДИН)
+                        // тк для него я уже одну проверку сделала вот еще одна:
+                        //TODO(здесь нужна проверка, ответил ли вообще кто-то из игроков,
+                        // если нет, переход к табл(visibility и вот это все), если да, идем дальше, но без возможности ввести ответ
+                        // + в табл с игроками отображать чей ход. кароче когда сеть будет я это сама сделаю,
+                        // а то там темурывсякие поломают все
+                    }
                 }
             }
         }
@@ -221,9 +259,17 @@ class GameInterfaceActivity : AppCompatActivity() {
             tv_people.visibility = View.INVISIBLE
         }
 
-        //когда игра закончится, нужно будет в  SP сохранить итоговый счет игрока за игру и в профиль, be like:
+        iv_gi_back_to_menu.setOnClickListener {
+            finish()
+            onBackPressed()
+        }
+
+        //TODO(когда игра закончится, нужно будет в  SP сохранить итоговый счет игрока за игру и в профиль, be like:)
 //        wholeScore+=score (score предварительно умножить на коэф)
 //        prefs.edit().putInt(APP_PREFERENCES_WHOLE_SCORE, score).apply()
+
+        //TODO(а еще я не знаю где лежат эти тосты, которые показывают категорию,цену,ответ вопроса
+        // так вот предлагаю их окончательно не убирать, а сделать красивый тост только с выводом категории и цены)
     }
 
 
@@ -234,7 +280,6 @@ class GameInterfaceActivity : AppCompatActivity() {
         tv_timer.visibility = View.INVISIBLE
         et_enterAnswer.visibility = View.VISIBLE
         btn_finallAnswer.visibility = View.VISIBLE
-        tv_people.visibility = View.VISIBLE
         tv_timer2.visibility = View.VISIBLE
     }
 
@@ -243,12 +288,14 @@ class GameInterfaceActivity : AppCompatActivity() {
         tv_numberOfRound.visibility = View.VISIBLE
         et_enterAnswer.visibility = View.INVISIBLE
         btn_finallAnswer.visibility = View.INVISIBLE
-        tv_people.visibility = View.VISIBLE
         tv_timer2.visibility = View.INVISIBLE
         tv_textquestion.visibility = View.INVISIBLE
         progressBar.visibility = View.INVISIBLE
         rv_questions.visibility = View.VISIBLE
+        iv_gi_back_to_menu.visibility = View.VISIBLE
+        tv_timer.visibility = View.INVISIBLE
     }
+
 
     private fun getPack(filename: String, randomize: Boolean = true): List<Category> {
         val contentsBytes = siqParser.parseSiq(assets.open(filename))

@@ -27,6 +27,8 @@
             android:textColorLink="#FDFDFD"
             android:textSize="30sp"
             tools:visibility="visible" />
+
+
     </androidx.core.widget.NestedScrollView>
 
     <Button
@@ -181,5 +183,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="TextView" />
+
+    <ImageView
+        android:id="@+id/iv_gi_back_to_menu"
+        android:layout_width="75dp"
+        android:layout_height="77dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.363"
+        app:srcCompat="@drawable/arrow_left_24px" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
