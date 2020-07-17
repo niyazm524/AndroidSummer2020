@@ -19,8 +19,9 @@
     <string name="profile_button_reset_score">Сбросить свои очки</string>
     <string name="profile_button_score_reset_notification">Ты сбросил свои очки!</string>
     <string name="profile_text_place_in_rating">место в рейтинге</string>
-    //?не поняла, к чему это прикреплено, спросить у Булата (после сброса тост что ли о
-    сбрасывании?)
+
+
+    <string name="final_text"></string>
 
     <string name="game_text_no_file_exception">Данного файла не существует</string>
     <string name="game_text_wrong_siq_exception">Не подходящий siq файл</string>
@@ -46,7 +47,6 @@
     <string name="sm_button_choose_pack">Выбрать</string>
     <string name="sm_button_user_isChoose">Готово!</string>
     <string name="settings_text">Настройки</string>
-
 
 
     <string name="help_text_info">   У каждого игрока имеется свой персональный счет.

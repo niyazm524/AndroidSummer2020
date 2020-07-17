@@ -44,6 +44,7 @@ class GameInterfaceActivity : AppCompatActivity() {
     var correctAnswer: Boolean = false
     var isChoose = false
     var countCharacter = 0
+    var questions_count = 0
 
     var heClick = false
     var heFinalClick = false
@@ -59,6 +60,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_interface)
         bot = SingleplayerBot("Bot",intent.getIntExtra("level",0))
+        val game_level = intent.getIntExtra("level",0)
 
         var isSingle = intent.getBooleanExtra("isSingle", false)
         //TODO(поменять(Диляре) тут после добавления лобби и мультиплеера)
@@ -79,6 +81,9 @@ class GameInterfaceActivity : AppCompatActivity() {
                 }
             val categories = getPack(pack, isPackFromUri, randomize = false)
             questionsAdapter.inputList(skipUnsupportedCategories(categories))
+            // по сути не нужно но пока не трогать лучше, пока не убедимся что таблица правильно работает
+            questions_count = 3
+//                count(categories)
 
             rv_questions.apply {
                 isNestedScrollingEnabled = false
@@ -109,8 +114,6 @@ class GameInterfaceActivity : AppCompatActivity() {
 
         countRound = 1
         var score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
-        var victory = prefs.getInt(APP_PREFERENCES_VICTORY, 0)
-        var wholeScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
         var helpSymbolPrice = 100
         var helpBotPrice = 200
         val me = prefs.getString(
@@ -129,6 +132,12 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
         //тут конечно теперь пустовато на экране с таблицей для одиночки, надо будет подумать над этим
         //TODO(сюда в тост вставь сложность после "уровень:")
+        if(questions_count == countRound){
+            val intent = Intent(this@GameInterfaceActivity, FinalActivity::class.java)
+            intent.putExtra("user_score",score)
+            intent.putExtra("bot_score", botScore)
+            intent.putExtra("level",game_level)
+        }
 
         iv_getOneChar.setOnClickListener {
 
@@ -381,6 +390,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+
         //TODO(когда игра закончится, нужно будет в  SP сохранить итоговый счет игрока за игру и в профиль, be like:)
 //        wholeScore+=score (score предварительно умножить на коэф)
 //        prefs.edit().putInt(APP_PREFERENCES_WHOLE_SCORE, score).apply()
@@ -494,6 +504,16 @@ class GameInterfaceActivity : AppCompatActivity() {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         })
         super.onBackPressed()
+    }
+
+    fun count(categoryList: List<Category>): Int{
+        var i = 0
+        for (category in categoryList){
+            for (question in category.questions){
+                i++
+            }
+        }
+        return i
     }
 
 
