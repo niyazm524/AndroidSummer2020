@@ -185,54 +185,64 @@ class GameInterfaceActivity : AppCompatActivity() {
 
         val time2 = object : CountDownTimer(20000, 1000) {
             override fun onFinish() {
-                if(botIsAnswer){
-                    if(botCorrectAnswer){
-                        Toast.makeText(this@GameInterfaceActivity,"${bot.name} ошибся \n -$rvPrice",Toast.LENGTH_SHORT).show()
-                        botScore -= rvPrice
-                    }else{
-                        Toast.makeText(this@GameInterfaceActivity,"${bot.name} ответил правильно \n +$rvPrice",Toast.LENGTH_SHORT).show()
-                        botScore += rvPrice
-                    }
-                    resetQuestion()
-                    botIsAnswer = false
-                    bot.countdown = 3
-                    canAnswer(true)
-                    botScore += rvPrice
-                    countRound++
-                    tv_numberOfRound.text = "Раунд:$countRound"
-                    makeInvisibleAnswerPart()
-                } else {
-                    if (!botHelpAnswer) {
-                        if (progressBar.progress == 0) {
-                            tv_timer2.text = "Вы не успели ввести ответ!"
+                    if (botIsAnswer) {
+                        if (botCorrectAnswer) {
                             Toast.makeText(
                                 this@GameInterfaceActivity,
-                                "Вы не успели ввести ответ!\n-$rvPrice очков!",
+                                "${bot.name} ошибся \n -$rvPrice",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            score -= rvPrice
-                            prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
-                            tv_count.text = "Счет:$score"
-                            cancel()
-                            resetQuestion()
-                            countRound++
-                            tv_numberOfRound.text = "Раунд:$countRound"
-                            makeInvisibleAnswerPart()
+                            botScore -= rvPrice
                         } else {
-                            this.cancel()
-                            openCheckingAnswerDialog { isCorrect ->
-                                correctAnswer = isCorrect
-                                checkAnswer()
-                            }
+                            Toast.makeText(
+                                this@GameInterfaceActivity,
+                                "${bot.name} ответил правильно \n +$rvPrice",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            botScore += rvPrice
                         }
-                        //TODO(надо будет добавить что-то для вывода результатов когда вопросы заканчиваются
-                        // + определять победу и набранные очки в зависимости single/multiplayer и мб сложности(для сингл))
-                    } else {
-                        correctAnswer = botHelpAnswer()
-                        checkAnswer()
-                    }
+                        resetQuestion()
+                        botIsAnswer = false
+                        bot.countdown = 3
+                        canAnswer(true)
+                        botScore += rvPrice
+                        countRound++
+                        tv_numberOfRound.text = "Раунд:$countRound"
 
-                }
+                        makeInvisibleAnswerPart()
+                    } else {
+                        if (!botHelpAnswer) {
+                            if (progressBar.progress == 0) {
+                                tv_timer2.text = "Вы не успели ввести ответ!"
+                                Toast.makeText(
+                                    this@GameInterfaceActivity,
+                                    "Вы не успели ввести ответ!\n-$rvPrice очков!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                score -= rvPrice
+                                prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
+                                tv_count.text = "Счет:$score"
+                                cancel()
+                                resetQuestion()
+                                countRound++
+                                tv_numberOfRound.text = "Раунд:$countRound"
+                                makeInvisibleAnswerPart()
+                            } else if(et_enterAnswer.text.isNotEmpty()) {
+                                this.cancel()
+                                openCheckingAnswerDialog { isCorrect ->
+                                    correctAnswer = isCorrect
+                                    checkAnswer()
+                                }
+                            }
+                            //TODO(надо будет добавить что-то для вывода результатов когда вопросы заканчиваются
+                            // + определять победу и набранные очки в зависимости single/multiplayer и мб сложности(для сингл))
+                        } else {
+                            correctAnswer = botHelpAnswer()
+                            checkAnswer()
+                        }
+
+                    }
+                tv_people.text = "ИГРОКИ: \n$me: $score\n${bot.name}: $botScore"
             }
 
             @SuppressLint("SetTextI18n")
@@ -290,9 +300,17 @@ class GameInterfaceActivity : AppCompatActivity() {
                     .show()
                 score -= rvPrice
                 prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
+                time2.cancel()
+                time2.onFinish()
+                resetQuestion()
+                tv_count.text = "Счет:$score"
+                tv_people.text = "ИГРОКИ: \n$me: $score\n${bot.name}: $botScore"
+                makeInvisibleAnswerPart()
                 //в будущем можно будет апгрейдить и не давать отвечать пока не введет ответ или что нибудь еще помимо тоста
+            }else{
+                finalAnswerBtnInit()
             }
-            finalAnswerBtnInit()
+
             //TODO(в конце игры, когда будет выявлен победитель, нужно в SP +1 игроку добавить, be like:)
 //            victory++
 //            prefs.edit().putInt(APP_PREFERENCES_VICTORY, victory).apply()
