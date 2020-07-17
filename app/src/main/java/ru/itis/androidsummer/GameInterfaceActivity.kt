@@ -27,8 +27,8 @@ import ru.itis.androidsummer.parsers.ContentsXmlParser.Companion.getQuestionsRes
 import ru.itis.androidsummer.parsers.ContentsXmlParser.Companion.questionResources
 import ru.itis.androidsummer.parsers.SiqParser
 import ru.itis.androidsummer.parsers.SiqParser.Companion.resourceStorage
-import ru.itis.androidsummer.utils.FileTypes
-import ru.itis.androidsummer.utils.FileTypes.Companion.checkFileType
+import ru.itis.androidsummer.parsers.FileTypes
+import ru.itis.androidsummer.parsers.FileTypes.Companion.checkFileType
 import ru.itis.androidsummer.utils.ProjectUtils.Companion.pickRandomQuestions
 import java.io.*
 

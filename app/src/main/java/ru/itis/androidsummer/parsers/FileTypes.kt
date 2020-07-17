@@ -1,4 +1,4 @@
-package ru.itis.androidsummer.utils
+package ru.itis.androidsummer.parsers
 
 enum class FileTypes {
     MUSIC_FILE,IMAGE_FILE,OTHER_FILE;

@@ -1,6 +1,7 @@
 package ru.itis.androidsummer.parsers
 
 import android.net.Uri
+import ru.itis.androidsummer.parsers.FileTypes.Companion.checkFileType
 import java.io.InputStream
 import java.util.zip.ZipInputStream
 
@@ -15,8 +16,8 @@ class SiqParser {
             while (zip != null) {
                 if (zip.name == "content.xml") {
                     contentsBytes = stream.readBytes()
-                }else if (zip.name.contains(".jpg") || zip.name.contains(".jpeg")
-                    ||zip.name.contains(".mp3"))
+                }else if (checkFileType(zip.name) == FileTypes.MUSIC_FILE ||
+                    checkFileType(zip.name) == FileTypes.IMAGE_FILE)
                     resourceStorage[Uri.decode(zip.name.replaceBefore('/',"")
                         .replace("/",""))] = stream.readBytes()
                 stream.closeEntry()
