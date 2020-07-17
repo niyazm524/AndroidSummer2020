@@ -458,10 +458,10 @@ class GameInterfaceActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
             val intent = Intent(this@GameInterfaceActivity, FinalActivity::class.java)
-            intent.putExtra("user_score",score)
+            intent.putExtra("user_score",getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE).getInt(APP_PREFERENCES_SCORE, 0))
             intent.putExtra("bot_score", botScore)
             intent.putExtra("level",game_level)
-            startActivity(Intent(this@GameInterfaceActivity, FinalActivity::class.java))
+            startActivity(intent)
         }
         tv_count.visibility = View.VISIBLE
         tv_numberOfRound.visibility = View.VISIBLE
