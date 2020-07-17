@@ -285,13 +285,13 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
         btn_finallAnswer.setOnClickListener {
-            if (et_enterAnswer.text.isEmpty()) {
+             /*if (et_enterAnswer.text.isEmpty()) {
                 Toast.makeText(this, "Вы не ввели ответ!\n-$rvPrice очков!", Toast.LENGTH_SHORT)
                     .show()
                 score -= rvPrice
                 prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
                 //в будущем можно будет апгрейдить и не давать отвечать пока не введет ответ или что нибудь еще помимо тоста
-            }
+            }*/
             finalAnswerBtnInit()
             //TODO(в конце игры, когда будет выявлен победитель, нужно в SP +1 игроку добавить, be like:)
 //            victory++
