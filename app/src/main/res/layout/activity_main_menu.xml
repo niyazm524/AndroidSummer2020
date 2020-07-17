@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".SplashActivity">
 
-<!--    "sans-serif-condensed-medium"-->
 
     <TextView
         android:id="@+id/tv_profile_name"
