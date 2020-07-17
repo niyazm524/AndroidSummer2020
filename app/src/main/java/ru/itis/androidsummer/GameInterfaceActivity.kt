@@ -110,14 +110,14 @@ class GameInterfaceActivity : AppCompatActivity() {
         var score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
         var victory = prefs.getInt(APP_PREFERENCES_VICTORY, 0)
         var wholeScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
-        val helpSymbolPrice = 100
-        val helpBotPrice = 200
+        val helpSymbolPrice = 500
+        val helpBotPrice = 800
         val me = prefs.getString(
             APP_PREFERENCES_REGISTRATION,
             resources.getString(R.string.profile_text_default_name)
         ) + "(ты)"
         tv_count.text = "Счет:$score"
-        tv_people.text = "ИГРОКИ: \n$me\n${bot.name}:$botScore"
+        tv_people.text = "ИГРОКИ: \n$me: $score\n${bot.name}: $botScore"
         tv_numberOfRound.text = "Раунд:$countRound"
         if (!isSingle) {
             tv_people.visibility = View.VISIBLE
@@ -139,12 +139,12 @@ class GameInterfaceActivity : AppCompatActivity() {
                         .apply()
                     et_enterAnswer.setText(rvAnswer?.subSequence(0, countCharacter))
                 } else {
-                    Toast.makeText(applicationContext, "Все символы открыты", Toast.LENGTH_SHORT)
+                    Toast.makeText(this, "Все символы открыты", Toast.LENGTH_SHORT)
                         .show()
                 }
             } else {
                 Toast.makeText(
-                    applicationContext,
+                    this,
                     "Недостаточно баллов, текущее количество:$checkScore",
                     Toast.LENGTH_SHORT
                 ).show()
@@ -153,14 +153,14 @@ class GameInterfaceActivity : AppCompatActivity() {
 
 
         iv_getOneChar.setOnLongClickListener {
-            Toast.makeText(applicationContext, "Открыть один символ ответа", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Открыть один символ ответа: $helpSymbolPrice", Toast.LENGTH_SHORT).show()
             true
         }
 
 
 
         iv_helpCallBot.setOnLongClickListener {
-            Toast.makeText(applicationContext, "Звонок боту", Toast.LENGTH_SHORT)
+            Toast.makeText(this, "Звонок боту: $helpBotPrice", Toast.LENGTH_SHORT)
                 .show()
             true
         }
@@ -269,8 +269,8 @@ class GameInterfaceActivity : AppCompatActivity() {
                 time2.onFinish()
             } else {
                 Toast.makeText(
-                    applicationContext,
-                    "Недостаточно баллов, текущее количество:$checkScore",
+                    this,
+                    "Недостаточно баллов, текущее количество: $checkScore",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -285,13 +285,13 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
         btn_finallAnswer.setOnClickListener {
-            /*if (et_enterAnswer.text.isEmpty()) {
+            if (et_enterAnswer.text.isEmpty()) {
                 Toast.makeText(this, "Вы не ввели ответ!\n-$rvPrice очков!", Toast.LENGTH_SHORT)
                     .show()
                 score -= rvPrice
                 prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
                 //в будущем можно будет апгрейдить и не давать отвечать пока не введет ответ или что нибудь еще помимо тоста
-            }*/
+            }
             finalAnswerBtnInit()
             //TODO(в конце игры, когда будет выявлен победитель, нужно в SP +1 игроку добавить, be like:)
 //            victory++
