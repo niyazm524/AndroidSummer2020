@@ -2,6 +2,8 @@ package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.method.ScrollingMovementMethod
@@ -18,11 +20,12 @@ import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_VICTORY
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_WHOLE_SCORE
 import ru.itis.androidsummer.data.Category
-import ru.itis.androidsummer.data.Question
 import ru.itis.androidsummer.parsers.ContentsXmlParser
 import ru.itis.androidsummer.parsers.SiqParser
+import ru.itis.androidsummer.utils.ProjectUtils.Companion.pickRandomQuestions
 import java.io.ByteArrayInputStream
 import java.io.FileNotFoundException
+import java.io.InputStream
 
 
 class GameInterfaceActivity : AppCompatActivity() {
@@ -30,7 +33,6 @@ class GameInterfaceActivity : AppCompatActivity() {
     private val questionsAdapter = QuestionsAdapter()
     private val siqParser = SiqParser()
     private lateinit var contentsXmlParser: ContentsXmlParser
-
 
     var rvAnswer: String? = null
     var rvQuestion: String? = null
@@ -48,17 +50,35 @@ class GameInterfaceActivity : AppCompatActivity() {
 
         var isSingle = intent.getBooleanExtra("isSingle", false)
         //TODO(поменять(Диляре) тут после добавления лобби и мультиплеера)
+        //TODO(Тимур, вот тут наподобие примера выше вытаскивый сложность, я ее передаю)
 
 
         val factory = XmlPullParserFactory.newInstance()
         val parser = factory.newPullParser()
         contentsXmlParser = ContentsXmlParser(parser)
+        val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         tv_textquestion.movementMethod = ScrollingMovementMethod()
 
-
         try {
-            val categories = getPack("limp.siq", randomize = false)
+            var isPackFromUri = true
+            val pack: String = intent.getStringExtra("packUri")
+                ?: (intent.getStringExtra("packFilename") ?: "limpGTA.siq").also {
+                    isPackFromUri = false
+                }
+            val categories = getPack(pack, isPackFromUri, randomize = false)
             questionsAdapter.inputList(skipUnsupportedCategories(categories))
+
+            rv_questions.apply {
+                isNestedScrollingEnabled = false
+                layoutManager =
+                    GridLayoutManager(
+                        this@GameInterfaceActivity,
+                        questionsAdapter.getCategoryCount(),
+                        GridLayoutManager.HORIZONTAL,
+                        false
+                    )
+                adapter = questionsAdapter
+            }
         } catch (e: Throwable) {
             when (e) {
                 is XmlPullParserException ->
@@ -75,20 +95,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             finish()
         }
 
-        rv_questions.apply {
-            isNestedScrollingEnabled = false
-            layoutManager =
-                GridLayoutManager(
-                    this@GameInterfaceActivity,
-                    questionsAdapter.getCategoryCount(),
-                    GridLayoutManager.HORIZONTAL,
-                    false
-                )
-            adapter = questionsAdapter
-        }
-
         var countRound = 1
-        val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         var score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
         var victory = prefs.getInt(APP_PREFERENCES_VICTORY, 0)
         var wholeScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
@@ -100,11 +107,11 @@ class GameInterfaceActivity : AppCompatActivity() {
         tv_people.text = "ИГРОКИ: \n$me"
         tv_numberOfRound.text = "Раунд:$countRound"
         if (!isSingle) {
-            tv_people.visibility = View.VISIBLE
             Toast.makeText(this, "Вы выбрали игру с друзьями!", Toast.LENGTH_SHORT).show()
         }
-        if (isSingle) Toast.makeText(this, "Вы выбрали одиночную игру!", Toast.LENGTH_SHORT).show()
+        if (isSingle) Toast.makeText(this, "Вы выбрали одиночную игру! Уровень:", Toast.LENGTH_SHORT).show()
         //тут конечно теперь пустовато на экране с таблицей для одиночки, надо будет подумать над этим
+        //TODO(сюда в тост вставь сложность после "уровень:")
 
 
 
@@ -151,7 +158,6 @@ class GameInterfaceActivity : AppCompatActivity() {
                 countRound++
                 tv_numberOfRound.text = "Раунд:$countRound"
                 makeInvisibleAnswerPart()
-                if (!isSingle) tv_people.visibility = View.VISIBLE
                 //TODO(надо будет добавить что-то для вывода результатов когда вопросы заканчиваются
                 // + определять победу и набранные очки в зависимости single/multiplayer и мб сложности(для сингл))
             }
@@ -191,6 +197,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             time2.onFinish()
             progressBar.visibility = View.INVISIBLE
             tv_timer2.visibility = View.INVISIBLE
+            tv_people.visibility = View.VISIBLE
             //TODO(в конце игры, когда будет выявлен победитель, нужно в SP +1 игроку добавить, be like:)
 //            victory++
 //            prefs.edit().putInt(APP_PREFERENCES_VICTORY, victory).apply()
@@ -204,7 +211,6 @@ class GameInterfaceActivity : AppCompatActivity() {
                 if (heClick) {
                     progressBar.progress = progressBar.max
                     makeVisibleAnswerPart()
-                    if (!isSingle) tv_people.visibility = View.VISIBLE
                     onFinish()
                     time2.start()
                     cancel()
@@ -231,6 +237,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                         tv_numberOfRound.text = "Раунд:$countRound"
                         btn_wantAnswer.visibility = View.INVISIBLE
                         makeInvisibleAnswerPart()
+                        tv_people.visibility = View.VISIBLE
                     }
                     if(!isSingle){
                         //TODO(WARNING! СПЕЦИАЛЬНО ДЛЯ ТЕМУРА, СПОНСОРА МОИХ РАННИХ СЕДИН)
@@ -261,7 +268,6 @@ class GameInterfaceActivity : AppCompatActivity() {
 
         iv_gi_back_to_menu.setOnClickListener {
             finish()
-            onBackPressed()
         }
 
         //TODO(когда игра закончится, нужно будет в  SP сохранить итоговый счет игрока за игру и в профиль, be like:)
@@ -281,6 +287,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         et_enterAnswer.visibility = View.VISIBLE
         btn_finallAnswer.visibility = View.VISIBLE
         tv_timer2.visibility = View.VISIBLE
+        tv_people.visibility = View.VISIBLE
     }
 
     private fun makeInvisibleAnswerPart() {
@@ -294,11 +301,22 @@ class GameInterfaceActivity : AppCompatActivity() {
         rv_questions.visibility = View.VISIBLE
         iv_gi_back_to_menu.visibility = View.VISIBLE
         tv_timer.visibility = View.INVISIBLE
+        tv_people.visibility = View.VISIBLE
     }
 
-
-    private fun getPack(filename: String, randomize: Boolean = true): List<Category> {
-        val contentsBytes = siqParser.parseSiq(assets.open(filename))
+    private fun getPack(
+        pack: String,
+        isPackUri: Boolean,
+        randomize: Boolean = true
+    ): List<Category> {
+        val dataStream: InputStream = if (isPackUri) {
+            contentResolver.openInputStream(Uri.parse(pack))
+                ?: throw FileNotFoundException()
+        } else {
+            assets.open(pack)
+        }
+        val contentsBytes = siqParser.parseSiq(dataStream)
+        dataStream.close()
         val stream = ByteArrayInputStream(contentsBytes)
         val categories = contentsXmlParser.parseQuestion(stream)
         stream.close()
@@ -314,45 +332,15 @@ class GameInterfaceActivity : AppCompatActivity() {
             category.questions.size > 1
         }
 
-    private fun pickRandomQuestions(
-        categoryList: List<Category>,
-        maxQuestions: Int,
-        maxCategories: Int
-    ): List<Category> {
-        val newCategoryList = ArrayList<Category>()
-        var maxIndex = maxCategories
-        val arrayOfCategoriesNames = ArrayList<String>(maxCategories)
-        if (categoryList.size < maxCategories)
-            maxIndex = categoryList.size
-        for (index in 1..maxIndex) {
-            val newQuestionArray = ArrayList<Question>()
-            var category = categoryList.random()
-            while (category.transformIntoArray().size == 0
-                || arrayOfCategoriesNames.contains(category.title)
-            ) {
-                category = categoryList.random()
-            }
-            arrayOfCategoriesNames.add(category.title)
-            val questionArray = category.transformIntoArray()
-            var maxIndex2 = maxQuestions
-            if (questionArray.size < maxQuestions) {
-                maxIndex2 = questionArray.size
-            }
-            for (index2 in 1..maxIndex2) {
-                newQuestionArray.add(questionArray.random())
-            }
-            newCategoryList.add(
-                Category(category.title,
-                    newQuestionArray.sortedBy { question -> question.price })
-            )
-        }
-        return newCategoryList
-    }
+
 
     override fun onBackPressed() {
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         prefs.edit().putInt(APP_PREFERENCES_SCORE, 0).apply()
-        this.onBackPressedDispatcher.onBackPressed()
+        startActivity(Intent(this, MainMenuActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        })
+        super.onBackPressed()
     }
 
 }
