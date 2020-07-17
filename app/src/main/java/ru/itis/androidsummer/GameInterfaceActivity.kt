@@ -125,7 +125,7 @@ class GameInterfaceActivity : AppCompatActivity() {
 
         iv_getOneChar.setOnClickListener {
 
-            val checkScore = 20000 //prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
+            val checkScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
             if (checkScore >= helpSymbolPrice) {
 
                 countCharacter++
@@ -210,7 +210,7 @@ class GameInterfaceActivity : AppCompatActivity() {
 
         iv_helpCallBot.setOnClickListener {
 
-            val checkScore = 20000 //prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
+            val checkScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
             if (checkScore >= helpBotPrice) {
                 prefs.edit().putInt(APP_PREFERENCES_WHOLE_SCORE, checkScore - helpBotPrice).apply()
 
