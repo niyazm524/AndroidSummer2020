@@ -4,13 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.media.MediaDataSource
 import android.media.MediaPlayer
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -27,8 +24,13 @@ import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_VICTORY
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_WHOLE_SCORE
 import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.parsers.ContentsXmlParser
-import ru.itis.androidsummer.parsers.ContentsXmlParser.Companion.hashThing
+import ru.itis.androidsummer.parsers.ContentsXmlParser.Companion.getQuestionsResource
+import ru.itis.androidsummer.parsers.ContentsXmlParser.Companion.questionResources
+import ru.itis.androidsummer.parsers.ContentsXmlParser.Companion.resourceTypes
 import ru.itis.androidsummer.parsers.SiqParser
+import ru.itis.androidsummer.parsers.SiqParser.Companion.resourceStorage
+import ru.itis.androidsummer.utils.FileTypes
+import ru.itis.androidsummer.utils.FileTypes.Companion.checkFileType
 import ru.itis.androidsummer.utils.ProjectUtils.Companion.pickRandomQuestions
 import java.io.*
 
@@ -43,6 +45,8 @@ class GameInterfaceActivity : AppCompatActivity() {
     var rvQuestion: String? = null
     var rvPrice: Int = 0
 
+    private val media = MediaPlayer()
+
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,11 +54,12 @@ class GameInterfaceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_interface)
 
+        val temporaryMusicFile = File(applicationContext.filesDir, "temp.mp3")
+
         val factory = XmlPullParserFactory.newInstance()
         val parser = factory.newPullParser()
         contentsXmlParser = ContentsXmlParser(parser)
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-
         try {
             val categories = getPack( randomize = false)
             questionsAdapter.inputList(skipUnsupportedCategories(categories))
@@ -103,7 +108,9 @@ class GameInterfaceActivity : AppCompatActivity() {
         var heFinalClick = false
 
         btn_wantAnswer.setOnClickListener {
+            media.stop()
             heClick = true
+            temporaryMusicFile.delete()
         }
 
         fun resetQuestion() {
@@ -162,6 +169,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
         btn_finallAnswer.setOnClickListener {
+            iv_image.setImageDrawable(null)
             heFinalClick = (et_enterAnswer.text.toString().toLowerCase().trim()
                     == rvAnswer.toString().toLowerCase().trim())
             if (et_enterAnswer.text.isEmpty()) {
@@ -189,7 +197,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
 
-        val time = object : CountDownTimer(20000, 1000) {
+        val time = object : CountDownTimer( 20000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 tv_timer.text = "Осталось времени:" + millisUntilFinished / 1000
                 progressBar.progress = progressBar.max
@@ -219,30 +227,26 @@ class GameInterfaceActivity : AppCompatActivity() {
             rvQuestion = question.question
             rvPrice = question.price
             tv_textquestion.text = rvQuestion
-            //
-            if (ContentsXmlParser.resourceTypes.get(question)==".jpg" ||
-                ContentsXmlParser.resourceTypes.get(question)==".jpeg"){
-                iv_image.setImageBitmap(BitmapFactory.decodeStream(ByteArrayInputStream(hashThing.get(question)).buffered()))
+            if (checkFileType(resourceTypes[question]) == FileTypes.IMAGE_FILE){
+                iv_image.setImageBitmap(BitmapFactory
+                    .decodeStream(ByteArrayInputStream(getQuestionsResource(question)).buffered()))
                 iv_image.setOnClickListener {
                     iv_image.maxHeight = 500
                     Toast.makeText(this,"hi",Toast.LENGTH_LONG).show()
                 }
             }
-
-            if (ContentsXmlParser.resourceTypes.get(question)==".mp3"){
-                FileInputStream(InputStream())
-                setDa
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-                }
-                MediaPlayer().setDataSource(ByteArrayInputStream(hashThing.get(question)))
-                iv_image.setOnClickListener {
-                    iv_image.maxHeight = 500
-                    Toast.makeText(this,"hi",Toast.LENGTH_LONG).show()
+            if (checkFileType(resourceTypes[question]) == FileTypes.MUSIC_FILE){
+                try {
+                    temporaryMusicFile.delete()
+                    temporaryMusicFile.writeBytes(getQuestionsResource(question)
+                        ?:throw FileNotFoundException("отсутствует ресурсный файл"))
+                    media.setDataSource(FileInputStream(temporaryMusicFile).fd)
+                    media.prepare()
+                    media.start()
+                }catch(e: Exception){
+                    Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show()
                 }
             }
-
-            //
             time.start()
             progressBar.visibility = View.VISIBLE
             tv_timer.visibility = View.VISIBLE
@@ -315,6 +319,10 @@ class GameInterfaceActivity : AppCompatActivity() {
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         prefs.edit().putInt(APP_PREFERENCES_SCORE, 0).apply()
         startActivity(Intent(this, MainMenuActivity::class.java))
+        //temp
+        questionResources.clear()
+        resourceStorage.clear()
+        resourceTypes.clear()
     }
 
 }

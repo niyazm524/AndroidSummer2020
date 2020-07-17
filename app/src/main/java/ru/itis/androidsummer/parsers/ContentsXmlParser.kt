@@ -3,15 +3,18 @@ package ru.itis.androidsummer.parsers
 import org.xmlpull.v1.XmlPullParser
 import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.data.Question
-import ru.itis.androidsummer.parsers.SiqParser.Companion.hash
+import ru.itis.androidsummer.parsers.SiqParser.Companion.resourceStorage
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.nio.charset.Charset
 
 class ContentsXmlParser(private val parser: XmlPullParser) {
     companion object {
-        val hashThing: HashMap<Question, ByteArray> = HashMap()
+        val questionResources: HashMap<Question, String> = HashMap()
         val resourceTypes: HashMap<Question, String> = HashMap()
+        fun getQuestionsResource(question: Question): ByteArray? {
+            return resourceStorage[questionResources[question]]
+        }
     }
     fun parseQuestion(contentsStream: InputStream): List<Category> {
         val streamReader = InputStreamReader(contentsStream, Charset.forName("UTF-8"))
@@ -62,15 +65,12 @@ class ContentsXmlParser(private val parser: XmlPullParser) {
                 else{
                     val question = Question(price, question, right)
                     categories.last().transformIntoArray().add(question)
-                    hash.get(resource.replace("@",""))?.let {
-                        hashThing.put(question, it)
-                    }
-                    resourceTypes.put(question,resource.replaceBefore(".",""))
+                    questionResources[question] = resource.replace("@","")
+                    resourceTypes[question] = resource.replaceBefore(".","")
                 }
             } else
                 parser.next()
         }
-        hash.clear()
         return categories
     }
 }
