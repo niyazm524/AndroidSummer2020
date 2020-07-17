@@ -35,10 +35,12 @@ class GameInterfaceActivity : AppCompatActivity() {
     private lateinit var contentsXmlParser: ContentsXmlParser
 
     var rvAnswer: String? = null
+    var countRound = 0
     var rvQuestion: String? = null
     var rvPrice: Int = 0
     var correctAnswer: Boolean = false
     var isChoose = false
+    var countCharacter = 0
 
     var heClick = false
     var heFinalClick = false
@@ -97,11 +99,10 @@ class GameInterfaceActivity : AppCompatActivity() {
             finish()
         }
 
-        var countRound = 1
+        countRound = 1
         var score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
         var victory = prefs.getInt(APP_PREFERENCES_VICTORY, 0)
         var wholeScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
-        var countCharacter = 0
         var helpSymbolPrice = 100
         var helpBotPrice = 200
         val me = prefs.getString(
@@ -144,6 +145,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             }
         }
 
+
         iv_getOneChar.setOnLongClickListener {
             Toast.makeText(applicationContext, "Один символ из ответа", Toast.LENGTH_SHORT).show()
             true
@@ -175,15 +177,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             heClick = true
         }
 
-        fun resetQuestion() {
-            heClick = false
-            countCharacter = 0
-            heFinalClick = false
-            rvAnswer = null
-            rvQuestion = null
-            rvPrice = 0
-            et_enterAnswer.setText("")
-        }
+
 
 
         val time2 = object : CountDownTimer(20000, 1000) {
@@ -201,34 +195,9 @@ class GameInterfaceActivity : AppCompatActivity() {
                     cancel()
                 } else {
                     this.cancel()
-                    correctAnswer = dialogInit()
-                    if (correctAnswer) {
-                        Toast.makeText(
-                            this@GameInterfaceActivity,
-                            "+$rvPrice очков!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        score += rvPrice
-                        prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
-                        tv_count.text = "Счет:$score"
-                        cancel()
-                    } else {
-                        Toast.makeText(
-                            this@GameInterfaceActivity,
-                            "-$rvPrice очков!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        score -= rvPrice
-                        prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
-                        tv_count.text = "Счет:$score"
-                        cancel()
-                    }
+                    dialogInit()
+
                 }
-                resetQuestion()
-                cancel()
-                countRound++
-                tv_numberOfRound.text = "Раунд:$countRound"
-                makeInvisibleAnswerPart()
                 //TODO(надо будет добавить что-то для вывода результатов когда вопросы заканчиваются
                 // + определять победу и набранные очки в зависимости single/multiplayer и мб сложности(для сингл))
             }
@@ -278,6 +247,16 @@ class GameInterfaceActivity : AppCompatActivity() {
                 }
                 progressBar.progress = (millisUntilFinished / 1000).toInt()
                 iv_gi_back_to_menu.visibility = View.INVISIBLE
+            }
+
+            fun resetQuestion() {
+                heClick = false
+                countCharacter = 0
+                heFinalClick = false
+                rvAnswer = null
+                rvQuestion = null
+                rvPrice = 0
+                et_enterAnswer.setText("")
             }
 
             override fun onFinish() {
@@ -341,8 +320,46 @@ class GameInterfaceActivity : AppCompatActivity() {
     }
 
 
-    fun dialogInit(): Boolean {
-        return getDialogValueBack(this@GameInterfaceActivity)
+    fun dialogInit() {
+        getDialogValueBack(this@GameInterfaceActivity)
+    }
+
+    fun resetQuestion() {
+        heClick = false
+        countCharacter = 0
+        heFinalClick = false
+        rvAnswer = null
+        rvQuestion = null
+        rvPrice = 0
+        et_enterAnswer.setText("")
+    }
+
+    fun checkAnswer(){
+        val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+        var score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
+        if (correctAnswer) {
+            Toast.makeText(
+                this@GameInterfaceActivity,
+                "+$rvPrice очков!",
+                Toast.LENGTH_SHORT
+            ).show()
+            score += rvPrice
+            prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
+            tv_count.text = "Счет:$score"
+        } else {
+            Toast.makeText(
+                this@GameInterfaceActivity,
+                "-$rvPrice очков!",
+                Toast.LENGTH_SHORT
+            ).show()
+            score -= rvPrice
+            prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
+            tv_count.text = "Счет:$score"
+        }
+        resetQuestion()
+        countRound++
+        tv_numberOfRound.text = "Раунд:$countRound"
+        makeInvisibleAnswerPart()
     }
 
 
@@ -413,31 +430,23 @@ class GameInterfaceActivity : AppCompatActivity() {
         super.onBackPressed()
     }
 
-    private var resultValue = false
-    private fun getDialogValueBack(context: Context?): Boolean {
-        val handler: Handler = @SuppressLint("HandlerLeak")
-        object : Handler() {
-            override fun handleMessage(mesg: Message?) {
-                throw RuntimeException()
-            }
-        }
+
+    private fun getDialogValueBack(context: Context?) {
+
+
         val alert = AlertDialog.Builder(context, R.style.AlertDialogStyle)
         alert.setTitle("Правильный ответ")
         alert.setMessage("$rvAnswer")
         alert.setPositiveButton("Правильно") { dialog, id ->
-            resultValue = true
-            handler.sendMessage(handler.obtainMessage())
+            correctAnswer = true
+            checkAnswer()
+
         }
         alert.setNegativeButton("Неправильно") { dialog, id ->
-            resultValue = false
-            handler.sendMessage(handler.obtainMessage())
+            correctAnswer = false
+            checkAnswer()
         }
         alert.show()
-        try {
-            Looper.loop()
-        } catch (e: RuntimeException) {
-        }
-        return resultValue
     }
 
 }
