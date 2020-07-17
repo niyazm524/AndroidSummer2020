@@ -42,7 +42,6 @@ class GameInterfaceActivity : AppCompatActivity() {
     var rvPrice: Int = 0
     var botHelpAnswer:Boolean = false
     var correctAnswer: Boolean = false
-    var isChoose = false
     var countCharacter = 0
 
     var heClick = false
@@ -60,7 +59,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game_interface)
         bot = SingleplayerBot("Bot",intent.getIntExtra("level",0))
 
-        var isSingle = intent.getBooleanExtra("isSingle", false)
+        val isSingle = intent.getBooleanExtra("isSingle", false)
         //TODO(поменять(Диляре) тут после добавления лобби и мультиплеера)
         //TODO(Тимур, вот тут наподобие примера выше вытаскивый сложность, я ее передаю)
 
@@ -111,8 +110,8 @@ class GameInterfaceActivity : AppCompatActivity() {
         var score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
         var victory = prefs.getInt(APP_PREFERENCES_VICTORY, 0)
         var wholeScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
-        var helpSymbolPrice = 100
-        var helpBotPrice = 200
+        val helpSymbolPrice = 100
+        val helpBotPrice = 200
         val me = prefs.getString(
             APP_PREFERENCES_REGISTRATION,
             resources.getString(R.string.profile_text_default_name)
@@ -140,7 +139,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                         .apply()
                     et_enterAnswer.setText(rvAnswer?.subSequence(0, countCharacter))
                 } else {
-                    Toast.makeText(applicationContext, "Все символы есть", Toast.LENGTH_SHORT)
+                    Toast.makeText(applicationContext, "Все символы открыты", Toast.LENGTH_SHORT)
                         .show()
                 }
             } else {
@@ -412,6 +411,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         botHelpAnswer = false
     }
 
+    @SuppressLint("SetTextI18n")
     fun checkAnswer(){
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         var score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
