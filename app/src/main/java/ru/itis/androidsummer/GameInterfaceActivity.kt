@@ -5,7 +5,8 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.*
+import android.os.Bundle
+import android.os.CountDownTimer
 import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.Toast
@@ -214,7 +215,10 @@ class GameInterfaceActivity : AppCompatActivity() {
                             cancel()
                         } else {
                             this.cancel()
-                            dialogInit()
+                            openCheckingAnswerDialog { isCorrect ->
+                                correctAnswer = isCorrect
+                                checkAnswer()
+                            }
                         }
                         //TODO(надо будет добавить что-то для вывода результатов когда вопросы заканчиваются
                         // + определять победу и набранные очки в зависимости single/multiplayer и мб сложности(для сингл))
@@ -385,11 +389,6 @@ class GameInterfaceActivity : AppCompatActivity() {
         // так вот предлагаю их окончательно не убирать, а сделать красивый тост только с выводом категории и цены)
     }
 
-
-    fun dialogInit() {
-        getDialogValueBack(this@GameInterfaceActivity)
-    }
-
     private fun resetQuestion() {
         heClick = false
         countCharacter = 0
@@ -498,20 +497,16 @@ class GameInterfaceActivity : AppCompatActivity() {
     }
 
 
-    private fun getDialogValueBack(context: Context?) {
-
-
-        val alert = AlertDialog.Builder(context, R.style.AlertDialogStyle)
+    private fun openCheckingAnswerDialog(answerCallback: (isCorrect: Boolean) -> Unit) {
+        val alert = AlertDialog.Builder(this, R.style.AlertDialogStyle)
         alert.setTitle("Правильный ответ")
         alert.setMessage("$rvAnswer")
-        alert.setPositiveButton("Правильно") { dialog, id ->
-            correctAnswer = true
-            checkAnswer()
+        alert.setPositiveButton("Правильно") { _, _ ->
+            answerCallback(true)
 
         }
-        alert.setNegativeButton("Неправильно") { dialog, id ->
-            correctAnswer = false
-            checkAnswer()
+        alert.setNegativeButton("Неправильно") { _, _ ->
+            answerCallback(false)
         }
         alert.show()
     }
