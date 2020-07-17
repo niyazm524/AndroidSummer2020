@@ -120,7 +120,6 @@
         android:layout_width="309sp"
         android:layout_height="121sp"
         android:background="@drawable/border"
-        android:padding="8dp"
         android:text="Игроки:"
         android:textSize="15sp"
         android:textColor="@color/justBlack"
@@ -209,34 +208,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.363"
         app:srcCompat="@drawable/arrow_left_24px" />
-
-    <ImageView
-        android:id="@+id/iv_helpCallBot"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="#DC1E1E"
-        android:visibility="invisible"
-        android:clickable="true"
-        android:longClickable="true"
-        app:layout_constraintStart_toStartOf="@+id/iv_gi_back_to_menu"
-        app:layout_constraintTop_toBottomOf="@+id/tv_count"
-        tools:srcCompat="@android:drawable/btn_star" />
-
-    <ImageView
-        android:id="@+id/iv_getOneChar"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="8dp"
-        android:visibility="invisible"
-        android:layout_marginEnd="8dp"
-        android:background="#8B1515"
-        android:clickable="true"
-        android:longClickable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_numberOfRound"
-        tools:srcCompat="@android:drawable/btn_star" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
