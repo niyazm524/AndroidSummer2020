@@ -5,12 +5,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
-import android.os.CountDownTimer
 import android.os.*
 import android.text.method.ScrollingMovementMethod
 import android.view.View
-import android.view.View.OnLongClickListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -117,30 +114,37 @@ class GameInterfaceActivity : AppCompatActivity() {
         if (!isSingle) {
             tv_people.visibility = View.VISIBLE
             Toast.makeText(this, "Вы выбрали игру с друзьями!", Toast.LENGTH_SHORT).show()
+        } else {
+            tv_people.visibility = View.GONE
+            Toast.makeText(this, "Вы выбрали одиночную игру! Уровень:", Toast.LENGTH_SHORT).show()
         }
-        if (isSingle) Toast.makeText(this, "Вы выбрали одиночную игру! Уровень:", Toast.LENGTH_SHORT).show()
         //тут конечно теперь пустовато на экране с таблицей для одиночки, надо будет подумать над этим
         //TODO(сюда в тост вставь сложность после "уровень:")
 
         iv_getOneChar.setOnClickListener {
             Toast.makeText(applicationContext, "Попытка купли", Toast.LENGTH_SHORT).show()
             val checkScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
-            if(checkScore >= helpSymbolPrice){
+            if (checkScore >= helpSymbolPrice) {
                 Toast.makeText(applicationContext, "Символ покупка", Toast.LENGTH_SHORT).show()
                 countCharacter++
-                    if(countCharacter <= (rvAnswer?.lastIndex ?: 0)+1){
-                        prefs.edit().putInt(APP_PREFERENCES_WHOLE_SCORE,checkScore-helpSymbolPrice).apply()
-                    et_enterAnswer.setText(rvAnswer?.subSequence(0,countCharacter))
+                if (countCharacter <= (rvAnswer?.lastIndex ?: 0) + 1) {
+                    prefs.edit().putInt(APP_PREFERENCES_WHOLE_SCORE, checkScore - helpSymbolPrice)
+                        .apply()
+                    et_enterAnswer.setText(rvAnswer?.subSequence(0, countCharacter))
+                } else {
+                    Toast.makeText(applicationContext, "Все символы есть", Toast.LENGTH_SHORT)
+                        .show()
                 }
-                else{
-                    Toast.makeText(applicationContext, "Все символы есть", Toast.LENGTH_SHORT).show()
-                }
-            }else{
-                Toast.makeText(applicationContext, "Недостаточно баллов, текущее количество:$checkScore", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    applicationContext,
+                    "Недостаточно баллов, текущее количество:$checkScore",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
-        iv_getOneChar.setOnLongClickListener{
+        iv_getOneChar.setOnLongClickListener {
             Toast.makeText(applicationContext, "Один символ из ответа", Toast.LENGTH_SHORT).show()
             true
         }
@@ -148,17 +152,22 @@ class GameInterfaceActivity : AppCompatActivity() {
         iv_helpCallBot.setOnClickListener {
             Toast.makeText(applicationContext, "Попытка звонка", Toast.LENGTH_SHORT).show()
             val checkScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
-            if(checkScore >= helpBotPrice){
-                prefs.edit().putInt(APP_PREFERENCES_WHOLE_SCORE,checkScore-helpBotPrice).apply()
+            if (checkScore >= helpBotPrice) {
+                prefs.edit().putInt(APP_PREFERENCES_WHOLE_SCORE, checkScore - helpBotPrice).apply()
                 Toast.makeText(applicationContext, "Бот звонок", Toast.LENGTH_SHORT).show()
                 //TODO метод тип 1 к 2
-            }else{
-                Toast.makeText(applicationContext, "Недостаточно баллов, текущее количество:$checkScore", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    applicationContext,
+                    "Недостаточно баллов, текущее количество:$checkScore",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
         iv_helpCallBot.setOnLongClickListener {
-            Toast.makeText(applicationContext, "50/50 правильный ответ от бота", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "50/50 правильный ответ от бота", Toast.LENGTH_SHORT)
+                .show()
             true
         }
 
@@ -332,11 +341,9 @@ class GameInterfaceActivity : AppCompatActivity() {
     }
 
 
-
-    fun dialogInit():Boolean{
+    fun dialogInit(): Boolean {
         return getDialogValueBack(this@GameInterfaceActivity)
     }
-
 
 
     private fun makeVisibleAnswerPart() {
@@ -397,7 +404,6 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
 
-
     override fun onBackPressed() {
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         prefs.edit().putInt(APP_PREFERENCES_SCORE, 0).apply()
@@ -415,7 +421,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                 throw RuntimeException()
             }
         }
-        val alert = AlertDialog.Builder(context,R.style.AlertDialogStyle)
+        val alert = AlertDialog.Builder(context, R.style.AlertDialogStyle)
         alert.setTitle("Правильный ответ")
         alert.setMessage("$rvAnswer")
         alert.setPositiveButton("Правильно") { dialog, id ->

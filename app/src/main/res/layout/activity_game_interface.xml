@@ -106,6 +106,7 @@
         android:layout_width="309sp"
         android:layout_height="121sp"
         android:background="@drawable/border"
+        android:padding="8dp"
         android:text="Игроки:"
         android:textSize="15sp"
         android:textColor="@color/justBlack"
