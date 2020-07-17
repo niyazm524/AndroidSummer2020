@@ -25,8 +25,10 @@
             android:textColorHighlight="#090909"
             android:textColorHint="#FFFFFF"
             android:textColorLink="#FDFDFD"
+            android:layout_margin="2sp"
             android:textSize="30sp"
             tools:visibility="visible" />
+
 
 
     </androidx.core.widget.NestedScrollView>
