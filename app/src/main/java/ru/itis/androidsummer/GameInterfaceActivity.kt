@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -22,16 +24,19 @@ import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_VICTORY
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_WHOLE_SCORE
 import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.parsers.ContentsXmlParser
+import ru.itis.androidsummer.parsers.ContentsXmlParser.Companion.getQuestionsResource
+import ru.itis.androidsummer.parsers.ContentsXmlParser.Companion.questionResources
 import ru.itis.androidsummer.parsers.SiqParser
+import ru.itis.androidsummer.parsers.SiqParser.Companion.resourceStorage
+import ru.itis.androidsummer.parsers.FileTypes
+import ru.itis.androidsummer.parsers.FileTypes.Companion.checkFileType
 import ru.itis.androidsummer.simpleBot.SingleplayerBot
 import ru.itis.androidsummer.utils.ProjectUtils.Companion.pickRandomQuestions
-import java.io.ByteArrayInputStream
-import java.io.FileNotFoundException
-import java.io.InputStream
+import java.io.*
 
 
 class GameInterfaceActivity : AppCompatActivity() {
-
+    private var media: MediaPlayer? = null
     private val questionsAdapter = QuestionsAdapter()
     private val siqParser = SiqParser()
     private lateinit var contentsXmlParser: ContentsXmlParser
@@ -58,6 +63,9 @@ class GameInterfaceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_interface)
         bot = SingleplayerBot("Bot",intent.getIntExtra("level",0))
+        iv_image.visibility = View.GONE
+
+        val temporaryMusicFile = File(applicationContext.filesDir, "temp.mp3")
 
         val isSingle = intent.getBooleanExtra("isSingle", false)
         //TODO(поменять(Диляре) тут после добавления лобби и мультиплеера)
@@ -166,7 +174,15 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
         btn_wantAnswer.setOnClickListener {
+            if (media != null) {
+                if (media!!.isPlaying) {
+                    media!!.stop()
+                    media!!.release()
+                    media = null
+                }
+            }
             heClick = true
+            temporaryMusicFile.delete()
         }
 
 
@@ -180,7 +196,6 @@ class GameInterfaceActivity : AppCompatActivity() {
             et_enterAnswer.isEnabled = bool
             iv_getOneChar.isEnabled = bool
             iv_helpCallBot.isEnabled = bool
-
         }
 
         val time2 = object : CountDownTimer(20000, 1000) {
@@ -279,8 +294,8 @@ class GameInterfaceActivity : AppCompatActivity() {
                 time2.onFinish()
             } else {
                 Toast.makeText(
-                    this,
-                    "Недостаточно баллов, текущее количество: $checkScore",
+                    applicationContext,
+                    "Недостаточно баллов, текущее количество:$checkScore",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -295,6 +310,10 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
         btn_finallAnswer.setOnClickListener {
+            if (iv_image.isShown) {
+                iv_image.setImageDrawable(null)
+                iv_image.visibility = View.GONE
+            }
             if (et_enterAnswer.text.isEmpty()) {
                 Toast.makeText(this, "Вы не ввели ответ!\n-$rvPrice очков!", Toast.LENGTH_SHORT)
                     .show()
@@ -307,7 +326,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                 tv_people.text = "ИГРОКИ: \n$me: $score\n${bot.name}: $botScore"
                 makeInvisibleAnswerPart()
                 //в будущем можно будет апгрейдить и не давать отвечать пока не введет ответ или что нибудь еще помимо тоста
-            }else{
+            } else{
                 finalAnswerBtnInit()
             }
 
@@ -315,8 +334,6 @@ class GameInterfaceActivity : AppCompatActivity() {
 //            victory++
 //            prefs.edit().putInt(APP_PREFERENCES_VICTORY, victory).apply()
         }
-
-
 
 
         val time = object : CountDownTimer(20000, 1000) {
@@ -328,7 +345,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                 } else{
                     botIsAnswer = bot.botAnswer()
                 }
-                if (heClick or botIsAnswer) {
+                if (heClick || botIsAnswer) {
                     progressBar.progress = progressBar.max
                     bot.countdown = 3
                     if(botIsAnswer){
@@ -393,6 +410,39 @@ class GameInterfaceActivity : AppCompatActivity() {
             rvQuestion = question.question
             rvPrice = question.price
             tv_textquestion.text = rvQuestion
+            if (checkFileType(questionResources[question]) == FileTypes.IMAGE_FILE){
+                tv_textquestion.text = ""
+                if (getQuestionsResource(question)!=null) {
+                    iv_image.visibility = View.VISIBLE
+                    ByteArrayInputStream(getQuestionsResource(question)).buffered().use { it ->
+                        iv_image.setImageBitmap(
+                            BitmapFactory.decodeStream(it)
+                        )
+                    }
+                    iv_image.setOnClickListener {
+                        Toast.makeText(this, question.question, Toast.LENGTH_LONG).show()
+                    }
+                } else
+                    Toast.makeText(this,"отсутствует ресурсный файл изображения",Toast.LENGTH_LONG).show()
+            }
+            if (checkFileType(questionResources[question]) == FileTypes.MUSIC_FILE){
+
+                try {
+                    temporaryMusicFile.delete()
+                    temporaryMusicFile.writeBytes(getQuestionsResource(question)
+                        ?:throw FileNotFoundException("отсутствует ресурсный файл аудио"))
+                    media = MediaPlayer()
+                    FileInputStream(temporaryMusicFile).use { it ->
+                        media!!.setDataSource(it.fd)
+                    }
+                    media!!.prepare()
+                    media!!.start()
+                    Toast.makeText(this,R.string.game_text_music_notification,Toast.LENGTH_SHORT)
+                        .show()
+                }catch(e: Exception){
+                    Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show()
+                }
+            }
             time.start()
             progressBar.visibility = View.VISIBLE
             tv_timer.visibility = View.VISIBLE
@@ -520,6 +570,13 @@ class GameInterfaceActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         prefs.edit().putInt(APP_PREFERENCES_SCORE, 0).apply()
+        questionResources.clear()
+        resourceStorage.clear()
+        if (media!= null &&  media!!.isPlaying) {
+            media!!.stop()
+            media!!.release()
+            media = null
+        }
         startActivity(Intent(this, MainMenuActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         })

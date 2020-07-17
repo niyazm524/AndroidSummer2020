@@ -123,7 +123,7 @@ class SingleMultiActivity : AppCompatActivity() {
     private fun startGameForSingle(level: Int) {
         val pack = selectedPack ?: return
         val gameIntent = Intent(this, GameInterfaceActivity::class.java)
-        gameIntent.putExtra("isSingle", true)
+        gameIntent.putExtra("isSingle", false)
         gameIntent.putExtra("level", level)
         if (pack is GamePack.CustomPack) {
             gameIntent.putExtra("packUri", pack.fileOrUri)
@@ -171,7 +171,7 @@ class SingleMultiActivity : AppCompatActivity() {
         private const val REQUEST_CODE = 9999
 
         private sealed class GamePack(val fileOrUri: String, val name: String) {
-            object LimpGta : GamePack("limpGta.siq", "GTA")
+            object LimpGta : GamePack("limpGTA.siq", "GTA")
             object LimpGames : GamePack("limpGames.siq", "Games")
             object LimpFunny : GamePack("limpFunny.siq", "Funny")
             class CustomPack(uri: Uri) : GamePack(uri.toString(), "Собственный")
