@@ -118,13 +118,12 @@ class GameInterfaceActivity : AppCompatActivity() {
             resources.getString(R.string.profile_text_default_name)
         ) + "(ты)"
         tv_count.text = "Счет:$score"
-        tv_people.text = "ИГРОКИ: \n$me"
+        tv_people.text = "ИГРОКИ: \n$me\n${bot.name}:$botScore"
         tv_numberOfRound.text = "Раунд:$countRound"
         if (!isSingle) {
             tv_people.visibility = View.VISIBLE
             Toast.makeText(this, "Вы выбрали игру с друзьями!", Toast.LENGTH_SHORT).show()
         } else {
-            tv_people.visibility = View.GONE
             Toast.makeText(this, "Вы выбрали одиночную игру! Уровень: ${bot.getDifficult()}", Toast.LENGTH_SHORT).show()
         }
         //тут конечно теперь пустовато на экране с таблицей для одиночки, надо будет подумать над этим
@@ -155,14 +154,14 @@ class GameInterfaceActivity : AppCompatActivity() {
 
 
         iv_getOneChar.setOnLongClickListener {
-            Toast.makeText(applicationContext, "Один символ из ответа", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Открыть один символ ответа", Toast.LENGTH_SHORT).show()
             true
         }
 
 
 
         iv_helpCallBot.setOnLongClickListener {
-            Toast.makeText(applicationContext, "50/50 правильный ответ от бота", Toast.LENGTH_SHORT)
+            Toast.makeText(applicationContext, "Звонок боту", Toast.LENGTH_SHORT)
                 .show()
             true
         }
@@ -180,6 +179,9 @@ class GameInterfaceActivity : AppCompatActivity() {
             btn_finallAnswer.isClickable = bool
             btn_wantAnswer.isClickable = bool
             et_enterAnswer.isEnabled = bool
+            iv_getOneChar.isEnabled = bool
+            iv_helpCallBot.isEnabled = bool
+
         }
 
         val time2 = object : CountDownTimer(20000, 1000) {
@@ -213,6 +215,10 @@ class GameInterfaceActivity : AppCompatActivity() {
                             prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
                             tv_count.text = "Счет:$score"
                             cancel()
+                            resetQuestion()
+                            countRound++
+                            tv_numberOfRound.text = "Раунд:$countRound"
+                            makeInvisibleAnswerPart()
                         } else {
                             this.cancel()
                             openCheckingAnswerDialog { isCorrect ->
@@ -226,6 +232,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                         correctAnswer = botHelpAnswer()
                         checkAnswer()
                     }
+
                 }
             }
 
@@ -309,6 +316,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                     bot.countdown = 3
                     if(botIsAnswer){
                         canAnswer(false)
+                        Toast.makeText(this@GameInterfaceActivity,"Бот решил ответить",Toast.LENGTH_SHORT).show()
                     }
                     makeVisibleAnswerPart()
                     onFinish()
@@ -361,7 +369,6 @@ class GameInterfaceActivity : AppCompatActivity() {
             }
         }
         questionsAdapter.setOnItemClickListener { question ->
-            Toast.makeText(this, "$question", Toast.LENGTH_SHORT).show()
             btn_wantAnswer.visibility = View.VISIBLE
             rv_questions.visibility = View.INVISIBLE
             tv_textquestion.visibility = View.VISIBLE
@@ -389,7 +396,12 @@ class GameInterfaceActivity : AppCompatActivity() {
         // так вот предлагаю их окончательно не убирать, а сделать красивый тост только с выводом категории и цены)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun resetQuestion() {
+        tv_people.text = "ИГРОКИ: \n${getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE).getString(
+            APP_PREFERENCES_REGISTRATION,
+            resources.getString(R.string.profile_text_default_name)
+        ) + "(ты)"}\n${bot.name}:$botScore"
         heClick = false
         countCharacter = 0
         heFinalClick = false
