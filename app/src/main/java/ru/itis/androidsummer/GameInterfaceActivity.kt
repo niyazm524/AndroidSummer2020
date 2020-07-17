@@ -82,7 +82,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             val categories = getPack(pack, isPackFromUri, randomize = false)
             questionsAdapter.inputList(skipUnsupportedCategories(categories))
             // по сути не нужно но пока не трогать лучше, пока не убедимся что таблица правильно работает
-            questions_count = 3
+            questions_count = 1
 //                count(categories)
 
             rv_questions.apply {
@@ -132,12 +132,6 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
         //тут конечно теперь пустовато на экране с таблицей для одиночки, надо будет подумать над этим
         //TODO(сюда в тост вставь сложность после "уровень:")
-        if(questions_count == countRound){
-            val intent = Intent(this@GameInterfaceActivity, FinalActivity::class.java)
-            intent.putExtra("user_score",score)
-            intent.putExtra("bot_score", botScore)
-            intent.putExtra("level",game_level)
-        }
 
         iv_getOneChar.setOnClickListener {
 
@@ -209,6 +203,13 @@ class GameInterfaceActivity : AppCompatActivity() {
                     countRound++
                     tv_numberOfRound.text = "Раунд:$countRound"
                     makeInvisibleAnswerPart()
+                    if(questions_count == countRound){
+                        val intent = Intent(this@GameInterfaceActivity, FinalActivity::class.java)
+                        intent.putExtra("user_score",score)
+                        intent.putExtra("bot_score", botScore)
+                        intent.putExtra("level",game_level)
+                        startActivity(Intent(this@GameInterfaceActivity, FinalActivity::class.java))
+                    }
                 } else {
                     if (!botHelpAnswer) {
                         if (progressBar.progress == 0) {
@@ -228,12 +229,31 @@ class GameInterfaceActivity : AppCompatActivity() {
                                 correctAnswer = isCorrect
                                 checkAnswer()
                             }
+                            if(questions_count == countRound){
+                                val intent = Intent(this@GameInterfaceActivity, FinalActivity::class.java)
+                                intent.putExtra("user_score",score)
+                                intent.putExtra("bot_score", botScore)
+                                intent.putExtra("level",game_level)
+                                startActivity(Intent(this@GameInterfaceActivity, FinalActivity::class.java))
+                            }
                         }
                         //TODO(надо будет добавить что-то для вывода результатов когда вопросы заканчиваются
                         // + определять победу и набранные очки в зависимости single/multiplayer и мб сложности(для сингл))
                     } else {
                         correctAnswer = botHelpAnswer()
                         checkAnswer()
+                        if(questions_count == countRound){
+                            Toast.makeText(
+                                this@GameInterfaceActivity,
+                                "Игра закончилась!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            val intent = Intent(this@GameInterfaceActivity, FinalActivity::class.java)
+                            intent.putExtra("user_score",score)
+                            intent.putExtra("bot_score", botScore)
+                            intent.putExtra("level",game_level)
+                            startActivity(Intent(this@GameInterfaceActivity, FinalActivity::class.java))
+                        }
                     }
                 }
             }
@@ -261,6 +281,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             }
 
         }
+
 
         iv_helpCallBot.setOnClickListener {
 
@@ -530,5 +551,6 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
         alert.show()
     }
+
 
 }
