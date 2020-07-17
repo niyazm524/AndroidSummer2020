@@ -26,10 +26,10 @@ import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.parsers.ContentsXmlParser
 import ru.itis.androidsummer.parsers.ContentsXmlParser.Companion.getQuestionsResource
 import ru.itis.androidsummer.parsers.ContentsXmlParser.Companion.questionResources
-import ru.itis.androidsummer.parsers.SiqParser
-import ru.itis.androidsummer.parsers.SiqParser.Companion.resourceStorage
 import ru.itis.androidsummer.parsers.FileTypes
 import ru.itis.androidsummer.parsers.FileTypes.Companion.checkFileType
+import ru.itis.androidsummer.parsers.SiqParser
+import ru.itis.androidsummer.parsers.SiqParser.Companion.resourceStorage
 import ru.itis.androidsummer.simpleBot.SingleplayerBot
 import ru.itis.androidsummer.utils.ProjectUtils.Companion.pickRandomQuestions
 import java.io.*
@@ -56,6 +56,7 @@ class GameInterfaceActivity : AppCompatActivity() {
     var botScore = 0
     var botIsAnswer = false
     var botCorrectAnswer = false
+    private lateinit var temporaryMusicFile: File
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +66,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         bot = SingleplayerBot("Bot",intent.getIntExtra("level",0))
         iv_image.visibility = View.GONE
 
-        val temporaryMusicFile = File(applicationContext.filesDir, "temp.mp3")
+        temporaryMusicFile = File(applicationContext.filesDir, "temp.mp3")
 
         val isSingle = intent.getBooleanExtra("isSingle", false)
         //TODO(поменять(Диляре) тут после добавления лобби и мультиплеера)
@@ -174,15 +175,8 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
         btn_wantAnswer.setOnClickListener {
-            if (media != null) {
-                if (media!!.isPlaying) {
-                    media!!.stop()
-                    media!!.release()
-                    media = null
-                }
-            }
             heClick = true
-            temporaryMusicFile.delete()
+            stopMusicIfPlaying()
         }
 
 
@@ -463,12 +457,25 @@ class GameInterfaceActivity : AppCompatActivity() {
         // так вот предлагаю их окончательно не убирать, а сделать красивый тост только с выводом категории и цены)
     }
 
+    private fun stopMusicIfPlaying() {
+        media?.apply {
+            if (isPlaying) {
+                stop()
+                release()
+                media = null
+            }
+        }
+        temporaryMusicFile.delete()
+    }
+
     @SuppressLint("SetTextI18n")
     private fun resetQuestion() {
-        tv_people.text = "ИГРОКИ: \n${getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE).getString(
-            APP_PREFERENCES_REGISTRATION,
-            resources.getString(R.string.profile_text_default_name)
-        ) + "(ты)"}\n${bot.name}:$botScore"
+        tv_people.text =
+            "ИГРОКИ: \n${getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE).getString(
+                APP_PREFERENCES_REGISTRATION,
+                resources.getString(R.string.profile_text_default_name)
+            ) + "(ты)"}\n${bot.name}:$botScore"
+        stopMusicIfPlaying()
         heClick = false
         countCharacter = 0
         heFinalClick = false
@@ -536,6 +543,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         tv_people.visibility = View.VISIBLE
         iv_helpCallBot.visibility = View.INVISIBLE
         iv_getOneChar.visibility = View.INVISIBLE
+        iv_image.visibility = View.GONE
     }
 
     private fun getPack(
