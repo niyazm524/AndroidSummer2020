@@ -29,19 +29,6 @@
             tools:visibility="visible" />
     </androidx.core.widget.NestedScrollView>
 
-    <ImageView
-        android:id="@+id/iv_image"
-        android:layout_width="108dp"
-        android:layout_height="108dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/nsc_question"
-        app:layout_constraintVertical_bias="0.0"
-        tools:srcCompat="@tools:sample/avatars" />
-
     <Button
         android:id="@+id/btn_wantAnswer"
         android:layout_width="268dp"
@@ -55,6 +42,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="108dp"
+        android:layout_height="108dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/nsc_question"
+        app:layout_constraintVertical_bias="0.0"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tv_timer"

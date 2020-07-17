@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
@@ -53,6 +54,7 @@ class GameInterfaceActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_interface)
+        iv_image.visibility = View.GONE
 
         val temporaryMusicFile = File(applicationContext.filesDir, "temp.mp3")
 
@@ -170,6 +172,7 @@ class GameInterfaceActivity : AppCompatActivity() {
 
         btn_finallAnswer.setOnClickListener {
             iv_image.setImageDrawable(null)
+            iv_image.visibility = View.GONE
             heFinalClick = (et_enterAnswer.text.toString().toLowerCase().trim()
                     == rvAnswer.toString().toLowerCase().trim())
             if (et_enterAnswer.text.isEmpty()) {
@@ -228,11 +231,11 @@ class GameInterfaceActivity : AppCompatActivity() {
             rvPrice = question.price
             tv_textquestion.text = rvQuestion
             if (checkFileType(resourceTypes[question]) == FileTypes.IMAGE_FILE){
+                iv_image.visibility = View.VISIBLE
                 iv_image.setImageBitmap(BitmapFactory
                     .decodeStream(ByteArrayInputStream(getQuestionsResource(question)).buffered()))
                 iv_image.setOnClickListener {
-                    iv_image.maxHeight = 500
-                    Toast.makeText(this,"hi",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this,question.question,Toast.LENGTH_LONG).show()
                 }
             }
             if (checkFileType(resourceTypes[question]) == FileTypes.MUSIC_FILE){
