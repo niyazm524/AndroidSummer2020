@@ -1,6 +1,7 @@
 package ru.itis.androidsummer
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -51,6 +52,7 @@ class FinalActivity : AppCompatActivity() {
 
         btn_final_game_over.setOnClickListener {
             finish()
+            startActivity(Intent(this,MainMenuActivity::class.java))
         }
 
         prefs.edit().putInt(SplashActivity.APP_PREFERENCES_WHOLE_SCORE, wholeScore).apply()

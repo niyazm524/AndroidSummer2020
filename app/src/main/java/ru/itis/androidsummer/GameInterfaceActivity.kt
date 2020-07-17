@@ -44,7 +44,10 @@ class GameInterfaceActivity : AppCompatActivity() {
     var correctAnswer: Boolean = false
     var isChoose = false
     var countCharacter = 0
+
     var questions_count = 0
+    var score = 0
+    var game_level = 0
 
     var heClick = false
     var heFinalClick = false
@@ -60,7 +63,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_interface)
         bot = SingleplayerBot("Bot",intent.getIntExtra("level",0))
-        val game_level = intent.getIntExtra("level",0)
+        game_level = intent.getIntExtra("level",0)
 
         var isSingle = intent.getBooleanExtra("isSingle", false)
         //TODO(поменять(Диляре) тут после добавления лобби и мультиплеера)
@@ -113,7 +116,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
         countRound = 1
-        var score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
+        score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
         var helpSymbolPrice = 100
         var helpBotPrice = 200
         val me = prefs.getString(
@@ -203,13 +206,6 @@ class GameInterfaceActivity : AppCompatActivity() {
                     countRound++
                     tv_numberOfRound.text = "Раунд:$countRound"
                     makeInvisibleAnswerPart()
-                    if(questions_count == countRound){
-                        val intent = Intent(this@GameInterfaceActivity, FinalActivity::class.java)
-                        intent.putExtra("user_score",score)
-                        intent.putExtra("bot_score", botScore)
-                        intent.putExtra("level",game_level)
-                        startActivity(Intent(this@GameInterfaceActivity, FinalActivity::class.java))
-                    }
                 } else {
                     if (!botHelpAnswer) {
                         if (progressBar.progress == 0) {
@@ -229,31 +225,12 @@ class GameInterfaceActivity : AppCompatActivity() {
                                 correctAnswer = isCorrect
                                 checkAnswer()
                             }
-                            if(questions_count == countRound){
-                                val intent = Intent(this@GameInterfaceActivity, FinalActivity::class.java)
-                                intent.putExtra("user_score",score)
-                                intent.putExtra("bot_score", botScore)
-                                intent.putExtra("level",game_level)
-                                startActivity(Intent(this@GameInterfaceActivity, FinalActivity::class.java))
-                            }
                         }
                         //TODO(надо будет добавить что-то для вывода результатов когда вопросы заканчиваются
                         // + определять победу и набранные очки в зависимости single/multiplayer и мб сложности(для сингл))
                     } else {
                         correctAnswer = botHelpAnswer()
                         checkAnswer()
-                        if(questions_count == countRound){
-                            Toast.makeText(
-                                this@GameInterfaceActivity,
-                                "Игра закончилась!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            val intent = Intent(this@GameInterfaceActivity, FinalActivity::class.java)
-                            intent.putExtra("user_score",score)
-                            intent.putExtra("bot_score", botScore)
-                            intent.putExtra("level",game_level)
-                            startActivity(Intent(this@GameInterfaceActivity, FinalActivity::class.java))
-                        }
                     }
                 }
             }
@@ -474,6 +451,18 @@ class GameInterfaceActivity : AppCompatActivity() {
     }
 
     private fun makeInvisibleAnswerPart() {
+        if(questions_count == (countRound-1)){
+            Toast.makeText(
+                this@GameInterfaceActivity,
+                "Игра закончилась!",
+                Toast.LENGTH_SHORT
+            ).show()
+            val intent = Intent(this@GameInterfaceActivity, FinalActivity::class.java)
+            intent.putExtra("user_score",score)
+            intent.putExtra("bot_score", botScore)
+            intent.putExtra("level",game_level)
+            startActivity(Intent(this@GameInterfaceActivity, FinalActivity::class.java))
+        }
         tv_count.visibility = View.VISIBLE
         tv_numberOfRound.visibility = View.VISIBLE
         et_enterAnswer.visibility = View.INVISIBLE
