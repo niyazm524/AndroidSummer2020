@@ -1,27 +1,27 @@
 package ru.itis.androidsummer
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_single_multi.*
-import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
-import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_IS_NOT_DEFAULT
-import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_QUESTION_PACK
 import java.io.FileNotFoundException
 
 class SingleMultiActivity : AppCompatActivity() {
+    private var selectedPack: GamePack? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_multi)
 
-       firstViewWithTextForUser()
+        firstViewWithTextForUser()
 
         var isSingle: Boolean
+
+        setIsReadyButtonDisabled(true)
 
         btn_sm_choose_pack.setOnClickListener {
             packChooseVisibility()
@@ -49,7 +49,13 @@ class SingleMultiActivity : AppCompatActivity() {
             //TODO(сначала лобби с хостом и вот это все, сюда вставите, а потом переход в GameInterfaceActivity
             // с выбранными темами, но пока оставлю как ниже)
             val intent = Intent(this, GameInterfaceActivity::class.java)
-            intent.putExtra("isSingle",isSingle)
+            intent.putExtra("isSingle", isSingle)
+            val pack = selectedPack ?: return@setOnClickListener
+            if (pack is GamePack.CustomPack) {
+                intent.putExtra("packUri", pack.fileOrUri)
+            } else {
+                intent.putExtra("packFilename", pack.fileOrUri)
+            }
             //TODO(поменять(Диляре желательно) putExtra и вот это все тут после добавления лобби и мультиплеера)
             startActivity(intent)
         }
@@ -70,29 +76,11 @@ class SingleMultiActivity : AppCompatActivity() {
             //TODO(добавить интенты в профиль для рейтинга(которого не будет здесь) и для счета/побед)
         }
 
-        btn_sm_easy.setOnClickListener {
-            isSingle = true
-            val intent = Intent(this, GameInterfaceActivity::class.java)
-            intent.putExtra("isSingle",isSingle)
-            intent.putExtra("easy",0)
-            startActivity(intent)
-        }
+        btn_sm_easy.setOnClickListener { startGameForSingle(0) }
 
-        btn_sm_medium.setOnClickListener {
-            isSingle = true
-            val intent = Intent(this, GameInterfaceActivity::class.java)
-            intent.putExtra("isSingle",isSingle)
-            intent.putExtra("medium",1)
-            startActivity(intent)
-        }
+        btn_sm_medium.setOnClickListener { startGameForSingle(1) }
 
-        btn_sm_hard.setOnClickListener {
-            isSingle = true
-            val intent = Intent(this, GameInterfaceActivity::class.java)
-            intent.putExtra("isSingle",isSingle)
-            intent.putExtra("hard",2)
-            startActivity(intent)
-        }
+        btn_sm_hard.setOnClickListener { startGameForSingle(2) }
 
         iv_back_to_menu.setOnClickListener {
             finish()
@@ -115,52 +103,57 @@ class SingleMultiActivity : AppCompatActivity() {
             singleMultiChooseVisibility()
         }
 
-        //мое
-        val prefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
+        bn_pack1.setOnClickListener { selectPack(GamePack.LimpGta) }
+        bn_pack3.setOnClickListener { selectPack(GamePack.LimpFunny) }
+        bn_pack5.setOnClickListener { selectPack(GamePack.LimpGames) }
 
-        bn_pack1.setOnClickListener {
-            prefs.edit().putString(APP_PREFERENCES_QUESTION_PACK,
-                resources.getString(R.string.pack_setting_text_pack1_file)).putBoolean(
-                APP_PREFERENCES_IS_NOT_DEFAULT,false).apply()
-            Toast.makeText(this,resources.getString(R.string.pack_setting_text_you_have_set_a_pack) +
-                    resources.getString(R.string.pack_setting_text_pack1),Toast.LENGTH_LONG).show()
-        }
-        bn_pack3.setOnClickListener {
-            prefs.edit().putString(APP_PREFERENCES_QUESTION_PACK,
-                resources.getString(R.string.pack_setting_text_pack3_file)).putBoolean(
-                APP_PREFERENCES_IS_NOT_DEFAULT,false).apply()
-            Toast.makeText(this,resources.getString(R.string.pack_setting_text_you_have_set_a_pack) +
-                    resources.getString(R.string.pack_setting_text_pack3),Toast.LENGTH_LONG).show()
-        }
-        bn_pack5.setOnClickListener {
-            prefs.edit().putString(APP_PREFERENCES_QUESTION_PACK,
-                resources.getString(R.string.pack_setting_text_pack5_file)).putBoolean(
-                APP_PREFERENCES_IS_NOT_DEFAULT,false).apply()
-            Toast.makeText(this,resources.getString(R.string.pack_setting_text_you_have_set_a_pack) +
-                    resources.getString(R.string.pack_setting_text_pack5),Toast.LENGTH_LONG).show()
-        }
         bn_pack6.setOnClickListener {
             try {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
                 intent.type = "*/*"
                 startActivityForResult(intent, Companion.REQUEST_CODE)
-            } catch(e: Exception){
-                Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show()
-
+            } catch (e: Exception) {
+                Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
             }
         }
 
     }
 
+    private fun startGameForSingle(level: Int) {
+        val pack = selectedPack ?: return
+        val gameIntent = Intent(this, GameInterfaceActivity::class.java)
+        gameIntent.putExtra("isSingle", false)
+        gameIntent.putExtra("level", level)
+        if (pack is GamePack.CustomPack) {
+            gameIntent.putExtra("packUri", pack.fileOrUri)
+        } else {
+            gameIntent.putExtra("packFilename", pack.fileOrUri)
+        }
+        startActivity(gameIntent)
+    }
+
+    private fun selectPack(pack: GamePack?) {
+        selectedPack = pack
+        if (pack != null) {
+            Toast.makeText(
+                this,
+                resources.getString(R.string.pack_setting_text_you_have_set_a_pack, pack.name),
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
+        setIsReadyButtonDisabled(selectedPack == null)
+    }
+
+    private fun setIsReadyButtonDisabled(disabled: Boolean) {
+        btn_sm_user_isChoose.isEnabled = !disabled
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode === REQUEST_CODE) {
-            if (resultCode === Activity.RESULT_OK ) {
-                val externalFileUri= data?.data.toString()
-                val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-                prefs.edit().putBoolean(APP_PREFERENCES_IS_NOT_DEFAULT,true)
-                    .putString(APP_PREFERENCES_QUESTION_PACK,externalFileUri).apply()
-                Toast.makeText(this,resources.getString(R.string.pack_setting_text_you_have_set_a_pack) +
-                        resources.getString(R.string.pack_setting_text_custom_notification),Toast.LENGTH_LONG).show()
+        if (requestCode == REQUEST_CODE) {
+            val uri = data?.data
+            if (resultCode == Activity.RESULT_OK && uri != null) {
+                selectPack(GamePack.CustomPack(uri))
             } else {
                 throw FileNotFoundException()
             }
@@ -175,24 +168,32 @@ class SingleMultiActivity : AppCompatActivity() {
 
     companion object {
         private const val REQUEST_CODE = 9999
+
+        private sealed class GamePack(val fileOrUri: String, val name: String) {
+            object LimpGta : GamePack("limpGta.siq", "GTA")
+            object LimpGames : GamePack("limpGames.siq", "Games")
+            object LimpFunny : GamePack("limpFunny.siq", "Funny")
+            class CustomPack(uri: Uri) : GamePack(uri.toString(), "Собственный")
+        }
     }
 
-    fun firstViewWithTextForUser(){
+    private fun firstViewWithTextForUser() {
         tv_sm_text_for_user.visibility = View.VISIBLE
         btn_sm_choose_pack.visibility = View.VISIBLE
         btn_sm_user_isChoose.visibility = View.INVISIBLE
         iv_back_to_menu.visibility = View.VISIBLE
         iv_back_to_choose.visibility = View.INVISIBLE
         iv_back_to_pack_choose.visibility = View.INVISIBLE
-        tv_sm_text_for_user.text = "Сначала тебе нужно выбрать пакет с категориями для игры\n" +
-                "    в зависимости от того, что ты предпочитаешь, и загрузить"
+        tv_sm_text_for_user.text = """Сначала тебе нужно выбрать пакет с категориями для игры
+                    в зависимости от того, что ты предпочитаешь, и загрузить""".trimIndent()
         //
         bn_pack1.visibility = View.INVISIBLE
         bn_pack3.visibility = View.INVISIBLE
         bn_pack5.visibility = View.INVISIBLE
         bn_pack6.visibility = View.INVISIBLE
     }
-    fun packChooseVisibility(){
+
+    private fun packChooseVisibility() {
         tv_sm_text_for_user.visibility = View.INVISIBLE
         btn_sm_choose_pack.visibility = View.INVISIBLE
 //            TODO("здесь делайте видимыми категорий паков. я думаю рекуклером и добавить CheckBox'ов,
@@ -211,7 +212,7 @@ class SingleMultiActivity : AppCompatActivity() {
         bn_pack6.visibility = View.VISIBLE
     }
 
-    fun singleMultiChooseVisibility(){
+    private fun singleMultiChooseVisibility() {
         btn_sm_choose_single.visibility = View.VISIBLE
         btn_sm_choose_multi.visibility = View.VISIBLE
         iv_back_to_pack_choose.visibility = View.VISIBLE

@@ -27,7 +27,7 @@
     <string name="game_text_wrong_xml_structure">Не правильная структура xml файла</string>
 
     <string name="pack_setting_text_select_pack">Выберите пак вопросов</string>
-    <string name="pack_setting_text_you_have_set_a_pack">Вы выбрали набор: " "</string>
+    <string name="pack_setting_text_you_have_set_a_pack">Вы выбрали набор: %1$s</string>
     <string name="pack_setting_text_pack1">GTA</string>
     <string name="pack_setting_text_pack1_file">limpGTA.siq</string>
     <string name="pack_setting_text_pack3">Funny</string>

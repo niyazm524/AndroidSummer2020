@@ -15,8 +15,6 @@ import kotlinx.android.synthetic.main.activity_game_interface.*
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
-import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_IS_NOT_DEFAULT
-import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_QUESTION_PACK
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_REGISTRATION
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_VICTORY
@@ -61,9 +59,13 @@ class GameInterfaceActivity : AppCompatActivity() {
         val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         tv_textquestion.movementMethod = ScrollingMovementMethod()
 
-
         try {
-            val categories = getPack( randomize = false)
+            var isPackFromUri = true
+            val pack: String = intent.getStringExtra("packUri")
+                ?: (intent.getStringExtra("packFilename") ?: "limpGTA.siq").also {
+                    isPackFromUri = false
+                }
+            val categories = getPack(pack, isPackFromUri, randomize = false)
             questionsAdapter.inputList(skipUnsupportedCategories(categories))
 
             rv_questions.apply {
@@ -302,18 +304,16 @@ class GameInterfaceActivity : AppCompatActivity() {
         tv_people.visibility = View.VISIBLE
     }
 
-    private fun getPack(randomize: Boolean = true): List<Category> {
-        val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        lateinit var path: String
-        var dataStream: InputStream
-        if (prefs.getBoolean(APP_PREFERENCES_IS_NOT_DEFAULT,false)) {
-            dataStream = prefs.getString(APP_PREFERENCES_QUESTION_PACK, null) ?.let {
-                contentResolver.openInputStream(Uri.parse(it)) }
+    private fun getPack(
+        pack: String,
+        isPackUri: Boolean,
+        randomize: Boolean = true
+    ): List<Category> {
+        val dataStream: InputStream = if (isPackUri) {
+            contentResolver.openInputStream(Uri.parse(pack))
                 ?: throw FileNotFoundException()
-        }else {
-            path = prefs.getString(APP_PREFERENCES_QUESTION_PACK, "limpGTA.siq")
-                ?: throw FileNotFoundException()
-            dataStream = assets.open(path)
+        } else {
+            assets.open(pack)
         }
         val contentsBytes = siqParser.parseSiq(dataStream)
         dataStream.close()
