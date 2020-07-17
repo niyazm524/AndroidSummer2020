@@ -39,5 +39,12 @@ class ProjectUtils {
             }
             return newCategoryList
         }
+        fun resetCategories(categoryList: List<Category>){
+            for (category in categoryList){
+                for (question in category.questions){
+                    question.isAnswer = false
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 package ru.itis.androidsummer
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +9,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_single_multi.*
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
+import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_THE_LAST_USED_PACK
 import java.io.FileNotFoundException
 
 class SingleMultiActivity : AppCompatActivity() {
@@ -129,6 +132,11 @@ class SingleMultiActivity : AppCompatActivity() {
         } else {
             gameIntent.putExtra("packFilename", pack.fileOrUri)
         }
+        val prefs = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+        if (prefs.getString(APP_PREFERENCES_THE_LAST_USED_PACK,"") == pack.fileOrUri){
+            gameIntent.putExtra("isUsedBefore",true)
+        }else
+            prefs.edit().putString(APP_PREFERENCES_THE_LAST_USED_PACK,pack.fileOrUri).apply()
         startActivity(gameIntent)
     }
 

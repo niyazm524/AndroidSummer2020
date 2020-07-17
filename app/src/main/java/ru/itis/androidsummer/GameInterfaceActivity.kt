@@ -30,6 +30,7 @@ import ru.itis.androidsummer.parsers.SiqParser.Companion.resourceStorage
 import ru.itis.androidsummer.parsers.FileTypes
 import ru.itis.androidsummer.parsers.FileTypes.Companion.checkFileType
 import ru.itis.androidsummer.utils.ProjectUtils.Companion.pickRandomQuestions
+import ru.itis.androidsummer.utils.ProjectUtils.Companion.resetCategories
 import java.io.*
 
 
@@ -45,7 +46,9 @@ class GameInterfaceActivity : AppCompatActivity() {
 
     var heClick = false
     var heFinalClick = false
-
+    companion object{
+        var categories: List<Category>? = null
+    }
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +58,10 @@ class GameInterfaceActivity : AppCompatActivity() {
         iv_image.visibility = View.GONE
 
         val temporaryMusicFile = File(applicationContext.filesDir, "temp.mp3")
+
+        //
+        val packIsUsedBefore = intent.extras?.getBoolean("isUsedBefore")
+        //
 
         var isSingle = intent.getBooleanExtra("isSingle", false)
         //TODO(поменять(Диляре) тут после добавления лобби и мультиплеера)
@@ -73,8 +80,12 @@ class GameInterfaceActivity : AppCompatActivity() {
                 ?: (intent.getStringExtra("packFilename") ?: "limpGTA.siq").also {
                     isPackFromUri = false
                 }
-            val categories = getPack(pack, isPackFromUri, randomize = false)
-            questionsAdapter.inputList(skipUnsupportedCategories(categories))
+            val categories = packIsUsedBefore?.let {
+                getPack(pack, isPackFromUri, randomize = false,
+                    packParsed = it
+                )
+            }
+            questionsAdapter.inputList(skipUnsupportedCategories(categories?: throw java.lang.Exception("Категории не были сформированы")))
 
             rv_questions.apply {
                 isNestedScrollingEnabled = false
@@ -362,23 +373,29 @@ class GameInterfaceActivity : AppCompatActivity() {
     private fun getPack(
         pack: String,
         isPackUri: Boolean,
-        randomize: Boolean = true
+        randomize: Boolean = true,
+        packParsed: Boolean = false
     ): List<Category> {
-        val dataStream: InputStream = if (isPackUri) {
-            contentResolver.openInputStream(Uri.parse(pack))
-                ?: throw FileNotFoundException()
-        } else {
-            assets.open(pack)
-        }
-        val contentsBytes = siqParser.parseSiq(dataStream)
-        dataStream.close()
-        val stream = ByteArrayInputStream(contentsBytes)
-        val categories = contentsXmlParser.parseQuestion(stream)
-        stream.close()
-        return if (randomize) {
-            pickRandomQuestions(categories, 3, 4)
-        } else {
-            categories
+        if (!packParsed) {
+            val dataStream: InputStream = if (isPackUri) {
+                contentResolver.openInputStream(Uri.parse(pack))
+                    ?: throw FileNotFoundException()
+            } else {
+                assets.open(pack)
+            }
+            val contentsBytes = siqParser.parseSiq(dataStream)
+            dataStream.close()
+            val stream = ByteArrayInputStream(contentsBytes)
+            categories = contentsXmlParser.parseQuestion(stream)
+            stream.close()
+            return if (randomize) {
+                pickRandomQuestions(categories!!, 3, 4)
+            } else {
+                categories?: throw java.lang.Exception("Категории не были сформированы")
+            }
+        } else{
+            categories?.let { resetCategories(it) }
+           return categories?: throw java.lang.Exception("Категории не были сформированы")
         }
     }
 
