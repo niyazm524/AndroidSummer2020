@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
@@ -46,8 +45,7 @@ class GameInterfaceActivity : AppCompatActivity() {
     var rvQuestion: String? = null
     var rvPrice: Int = 0
 
-    private val media = MediaPlayer()
-
+    private var media: MediaPlayer? = null
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,7 +108,13 @@ class GameInterfaceActivity : AppCompatActivity() {
         var heFinalClick = false
 
         btn_wantAnswer.setOnClickListener {
-            media.stop()
+            if (media != null) {
+                if (media!!.isPlaying) {
+                    media!!.stop()
+                    media!!.release()
+                    media = null
+                }
+            }
             heClick = true
             temporaryMusicFile.delete()
         }
@@ -171,8 +175,10 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
         btn_finallAnswer.setOnClickListener {
-            iv_image.setImageDrawable(null)
-            iv_image.visibility = View.GONE
+            if (iv_image.isShown) {
+                iv_image.setImageDrawable(null)
+                iv_image.visibility = View.GONE
+            }
             heFinalClick = (et_enterAnswer.text.toString().toLowerCase().trim()
                     == rvAnswer.toString().toLowerCase().trim())
             if (et_enterAnswer.text.isEmpty()) {
@@ -232,8 +238,11 @@ class GameInterfaceActivity : AppCompatActivity() {
             tv_textquestion.text = rvQuestion
             if (checkFileType(resourceTypes[question]) == FileTypes.IMAGE_FILE){
                 iv_image.visibility = View.VISIBLE
-                iv_image.setImageBitmap(BitmapFactory
-                    .decodeStream(ByteArrayInputStream(getQuestionsResource(question)).buffered()))
+                ByteArrayInputStream(getQuestionsResource(question)).buffered().use { it->
+                    iv_image.setImageBitmap(
+                        BitmapFactory.decodeStream(it)
+                    )
+                }
                 iv_image.setOnClickListener {
                     Toast.makeText(this,question.question,Toast.LENGTH_LONG).show()
                 }
@@ -243,9 +252,12 @@ class GameInterfaceActivity : AppCompatActivity() {
                     temporaryMusicFile.delete()
                     temporaryMusicFile.writeBytes(getQuestionsResource(question)
                         ?:throw FileNotFoundException("отсутствует ресурсный файл"))
-                    media.setDataSource(FileInputStream(temporaryMusicFile).fd)
-                    media.prepare()
-                    media.start()
+                    media = MediaPlayer()
+                    FileInputStream(temporaryMusicFile).use { it ->
+                        media!!.setDataSource(it.fd)
+                    }
+                    media!!.prepare()
+                    media!!.start()
                 }catch(e: Exception){
                     Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show()
                 }
@@ -326,6 +338,11 @@ class GameInterfaceActivity : AppCompatActivity() {
         questionResources.clear()
         resourceStorage.clear()
         resourceTypes.clear()
+        if (media!= null &&  media!!.isPlaying) {
+            media!!.stop()
+            media!!.release()
+            media = null
+        }
     }
 
 }
