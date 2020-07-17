@@ -21,8 +21,8 @@ class FinalActivity : AppCompatActivity() {
         var victory = prefs.getInt(SplashActivity.APP_PREFERENCES_VICTORY, 0)
         var wholeScore = prefs.getInt(SplashActivity.APP_PREFERENCES_WHOLE_SCORE, 0)
 
-        tv_final_user_score.text = "Твой счет: $user_score"
-        tv_final_bot_score.text = "Счет бота: $bot_score"
+        tv_final_user_score.text = "Ты:\n\n\n$user_score"
+        tv_final_bot_score.text = "Бот:\n\n\n$bot_score"
 
         tv_final_bot_score.underline()
         tv_final_user_score.underline()

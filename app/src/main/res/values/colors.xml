@@ -12,4 +12,5 @@
     <color name="shadowColor">#706C6C</color>
     <color name="cell">#F59E69AA</color>
     <color name="end">#F5E64E4E</color>
+    <color name="vs">#F5780707</color>
 </resources>

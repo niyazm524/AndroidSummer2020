@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.Toast
@@ -84,9 +85,9 @@ class GameInterfaceActivity : AppCompatActivity() {
                 }
             val categories = getPack(pack, isPackFromUri, randomize = false)
             questionsAdapter.inputList(skipUnsupportedCategories(categories))
-            // по сути не нужно но пока не трогать лучше, пока не убедимся что таблица правильно работает
-            questions_count = 1
-//                count(categories)
+            // по сути не нужно из адаптера считать, но пока не трогать лучше, пока не убедимся что таблица правильно работает
+            questions_count = count(categories)
+            //это по-хорошому, но для теста рекомендую questions_count = 1,2,3...
 
             rv_questions.apply {
                 isNestedScrollingEnabled = false
@@ -451,31 +452,40 @@ class GameInterfaceActivity : AppCompatActivity() {
     }
 
     private fun makeInvisibleAnswerPart() {
-        if(questions_count == (countRound-1)){
-            Toast.makeText(
-                this@GameInterfaceActivity,
-                "Игра закончилась!",
-                Toast.LENGTH_SHORT
-            ).show()
-            val intent = Intent(this@GameInterfaceActivity, FinalActivity::class.java)
-            intent.putExtra("user_score",getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE).getInt(APP_PREFERENCES_SCORE, 0))
-            intent.putExtra("bot_score", botScore)
-            intent.putExtra("level",game_level)
-            startActivity(intent)
+        if(questions_count == (countRound-1)) {
+            val handler = Handler()
+            handler.postDelayed({
+                Toast.makeText(
+                    this@GameInterfaceActivity,
+                    "Игра закончилась!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                val intent = Intent(this@GameInterfaceActivity, FinalActivity::class.java)
+                intent.putExtra(
+                    "user_score",
+                    getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE).getInt(
+                        APP_PREFERENCES_SCORE,
+                        0
+                    )
+                )
+                intent.putExtra("bot_score", botScore)
+                intent.putExtra("level", game_level)
+                startActivity(intent)            }, 2500)
+        } else {
+            tv_count.visibility = View.VISIBLE
+            tv_numberOfRound.visibility = View.VISIBLE
+            et_enterAnswer.visibility = View.INVISIBLE
+            btn_finallAnswer.visibility = View.INVISIBLE
+            tv_timer2.visibility = View.INVISIBLE
+            tv_textquestion.visibility = View.INVISIBLE
+            progressBar.visibility = View.INVISIBLE
+            rv_questions.visibility = View.VISIBLE
+            iv_gi_back_to_menu.visibility = View.VISIBLE
+            tv_timer.visibility = View.INVISIBLE
+            tv_people.visibility = View.VISIBLE
+            iv_helpCallBot.visibility = View.INVISIBLE
+            iv_getOneChar.visibility = View.INVISIBLE
         }
-        tv_count.visibility = View.VISIBLE
-        tv_numberOfRound.visibility = View.VISIBLE
-        et_enterAnswer.visibility = View.INVISIBLE
-        btn_finallAnswer.visibility = View.INVISIBLE
-        tv_timer2.visibility = View.INVISIBLE
-        tv_textquestion.visibility = View.INVISIBLE
-        progressBar.visibility = View.INVISIBLE
-        rv_questions.visibility = View.VISIBLE
-        iv_gi_back_to_menu.visibility = View.VISIBLE
-        tv_timer.visibility = View.INVISIBLE
-        tv_people.visibility = View.VISIBLE
-        iv_helpCallBot.visibility = View.INVISIBLE
-        iv_getOneChar.visibility = View.INVISIBLE
     }
 
     private fun getPack(
