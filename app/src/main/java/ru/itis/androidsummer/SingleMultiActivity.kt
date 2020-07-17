@@ -1,5 +1,6 @@
 package ru.itis.androidsummer
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -111,7 +112,7 @@ class SingleMultiActivity : AppCompatActivity() {
             try {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
                 intent.type = "*/*"
-                startActivityForResult(intent, Companion.REQUEST_CODE)
+                startActivityForResult(intent, REQUEST_CODE)
             } catch (e: Exception) {
                 Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
             }
@@ -177,6 +178,7 @@ class SingleMultiActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun firstViewWithTextForUser() {
         tv_sm_text_for_user.visibility = View.VISIBLE
         btn_sm_choose_pack.visibility = View.VISIBLE
