@@ -37,7 +37,7 @@ class FinalActivity : AppCompatActivity() {
             wholeScore += user_score
             victory++
         }
-        if (user_score < bot_score) {
+        else if (user_score < bot_score) {
             tv_final_text.text = "Поражение!"
             when (level) {
                 0 -> user_score = (user_score * 0.2).toInt()
@@ -52,6 +52,7 @@ class FinalActivity : AppCompatActivity() {
 
         btn_final_game_over.setOnClickListener {
             finish()
+            onBackPressed()
             startActivity(Intent(this,MainMenuActivity::class.java))
         }
 
@@ -61,5 +62,14 @@ class FinalActivity : AppCompatActivity() {
 
     fun TextView.underline() {
         paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
+    }
+
+    override fun onBackPressed() {
+        val prefs = getSharedPreferences(SplashActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
+        prefs.edit().putInt(SplashActivity.APP_PREFERENCES_SCORE, 0).apply()
+        startActivity(Intent(this, MainMenuActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        })
+        super.onBackPressed()
     }
 }
