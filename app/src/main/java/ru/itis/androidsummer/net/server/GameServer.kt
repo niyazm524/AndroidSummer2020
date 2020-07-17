@@ -1,24 +1,30 @@
 package ru.itis.androidsummer.net.server
 
-import java.net.ServerSocket
+import ru.itis.androidsummer.net.UdpWorker
+import java.io.IOException
+import java.net.DatagramPacket
+import java.net.DatagramSocket
+import java.net.SocketException
 
-class GameServer : Thread() {
-    private var isRunning = true
-    private val serverSocket: ServerSocket = ServerSocket(1337)
-    private val clients = mutableListOf<GameClient>()
+abstract class GameServer(port: Int = 3443) : UdpWorker() {
+    override var socket = DatagramSocket(port)
 
-    override fun run() {
-        while (isRunning && !isInterrupted) {
-            val client = serverSocket.accept()
-            val gameClient = GameClient(this, client)
-            clients.add(gameClient)
-            gameClient.start()
-        }
+    init {
+        name = "server"
     }
 
-    fun stopServer() {
-        isRunning = false
-        clients.forEach { it.stop() }
-        this.interrupt()
+    override fun run() {
+        while (!isInterrupted) {
+            try {
+                val data = ByteArray(1024)
+                val datagramPacket = DatagramPacket(data, data.size)
+                socket.receive(datagramPacket)
+                onDatagramReceived(datagramPacket)
+            } catch (e: SocketException) {
+                if (!isInterrupted) System.err.println("Client: ${e.message}")
+            } catch (e: IOException) {
+                e.printStackTrace(System.err)
+            }
+        }
     }
 }

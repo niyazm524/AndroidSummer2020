@@ -15,8 +15,9 @@ import kotlinx.android.synthetic.main.activity_lobby.*
 import ru.itis.androidsummer.R
 import ru.itis.androidsummer.SplashActivity
 import ru.itis.androidsummer.data.Server
-import ru.itis.androidsummer.net.client.PlayerClient
+import ru.itis.androidsummer.net.client.OIGameClient
 import ru.itis.androidsummer.net.server.ServerService
+import java.net.InetAddress
 import kotlin.concurrent.thread
 
 
@@ -26,7 +27,7 @@ class LobbyActivity : AppCompatActivity() {
     private lateinit var mNearDiscovery:NearDiscovery
     private val playersAdapter = PlayersAdapter()
     private val serversAdapter = ServersAdapter()
-    private lateinit var client: PlayerClient
+    private lateinit var client: OIGameClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +71,8 @@ class LobbyActivity : AppCompatActivity() {
             mNearDiscovery.startDiscovery()
         }
         serversAdapter.setOnItemClickListener {
-            client = PlayerClient(it.address)
+            client = OIGameClient()
+            client.address = InetAddress.getByName(it.address)
             client.start()
             Toast.makeText(this, "connection in process", Toast.LENGTH_SHORT).show()
         }
@@ -81,7 +83,11 @@ class LobbyActivity : AppCompatActivity() {
 
         btn_connect.setOnClickListener {
             thread {
-                client.sendMessage("hello")
+                client.login(me) { success ->
+                    runOnUiThread {
+                        Toast.makeText(this, "Connect: $success", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
 
