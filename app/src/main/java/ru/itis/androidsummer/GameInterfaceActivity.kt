@@ -22,6 +22,7 @@ import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_WHOLE_SCOR
 import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.parsers.ContentsXmlParser
 import ru.itis.androidsummer.parsers.SiqParser
+import ru.itis.androidsummer.simpleBot.SingleplayerBot
 import ru.itis.androidsummer.utils.ProjectUtils.Companion.pickRandomQuestions
 import java.io.ByteArrayInputStream
 import java.io.FileNotFoundException
@@ -46,12 +47,17 @@ class GameInterfaceActivity : AppCompatActivity() {
     var heClick = false
     var heFinalClick = false
 
+    lateinit var bot:SingleplayerBot
+    var botScore = 0
+    var botIsAnswer = false
+    var botCorrectAnswer = false
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_interface)
+        bot = SingleplayerBot("Bot",intent.getIntExtra("level",0))
 
         var isSingle = intent.getBooleanExtra("isSingle", false)
         //TODO(поменять(Диляре) тут после добавления лобби и мультиплеера)
@@ -118,7 +124,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             Toast.makeText(this, "Вы выбрали игру с друзьями!", Toast.LENGTH_SHORT).show()
         } else {
             tv_people.visibility = View.GONE
-            Toast.makeText(this, "Вы выбрали одиночную игру! Уровень:", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Вы выбрали одиночную игру! Уровень: ${bot.getDifficult()}", Toast.LENGTH_SHORT).show()
         }
         //тут конечно теперь пустовато на экране с таблицей для одиночки, надо будет подумать над этим
         //TODO(сюда в тост вставь сложность после "уровень:")
@@ -169,29 +175,53 @@ class GameInterfaceActivity : AppCompatActivity() {
             return (Math.random()*100+1).toInt() >= 50
         }
 
+        fun canAnswer(bool:Boolean){
+            btn_finallAnswer.isClickable = bool
+            btn_wantAnswer.isClickable = bool
+            et_enterAnswer.isEnabled = bool
+        }
+
         val time2 = object : CountDownTimer(20000, 1000) {
             override fun onFinish() {
-                if (!botHelpAnswer) {
-                    if (progressBar.progress == 0) {
-                        tv_timer2.text = "Вы не успели ввести ответ!"
-                        Toast.makeText(
-                            this@GameInterfaceActivity,
-                            "Вы не успели ввести ответ!\n-$rvPrice очков!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        score -= rvPrice
-                        prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
-                        tv_count.text = "Счет:$score"
-                        cancel()
-                    } else {
-                        this.cancel()
-                        dialogInit()
+                if(botIsAnswer){
+                    if(botCorrectAnswer){
+                        Toast.makeText(this@GameInterfaceActivity,"${bot.name} ошибся \n -$rvPrice",Toast.LENGTH_SHORT).show()
+                        botScore -= rvPrice
+                    }else{
+                        Toast.makeText(this@GameInterfaceActivity,"${bot.name} ответил правильно \n +$rvPrice",Toast.LENGTH_SHORT).show()
+                        botScore += rvPrice
                     }
-                    //TODO(надо будет добавить что-то для вывода результатов когда вопросы заканчиваются
-                    // + определять победу и набранные очки в зависимости single/multiplayer и мб сложности(для сингл))
-                } else{
-                    correctAnswer = botHelpAnswer()
-                    checkAnswer()
+                    resetQuestion()
+                    botIsAnswer = false
+                    bot.countdown = 3
+                    canAnswer(true)
+                    botScore += rvPrice
+                    countRound++
+                    tv_numberOfRound.text = "Раунд:$countRound"
+                    makeInvisibleAnswerPart()
+                } else {
+                    if (!botHelpAnswer) {
+                        if (progressBar.progress == 0) {
+                            tv_timer2.text = "Вы не успели ввести ответ!"
+                            Toast.makeText(
+                                this@GameInterfaceActivity,
+                                "Вы не успели ввести ответ!\n-$rvPrice очков!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            score -= rvPrice
+                            prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
+                            tv_count.text = "Счет:$score"
+                            cancel()
+                        } else {
+                            this.cancel()
+                            dialogInit()
+                        }
+                        //TODO(надо будет добавить что-то для вывода результатов когда вопросы заканчиваются
+                        // + определять победу и набранные очки в зависимости single/multiplayer и мб сложности(для сингл))
+                    } else {
+                        correctAnswer = botHelpAnswer()
+                        checkAnswer()
+                    }
                 }
             }
 
@@ -199,10 +229,21 @@ class GameInterfaceActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 tv_timer2.text = "Осталось времени:" + millisUntilFinished / 1000
                 progressBar.progress = (millisUntilFinished / 1000).toInt()
-                if (heFinalClick) {
-                    progressBar.progress = progressBar.max
-                    cancel()
-                    onFinish()
+                if(botIsAnswer){
+                    if(bot.countdown > 0){
+                        bot.countdown--
+                    } else {
+                        botCorrectAnswer = bot.botCorrectAnswer()
+                        bot.countdown = 3
+                        cancel()
+                        onFinish()
+                    }
+                }else {
+                    if (heFinalClick) {
+                        progressBar.progress = progressBar.max
+                        cancel()
+                        onFinish()
+                    }
                 }
             }
 
@@ -254,8 +295,17 @@ class GameInterfaceActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 tv_timer.text = "Осталось времени:" + millisUntilFinished / 1000
                 progressBar.progress = progressBar.max
-                if (heClick) {
+                if(bot.countdown > 0){
+                    bot.countdown--
+                } else{
+                    botIsAnswer = bot.botAnswer()
+                }
+                if (heClick or botIsAnswer) {
                     progressBar.progress = progressBar.max
+                    bot.countdown = 3
+                    if(botIsAnswer){
+                        canAnswer(false)
+                    }
                     makeVisibleAnswerPart()
                     onFinish()
                     time2.start()
@@ -276,32 +326,32 @@ class GameInterfaceActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                if (!heClick or (progressBar.progress == 0)) {
-                    tv_timer.text = "Время вышло!"
-                    if (isSingle) {
-                        score -= rvPrice
-                        prefs.edit().putInt(APP_PREFERENCES_SCORE, score).apply()
-                        tv_count.text = "Счет:$score"
-                        Toast.makeText(
-                            this@GameInterfaceActivity,
-                            "Вы решили не отвечать!\n-$rvPrice очков!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        resetQuestion()
-                        cancel()
-                        countRound++
-                        tv_numberOfRound.text = "Раунд:$countRound"
-                        btn_wantAnswer.visibility = View.INVISIBLE
-                        makeInvisibleAnswerPart()
-                        tv_people.visibility = View.VISIBLE
-                    }
-                    if (!isSingle) {
-                        //TODO(WARNING! СПЕЦИАЛЬНО ДЛЯ ТЕМУРА, СПОНСОРА МОИХ РАННИХ СЕДИН)
-                        // тк для него я уже одну проверку сделала вот еще одна:
-                        //TODO(здесь нужна проверка, ответил ли вообще кто-то из игроков,
-                        // если нет, переход к табл(visibility и вот это все), если да, идем дальше, но без возможности ввести ответ
-                        // + в табл с игроками отображать чей ход. кароче когда сеть будет я это сама сделаю,
-                        // а то там темурывсякие поломают все
+                if (!botIsAnswer) {
+                    if (!heClick or (progressBar.progress == 0)) {
+                        tv_timer.text = "Время вышло!"
+                        if (isSingle) {
+                            tv_count.text = "Счет:$score"
+                            Toast.makeText(
+                                this@GameInterfaceActivity,
+                                "Никто не ответил",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            resetQuestion()
+                            cancel()
+                            countRound++
+                            tv_numberOfRound.text = "Раунд:$countRound"
+                            btn_wantAnswer.visibility = View.INVISIBLE
+                            makeInvisibleAnswerPart()
+                            tv_people.visibility = View.VISIBLE
+                        }
+                        if (!isSingle) {
+                            //TODO(WARNING! СПЕЦИАЛЬНО ДЛЯ ТЕМУРА, СПОНСОРА МОИХ РАННИХ СЕДИН)
+                            // тк для него я уже одну проверку сделала вот еще одна:
+                            //TODO(здесь нужна проверка, ответил ли вообще кто-то из игроков,
+                            // если нет, переход к табл(visibility и вот это все), если да, идем дальше, но без возможности ввести ответ
+                            // + в табл с игроками отображать чей ход. кароче когда сеть будет я это сама сделаю,
+                            // а то там темурывсякие поломают все
+                        }
                     }
                 }
             }
