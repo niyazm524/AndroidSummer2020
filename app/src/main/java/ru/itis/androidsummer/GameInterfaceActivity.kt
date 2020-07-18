@@ -1,6 +1,7 @@
 package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -21,7 +22,6 @@ import org.xmlpull.v1.XmlPullParserFactory
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_REGISTRATION
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
-import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_VICTORY
 import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_WHOLE_SCORE
 import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.parsers.ContentsXmlParser
@@ -352,6 +352,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                     botIsAnswer = bot.botAnswer()
                 }
                 if (heClick || botIsAnswer) {
+                    stopMusicIfPlaying()
                     progressBar.progress = progressBar.max
                     bot.countdown = 3
                     if(botIsAnswer){
@@ -479,6 +480,8 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
         temporaryMusicFile.delete()
     }
+
+
 
     @SuppressLint("SetTextI18n")
     private fun resetQuestion() {
