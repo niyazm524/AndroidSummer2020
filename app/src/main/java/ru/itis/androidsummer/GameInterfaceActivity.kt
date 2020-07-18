@@ -337,7 +337,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
 
-        val time = object : CountDownTimer(20000, 1000) {
+        val time = object : CountDownTimer(21000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 tv_timer.text = "Осталось времени:" + millisUntilFinished / 1000
                 progressBar.progress = progressBar.max
@@ -360,6 +360,9 @@ class GameInterfaceActivity : AppCompatActivity() {
                 }
                 progressBar.progress = (millisUntilFinished / 1000).toInt()
                 iv_gi_back_to_menu.visibility = View.INVISIBLE
+                if (progressBar.progress == 1) {
+                    onFinish()
+                }
             }
 
             fun resetQuestion() {
@@ -369,12 +372,13 @@ class GameInterfaceActivity : AppCompatActivity() {
                 rvAnswer = null
                 rvQuestion = null
                 rvPrice = 0
+                stopMusicIfPlaying()
                 et_enterAnswer.setText("")
             }
 
             override fun onFinish() {
                 if (!botIsAnswer) {
-                    if (!heClick or (progressBar.progress == 0)) {
+                    if (progressBar.progress == 1) {
                         tv_timer.text = "Время вышло!"
                         if (isSingle) {
                             tv_count.text = "Счет:$score"
