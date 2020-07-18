@@ -31,10 +31,7 @@ class ProfileActivity : AppCompatActivity() {
         //нужно будет сохранять количество очков за игру(после завершения)
         // и выводить сюда(они будут постоянными, просто накапливаться), be like:
         if (score == 0) {
-            tv_profile_score.text = sharedPreferences.getString(
-                APP_PREFERENCES_WHOLE_SCORE,
-                resources.getString(R.string.profile_text_default_score)
-            )
+            tv_profile_score.text = resources.getString(R.string.profile_text_default_score)
         } else
             tv_profile_score.text = score.toString()
 
