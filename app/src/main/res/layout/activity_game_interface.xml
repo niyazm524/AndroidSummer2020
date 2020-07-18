@@ -6,26 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".GameInterfaceActivity">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="9dp"
+        android:background="@color/colorAccent"
+        android:max="20"
+        android:orientation="horizontal"
+        android:progress="0"
+        android:progressTint="#F8F8F8"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/tv_timer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nsc_question"
+        tools:visibility="visible" />
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsc_question"
         android:layout_width="0dp"
         android:layout_height="176dp"
         android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/progressBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.064"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_questions"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="2sp"
             android:gravity="center"
             android:shadowColor="#FDFDFD"
             android:textColorHighlight="#090909"
             android:textColorHint="#FFFFFF"
             android:textColorLink="#FDFDFD"
-            android:layout_margin="2sp"
             android:textSize="30sp"
             tools:visibility="visible" />
 
@@ -37,14 +57,14 @@
         android:layout_width="268dp"
         android:layout_height="135dp"
         android:backgroundTint="@color/colorAccent"
-        android:textColor="@color/textColorPrimary"
         android:text="Есть ответ!"
+        android:textColor="@color/textColorPrimary"
         android:textSize="25sp"
         android:visibility="invisible"
-        app:layout_constraintTop_toBottomOf="@id/tv_people"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_people" />
 
     <ImageView
         android:id="@+id/iv_image"
@@ -62,10 +82,10 @@
         android:id="@+id/tv_timer"
         android:layout_width="127dp"
         android:layout_height="30dp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:textColor="@color/colorAccent"
         android:textSize="12sp"
-        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/progressBar" />
@@ -79,46 +99,70 @@
         android:textColor="@color/colorAccent"
         android:textSize="12sp"
         android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/tv_people"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tv_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="30dp"
+        android:layout_width="104dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="82dp"
         android:text="Счет:"
         android:textColor="@color/justBlack"
         android:textSize="15sp"
         android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/tv_people"
         app:layout_constraintEnd_toStartOf="@+id/tv_timer"
-        app:layout_constraintHorizontal_bias="0.368"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_timer"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        app:layout_constraintVertical_bias="0.0"
         tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/iv_gi_back_to_menu"
+        android:layout_width="66dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_people"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_count"
+        app:layout_constraintVertical_bias="0.392"
+        app:srcCompat="@drawable/arrow_left_24px" />
 
     <TextView
         android:id="@+id/tv_numberOfRound"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_width="70dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Раунд:"
         android:textColor="@color/justBlack"
         android:textSize="15sp"
         android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/tv_people"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.232"
         app:layout_constraintStart_toEndOf="@+id/tv_timer2"
-        app:layout_constraintTop_toTopOf="@+id/tv_timer"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        app:layout_constraintVertical_bias="0.0"
         tools:visibility="visible" />
 
     <TextView
         android:id="@+id/tv_people"
-        android:layout_width="309sp"
-        android:layout_height="121sp"
+        android:layout_width="267dp"
+        android:layout_height="116dp"
         android:background="@drawable/border"
         android:padding="8dp"
         android:text="Игроки:"
@@ -162,36 +206,18 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_people"
         app:layout_constraintVertical_bias="0.7" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="9dp"
-        android:background="@color/colorAccent"
-        android:max="20"
-        android:orientation="horizontal"
-        android:progress="0"
-        android:progressTint="#F8F8F8"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/tv_timer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nsc_question"
-        tools:visibility="visible" />
-
     <TextView
         android:id="@+id/tv_textquestion"
-        android:layout_width="0sp"
-        android:layout_height="163sp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginBottom="8dp"
         android:gravity="center"
         android:scrollbars="vertical"
         android:textColor="@color/justBlack"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
@@ -199,47 +225,30 @@
         tools:text="TextView" />
 
     <ImageView
-        android:id="@+id/iv_gi_back_to_menu"
-        android:layout_width="73dp"
-        android:layout_height="66dp"
-        android:layout_marginBottom="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_people"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.044"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_count"
-        app:layout_constraintVertical_bias="0.333"
-        app:srcCompat="@drawable/arrow_left_24px" />
-
-    <ImageView
         android:id="@+id/iv_helpCallBot"
         android:layout_width="57dp"
         android:layout_height="40dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="41dp"
-        android:layout_marginBottom="7dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/et_enterAnswer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.168"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_people"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.100000024"
         app:srcCompat="@drawable/call_black_18dp" />
 
     <ImageView
         android:id="@+id/iv_getOneChar"
         android:layout_width="55dp"
         android:layout_height="48dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginBottom="226dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/et_enterAnswer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_people"
-        app:layout_constraintVertical_bias="0.088"
+        app:layout_constraintVertical_bias="0.100000024"
         app:srcCompat="@drawable/text_rotation_none_black_18dp" />
 
 
