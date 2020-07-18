@@ -1,5 +1,6 @@
 package ru.itis.androidsummer
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -111,7 +112,7 @@ class SingleMultiActivity : AppCompatActivity() {
             try {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
                 intent.type = "*/*"
-                startActivityForResult(intent, Companion.REQUEST_CODE)
+                startActivityForResult(intent, REQUEST_CODE)
             } catch (e: Exception) {
                 Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
             }
@@ -122,7 +123,7 @@ class SingleMultiActivity : AppCompatActivity() {
     private fun startGameForSingle(level: Int) {
         val pack = selectedPack ?: return
         val gameIntent = Intent(this, GameInterfaceActivity::class.java)
-        gameIntent.putExtra("isSingle", true)
+        gameIntent.putExtra("isSingle", false)
         gameIntent.putExtra("level", level)
         if (pack is GamePack.CustomPack) {
             gameIntent.putExtra("packUri", pack.fileOrUri)
@@ -170,13 +171,14 @@ class SingleMultiActivity : AppCompatActivity() {
         private const val REQUEST_CODE = 9999
 
         private sealed class GamePack(val fileOrUri: String, val name: String) {
-            object LimpGta : GamePack("limpGta.siq", "GTA")
+            object LimpGta : GamePack("limpGTA.siq", "GTA")
             object LimpGames : GamePack("limpGames.siq", "Games")
             object LimpFunny : GamePack("limpFunny.siq", "Funny")
             class CustomPack(uri: Uri) : GamePack(uri.toString(), "Собственный")
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun firstViewWithTextForUser() {
         tv_sm_text_for_user.visibility = View.VISIBLE
         btn_sm_choose_pack.visibility = View.VISIBLE
