@@ -97,6 +97,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             questions_count = count(categories)
             //это по-хорошому, но для теста рекомендую questions_count = 1,2,3...
 
+
             rv_questions.apply {
                 isNestedScrollingEnabled = false
                 layoutManager =
@@ -108,6 +109,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                     )
                 adapter = questionsAdapter
             }
+
         } catch (e: Throwable) {
             when (e) {
                 is XmlPullParserException ->
@@ -227,7 +229,6 @@ class GameInterfaceActivity : AppCompatActivity() {
 
                         makeInvisibleAnswerPart()
                     } else {
-                        if (!botHelpAnswer) {
                             if (progressBar.progress == 0) {
                                 tv_timer2.text = "Вы не успели ввести ответ!"
                                 Toast.makeText(
@@ -252,10 +253,6 @@ class GameInterfaceActivity : AppCompatActivity() {
                             }
                             //TODO(надо будет добавить что-то для вывода результатов когда вопросы заканчиваются
                             // + определять победу и набранные очки в зависимости single/multiplayer и мб сложности(для сингл))
-                        } else {
-                            correctAnswer = botHelpAnswer()
-                            checkAnswer()
-                        }
 
                     }
                 tv_people.text = "ИГРОКИ: \n$me: $score\n${bot.name}: $botScore"
@@ -289,10 +286,18 @@ class GameInterfaceActivity : AppCompatActivity() {
 
             val checkScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
             if (checkScore >= helpBotPrice) {
-                prefs.edit().putInt(APP_PREFERENCES_WHOLE_SCORE, checkScore - helpBotPrice).apply()
-
-                botHelpAnswer = true
-                time2.onFinish()
+                if(!botHelpAnswer) {
+                    prefs.edit().putInt(APP_PREFERENCES_WHOLE_SCORE, checkScore - helpBotPrice)
+                        .apply()
+                    botHelpAnswer = true
+                    if (botHelpAnswer()) {
+                        et_enterAnswer.setText(rvAnswer)
+                    } else {
+                        Toast.makeText(this, "Бот не знает ответа...", Toast.LENGTH_SHORT).show()
+                    }
+                } else{
+                    Toast.makeText(this,"Вы уже звонили боту",Toast.LENGTH_SHORT ).show()
+                }
             } else {
                 Toast.makeText(
                     this,
@@ -490,7 +495,6 @@ class GameInterfaceActivity : AppCompatActivity() {
         rvQuestion = null
         rvPrice = 0
         et_enterAnswer.setText("")
-        botHelpAnswer = false
     }
 
     @SuppressLint("SetTextI18n")
@@ -537,6 +541,7 @@ class GameInterfaceActivity : AppCompatActivity() {
     }
 
     private fun makeInvisibleAnswerPart() {
+
         if(questions_count == (countRound-1)) {
             val handler = Handler()
             handler.postDelayed({
@@ -571,7 +576,9 @@ class GameInterfaceActivity : AppCompatActivity() {
             iv_helpCallBot.visibility = View.INVISIBLE
             iv_getOneChar.visibility = View.INVISIBLE
             iv_image.visibility = View.GONE
+            botHelpAnswer = false
         }
+
     }
 
     private fun getPack(
@@ -641,3 +648,4 @@ class GameInterfaceActivity : AppCompatActivity() {
     }
 
 }
+
