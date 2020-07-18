@@ -9,6 +9,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.Toast
@@ -49,6 +50,10 @@ class GameInterfaceActivity : AppCompatActivity() {
     var correctAnswer: Boolean = false
     var countCharacter = 0
 
+    var questions_count = 0
+    var score = 0
+    var game_level = 0
+
     var heClick = false
     var heFinalClick = false
 
@@ -65,6 +70,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game_interface)
         bot = SingleplayerBot("Bot",intent.getIntExtra("level",0))
         iv_image.visibility = View.GONE
+        game_level = intent.getIntExtra("level",0)
 
         temporaryMusicFile = File(applicationContext.filesDir, "temp.mp3")
 
@@ -87,6 +93,9 @@ class GameInterfaceActivity : AppCompatActivity() {
                 }
             val categories = getPack(pack, isPackFromUri, randomize = false)
             questionsAdapter.inputList(skipUnsupportedCategories(categories))
+            // по сути не нужно из адаптера считать, но пока не трогать лучше, пока не убедимся что таблица правильно работает
+            questions_count = count(categories)
+            //это по-хорошому, но для теста рекомендую questions_count = 1,2,3...
 
             rv_questions.apply {
                 isNestedScrollingEnabled = false
@@ -116,9 +125,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         }
 
         countRound = 1
-        var score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
-        var victory = prefs.getInt(APP_PREFERENCES_VICTORY, 0)
-        var wholeScore = prefs.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
+        score = prefs.getInt(APP_PREFERENCES_SCORE, 0)
         val helpSymbolPrice = 500
         val helpBotPrice = 800
         val me = prefs.getString(
@@ -288,7 +295,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                 time2.onFinish()
             } else {
                 Toast.makeText(
-                    applicationContext,
+                    this,
                     "Недостаточно баллов, текущее количество:$checkScore",
                     Toast.LENGTH_SHORT
                 ).show()
@@ -530,20 +537,41 @@ class GameInterfaceActivity : AppCompatActivity() {
     }
 
     private fun makeInvisibleAnswerPart() {
-        tv_count.visibility = View.VISIBLE
-        tv_numberOfRound.visibility = View.VISIBLE
-        et_enterAnswer.visibility = View.INVISIBLE
-        btn_finallAnswer.visibility = View.INVISIBLE
-        tv_timer2.visibility = View.INVISIBLE
-        tv_textquestion.visibility = View.INVISIBLE
-        progressBar.visibility = View.INVISIBLE
-        rv_questions.visibility = View.VISIBLE
-        iv_gi_back_to_menu.visibility = View.VISIBLE
-        tv_timer.visibility = View.INVISIBLE
-        tv_people.visibility = View.VISIBLE
-        iv_helpCallBot.visibility = View.INVISIBLE
-        iv_getOneChar.visibility = View.INVISIBLE
-        iv_image.visibility = View.GONE
+        if(questions_count == (countRound-1)) {
+            val handler = Handler()
+            handler.postDelayed({
+                Toast.makeText(
+                    this@GameInterfaceActivity,
+                    "Игра закончилась!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                val intent = Intent(this@GameInterfaceActivity, FinalActivity::class.java)
+                intent.putExtra(
+                    "user_score",
+                    getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE).getInt(
+                        APP_PREFERENCES_SCORE,
+                        0
+                    )
+                )
+                intent.putExtra("bot_score", botScore)
+                intent.putExtra("level", game_level)
+                startActivity(intent)            }, 2500)
+        } else {
+            tv_count.visibility = View.VISIBLE
+            tv_numberOfRound.visibility = View.VISIBLE
+            et_enterAnswer.visibility = View.INVISIBLE
+            btn_finallAnswer.visibility = View.INVISIBLE
+            tv_timer2.visibility = View.INVISIBLE
+            tv_textquestion.visibility = View.INVISIBLE
+            progressBar.visibility = View.INVISIBLE
+            rv_questions.visibility = View.VISIBLE
+            iv_gi_back_to_menu.visibility = View.VISIBLE
+            tv_timer.visibility = View.INVISIBLE
+            tv_people.visibility = View.VISIBLE
+            iv_helpCallBot.visibility = View.INVISIBLE
+            iv_getOneChar.visibility = View.INVISIBLE
+            iv_image.visibility = View.GONE
+        }
     }
 
     private fun getPack(
@@ -580,15 +608,21 @@ class GameInterfaceActivity : AppCompatActivity() {
         prefs.edit().putInt(APP_PREFERENCES_SCORE, 0).apply()
         questionResources.clear()
         resourceStorage.clear()
-        if (media!= null &&  media!!.isPlaying) {
-            media!!.stop()
-            media!!.release()
-            media = null
-        }
+        stopMusicIfPlaying()
         startActivity(Intent(this, MainMenuActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         })
         super.onBackPressed()
+    }
+
+    fun count(categoryList: List<Category>): Int{
+        var i = 0
+        for (category in categoryList){
+            for (question in category.questions){
+                i++
+            }
+        }
+        return i
     }
 
 

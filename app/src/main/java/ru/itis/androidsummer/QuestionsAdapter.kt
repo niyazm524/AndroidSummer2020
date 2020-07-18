@@ -1,5 +1,6 @@
 package ru.itis.androidsummer
 
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -10,20 +11,22 @@ import kotlinx.android.synthetic.main.item_cell.*
 import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.data.Question
 
-
 class QuestionsAdapter : RecyclerView.Adapter<CategoriesViewHolder>() {
     private val categories = ArrayList<Category>()
     private var itemClickListener: ((Question) -> Unit)? = null
 
+    var count = 0
 
     fun inputCategory(category: Category) {
         categories.add(category)
     }
 
-    fun inputList(category: List<Category>)  {
+    fun inputList(category: List<Category>): Int  {
         category.forEach {
             inputCategory(it)
+            count += it.questions.size
         }
+        return count
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesViewHolder {
@@ -90,8 +93,8 @@ class CategoriesViewHolder(override val containerView: View) :
                     question.isAnswer = true
                 }
                 tv_tableitem.visibility = View.GONE
-            }
 
+            }
         }
 
         if (index != null) {
