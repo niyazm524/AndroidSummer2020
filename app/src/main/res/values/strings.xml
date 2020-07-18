@@ -47,6 +47,9 @@
     <string name="sm_button_choose_pack">Выбрать</string>
     <string name="sm_button_user_isChoose">Готово!</string>
     <string name="settings_text">Настройки</string>
+    
+    <string name="settings_text_link">https://vladimirkhil.com/si/storage</string>
+    <string name="link">Скачать свои паки\n<a href="https://vladimirkhil.com/si/storage">https://vladimirkhil.com/si/storage</a></string>
 
 
 
