@@ -123,7 +123,7 @@ class SingleMultiActivity : AppCompatActivity() {
     private fun startGameForSingle(level: Int) {
         val pack = selectedPack ?: return
         val gameIntent = Intent(this, GameInterfaceActivity::class.java)
-        gameIntent.putExtra("isSingle", false)
+        gameIntent.putExtra("isSingle", true)
         gameIntent.putExtra("level", level)
         if (pack is GamePack.CustomPack) {
             gameIntent.putExtra("packUri", pack.fileOrUri)
