@@ -599,7 +599,7 @@ class GameInterfaceActivity : AppCompatActivity() {
 
     private fun skipUnsupportedCategories(categories: List<Category>) =
         categories.filter { category ->
-            category.questions.size > 1
+            category.questions.size > 0
         }
 
 
