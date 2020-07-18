@@ -97,6 +97,7 @@ class GameInterfaceActivity : AppCompatActivity() {
             questions_count = count(categories)
             //это по-хорошому, но для теста рекомендую questions_count = 1,2,3...
 
+
             rv_questions.apply {
                 isNestedScrollingEnabled = false
                 layoutManager =
@@ -108,6 +109,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                     )
                 adapter = questionsAdapter
             }
+
         } catch (e: Throwable) {
             when (e) {
                 is XmlPullParserException ->
@@ -227,7 +229,6 @@ class GameInterfaceActivity : AppCompatActivity() {
 
                         makeInvisibleAnswerPart()
                     } else {
-
                             if (progressBar.progress == 0) {
                                 tv_timer2.text = "Вы не успели ввести ответ!"
                                 Toast.makeText(
@@ -252,7 +253,6 @@ class GameInterfaceActivity : AppCompatActivity() {
                             }
                             //TODO(надо будет добавить что-то для вывода результатов когда вопросы заканчиваются
                             // + определять победу и набранные очки в зависимости single/multiplayer и мб сложности(для сингл))
-
 
                     }
                 tv_people.text = "ИГРОКИ: \n$me: $score\n${bot.name}: $botScore"
@@ -542,7 +542,6 @@ class GameInterfaceActivity : AppCompatActivity() {
     }
 
     private fun makeInvisibleAnswerPart() {
-        botHelpAnswer = false
         if(questions_count == (countRound-1)) {
             val handler = Handler()
             handler.postDelayed({
@@ -577,7 +576,9 @@ class GameInterfaceActivity : AppCompatActivity() {
             iv_helpCallBot.visibility = View.INVISIBLE
             iv_getOneChar.visibility = View.INVISIBLE
             iv_image.visibility = View.GONE
+            botHelpAnswer = false
         }
+
     }
 
     private fun getPack(
@@ -647,3 +648,4 @@ class GameInterfaceActivity : AppCompatActivity() {
     }
 
 }
+
