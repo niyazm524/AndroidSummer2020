@@ -207,21 +207,20 @@ class GameInterfaceActivity : AppCompatActivity() {
                         if (botCorrectAnswer) {
                             Toast.makeText(
                                 this@GameInterfaceActivity,
-                                "${bot.name} ошибся \n -$rvPrice",
+                                "${bot.name} ошибся \n -$rvPrice\nОтвет:$rvAnswer",
                                 Toast.LENGTH_SHORT
                             ).show()
                             botScore -= rvPrice
                         } else {
                             Toast.makeText(
                                 this@GameInterfaceActivity,
-                                "${bot.name} ответил правильно \n +$rvPrice",
+                                "${bot.name} ответил правильно \n +$rvPrice\nОтвет:$rvAnswer",
                                 Toast.LENGTH_SHORT
                             ).show()
                             botScore += rvPrice
                         }
                         resetQuestion()
                         botIsAnswer = false
-                        bot.countdown = 3
                         canAnswer(true)
                         botScore += rvPrice
                         countRound++
@@ -267,7 +266,6 @@ class GameInterfaceActivity : AppCompatActivity() {
                         bot.countdown--
                     } else {
                         botCorrectAnswer = bot.botCorrectAnswer()
-                        bot.countdown = 3
                         cancel()
                         onFinish()
                     }
@@ -357,7 +355,7 @@ class GameInterfaceActivity : AppCompatActivity() {
                     bot.countdown = 3
                     if(botIsAnswer){
                         canAnswer(false)
-                        Toast.makeText(this@GameInterfaceActivity,"Бот решил ответить",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@GameInterfaceActivity,"${bot.name} решил ответить",Toast.LENGTH_SHORT).show()
                     }
                     makeVisibleAnswerPart()
                     onFinish()
@@ -503,6 +501,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         rvPrice = 0
         et_enterAnswer.setText("")
         botHelpAnswer = false
+        bot.countdown = 6
     }
 
     @SuppressLint("SetTextI18n")
