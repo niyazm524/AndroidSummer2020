@@ -4,9 +4,9 @@ class SingleplayerBot(val name: String, private val difficult: Int) {
     var countdown = 5
     fun getDifficult(): String {
         return when (difficult) {
-            0 -> "Easy"
-            1 -> "Medium"
-            else -> "Hard"
+            0 -> "Легко"
+            1 -> "Средне"
+            else -> "Тяжело"
         }
     }
 
