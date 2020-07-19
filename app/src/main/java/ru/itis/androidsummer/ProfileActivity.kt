@@ -16,9 +16,17 @@ import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_VICTORY
 class ProfileActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val sharedPreferences = getSharedPreferences(SplashActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
+        val theme = getSharedPreferences(SplashActivity.APP_PREFERENCES, Context.MODE_PRIVATE).getString("theme","Light")
+        if(theme == "Dark"){
+            setTheme(R.style.DarkTheme)
+        } else {
+            setTheme(R.style.LightTheme)
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-        val sharedPreferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         val score = sharedPreferences.getInt(APP_PREFERENCES_WHOLE_SCORE, 0)
 
         tv_profile_name.text = sharedPreferences.getString(

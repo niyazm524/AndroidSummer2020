@@ -2,6 +2,7 @@ package ru.itis.androidsummer
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,6 +16,15 @@ class SingleMultiActivity : AppCompatActivity() {
     private var selectedPack: GamePack? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val sharedPreferences = getSharedPreferences(SplashActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
+        val theme = getSharedPreferences(SplashActivity.APP_PREFERENCES, Context.MODE_PRIVATE).getString("theme","Light")
+        if(theme == "Dark"){
+            setTheme(R.style.DarkTheme)
+        } else {
+            setTheme(R.style.LightTheme)
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_multi)
 

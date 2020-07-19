@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="LightTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -9,6 +9,17 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@drawable/gradient</item>
         <item name="android:fontFamily">@font/comfortaa</item>
+    </style>
+
+    <style name="DarkTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/shadowColor</item>
+        <item name="colorPrimaryDark">@color/end</item>
+        <item name="android:textColorPrimary">@color/ic_launcher_background</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@drawable/gradient_dark</item>
+        <item name="android:fontFamily">@font/comfortaa</item>
+        <item name="android:windowLightStatusBar">@color/colorPrimaryDark</item>
     </style>
 
     <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">

@@ -11,9 +11,17 @@ import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_WHOLE_SCOR
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val sharedPreferences = getSharedPreferences(SplashActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
+        val theme = getSharedPreferences(SplashActivity.APP_PREFERENCES, Context.MODE_PRIVATE).getString("theme","Light")
+        if(theme == "Dark"){
+            setTheme(R.style.DarkTheme)
+        } else {
+            setTheme(R.style.LightTheme)
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        val sharedPreferences = getSharedPreferences(SplashActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
         val score = sharedPreferences.getInt(APP_PREFERENCES_WHOLE_SCORE,0)
 
         btn_settings_sign_Out.setOnClickListener {
@@ -37,7 +45,21 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
+        btn_themechange.setOnClickListener {
+            val theme = sharedPreferences.getString("theme","Light")
+            if(theme == "Dark"){
+                sharedPreferences.edit().putString("theme","Light").apply()
+                application.setTheme(R.style.LightTheme)
+            } else {
+                sharedPreferences.edit().putString("theme","Dark").apply()
+                application.setTheme(R.style.DarkTheme)
+            }
+            recreate()
+        }
+
         iv_settings_back_to_menu.setOnClickListener {
+            val intent = Intent(this,MainMenuActivity::class.java)
+            startActivity(intent)
             finish()
         }
         //когда сеть будет, отсюда можно что нибудь с хостами я хз

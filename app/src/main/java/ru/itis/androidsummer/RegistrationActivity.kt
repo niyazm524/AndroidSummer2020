@@ -12,9 +12,17 @@ import ru.itis.androidsummer.SplashActivity.Companion.APP_PREFERENCES_SCORE
 
 class RegistrationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val sharedPreferences = getSharedPreferences(SplashActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
+        val theme = getSharedPreferences(SplashActivity.APP_PREFERENCES, Context.MODE_PRIVATE).getString("theme","Light")
+        if(theme == "Dark"){
+            setTheme(R.style.DarkTheme)
+        } else {
+            setTheme(R.style.LightTheme)
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
-        val sharedPreferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         btn_registration_correct.setOnClickListener {
             val edit = sharedPreferences.edit()
             var correctName = false

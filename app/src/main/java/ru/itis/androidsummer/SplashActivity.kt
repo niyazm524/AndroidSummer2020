@@ -10,11 +10,20 @@ class SplashActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val sharedPreferences = getSharedPreferences(SplashActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
+        val theme = getSharedPreferences(SplashActivity.APP_PREFERENCES, Context.MODE_PRIVATE).getString("theme","Light")
+        if(theme == "Dark"){
+            setTheme(R.style.DarkTheme)
+        } else {
+            setTheme(R.style.LightTheme)
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        sharedPreferences =
-            getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         val name = sharedPreferences.getString(APP_PREFERENCES_REGISTRATION,null)
+
+
         if(!name.isNullOrEmpty()){
             startActivity(Intent(this, MainMenuActivity::class.java))
         } else{
