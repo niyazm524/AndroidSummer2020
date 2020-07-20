@@ -1,7 +1,7 @@
 package ru.itis.androidsummer.simpleBot
 
 class SingleplayerBot(val name: String, private val difficult: Int) {
-    var countdown = 5
+    var countdown = 8
     fun getDifficult(): String {
         return when (difficult) {
             0 -> "Легко"

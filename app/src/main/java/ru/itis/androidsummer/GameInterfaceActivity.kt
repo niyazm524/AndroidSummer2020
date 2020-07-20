@@ -501,7 +501,7 @@ class GameInterfaceActivity : AppCompatActivity() {
         rvPrice = 0
         et_enterAnswer.setText("")
         botHelpAnswer = false
-        bot.countdown = 5
+        bot.countdown = 8
     }
 
     @SuppressLint("SetTextI18n")
