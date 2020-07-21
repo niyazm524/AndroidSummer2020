@@ -9,37 +9,52 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <service android:name=".net.server.ServerService" />
-        <activity android:name=".SplashActivity"
+
+
+        <activity android:name=".FinalActivity"></activity>
+        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".SplashActivity"
+
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistrationActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity android:name=".MainMenuActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".ProfileActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity android:name=".GameInterfaceActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity android:name=".HelpActivity"
-            android:screenOrientation="portrait">
 
         </activity>
         <activity android:name=".net.LobbyActivity"
             android:screenOrientation="portrait">
 
         </activity>
+
+        <activity
+            android:name=".RegistrationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainMenuActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GameInterfaceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HelpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SingleMultiActivity"
+            android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>

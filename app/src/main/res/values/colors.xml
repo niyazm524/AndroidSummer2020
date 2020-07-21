@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ece5ef</color>
-    <color name="colorPrimaryDark">#B31919</color>
-    <color name="colorAccent">#914343</color>
+
+    <color name="colorPrimary">#F5F6E5FA</color>
+    <color name="colorUp">#D8D3D8</color>
+    <color name="colorBackground">#EBF3F0</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="textColorPrimary">#FCFFFCF9</color>
+    <color name="colorAccent">#5A4391</color>
+
     <color name="colorQuestionItemBackground">#8C9EFF</color>
     <color name="colorQuestionItemBorder">#943D5AFE</color>
     <color name="justBlack">#0B0000</color>
+    <color name="shadowColor">#706C6C</color>
+    <color name="cell">#F59E69AA</color>
+    <color name="end">#F5E64E4E</color>
+    <color name="vs">#F5780707</color>
 </resources>

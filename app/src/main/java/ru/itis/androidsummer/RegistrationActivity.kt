@@ -15,31 +15,34 @@ class RegistrationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
         val sharedPreferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        val edit = sharedPreferences.edit()
         btn_registration_correct.setOnClickListener {
-            val user = et_registration_users_name.text.toString()
+            val edit = sharedPreferences.edit()
+            var correctName = false
+            val user = et_registration_users_name.text.toString().trim()
             if (user.isNotEmpty()) {
                 edit.putString(APP_PREFERENCES_REGISTRATION, user).apply()
+                correctName = true
             } else {
-                edit.putString(
-                    APP_PREFERENCES_REGISTRATION,
-                    resources.getString(R.string.profile_text_default_name)
-                ).apply()
+                Toast.makeText(this, "Введи корректное имя!", Toast.LENGTH_SHORT).show()
             }
             if (!sharedPreferences.contains(APP_PREFERENCES_SCORE)) {
                 edit.putInt(APP_PREFERENCES_SCORE, 0).apply()
             }
-            Toast.makeText(
-                this,
-                resources.getString(R.string.registration_text_hello) +
-                        sharedPreferences.getString(
-                            APP_PREFERENCES_REGISTRATION,
-                            resources.getString(R.string.profile_text_default_name)
-                        ),
-                Toast.LENGTH_LONG
-            ).show()
-            startActivity(Intent(this, MainMenuActivity::class.java))
-            finish()
+            if (correctName) {
+                Toast.makeText(
+                    this,
+                    resources.getString(R.string.registration_text_hello) +
+                            sharedPreferences.getString(
+                                APP_PREFERENCES_REGISTRATION,
+                                "Если видете это, то значит тут баг!"
+                            ),
+                    Toast.LENGTH_LONG
+                ).show()
+                startActivity(Intent(this, MainMenuActivity::class.java))
+                finish()
+            }
         }
+
+
     }
 }

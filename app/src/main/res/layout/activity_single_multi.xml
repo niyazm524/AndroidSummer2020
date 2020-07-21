@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SingleMultiActivity">
+
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="64dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+
+            <Button
+                android:id="@+id/bn_pack1"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_marginTop="100sp"
+                android:background="@color/colorUp"
+                android:gravity="center"
+                android:text="@string/pack_setting_text_pack1"
+                android:textColor="@color/justBlack"
+                android:textSize="18sp"
+
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/bn_pack3"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_marginTop="30sp"
+                android:background="@color/colorUp"
+                android:textColor="@color/justBlack"
+                android:gravity="center"
+                android:text="@string/pack_setting_text_pack3"
+                android:textSize="18sp"
+
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/bn_pack5"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_marginTop="30sp"
+                android:background="@color/colorUp"
+                android:textColor="@color/justBlack"
+                android:gravity="center"
+                android:text="@string/pack_setting_text_pack5"
+                android:textSize="18sp"
+
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/bn_pack6"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_marginTop="30sp"
+                android:background="@color/colorUp"
+                android:textColor="@color/justBlack"
+                android:layout_marginBottom="32dp"
+                android:gravity="center"
+
+                android:text="@string/pack_setting_text_custom"
+                android:textSize="18sp"
+                android:visibility="invisible" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/iv_back_to_choose"
+        android:layout_width="79sp"
+        android:layout_height="84sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.048"
+        app:srcCompat="@drawable/arrow_left_24px" />
+
+    <Button
+        android:id="@+id/btn_sm_user_isChoose"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:background="@color/colorAccent"
+        android:clickable="false"
+        android:gravity="center"
+        android:text="@string/sm_button_user_isChoose"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+         />
+
+    <Button
+        android:id="@+id/btn_sm_hard"
+        android:layout_width="154sp"
+        android:layout_height="69sp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:text="Сложный"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.85" />
+
+    <Button
+        android:id="@+id/btn_sm_medium"
+        android:layout_width="154sp"
+        android:layout_height="69sp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:text="Средний"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.669" />
+
+    <Button
+        android:id="@+id/btn_sm_choose_single"
+        android:layout_width="154sp"
+        android:layout_height="69sp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:text="@string/sm_button_single"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.345" />
+
+    <Button
+        android:id="@+id/btn_sm_choose_multi"
+        android:layout_width="154sp"
+        android:layout_height="69sp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:text="@string/sm_button_multi"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.596" />
+
+    <TextView
+        android:id="@+id/tv_sm_text_for_user"
+        android:layout_width="0sp"
+        android:layout_height="142dp"
+        android:gravity="center"
+        android:text="@string/sm_text_choose_pack"
+        android:textColor="@color/justBlack"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.231" />
+
+    <Button
+        android:id="@+id/btn_sm_choose_pack"
+        android:layout_width="179dp"
+        android:layout_height="81dp"
+        android:layout_marginTop="74dp"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:text="@string/sm_button_choose_pack"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sm_text_for_user"
+        app:layout_constraintVertical_bias="0.024" />
+
+    <ImageView
+        android:id="@+id/iv_back_to_menu"
+        android:layout_width="79sp"
+        android:layout_height="84sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.048"
+        app:srcCompat="@drawable/arrow_left_24px" />
+
+
+    <ImageView
+        android:id="@+id/iv_back_to_pack_choose"
+        android:layout_width="79sp"
+        android:layout_height="84sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.048"
+        app:srcCompat="@drawable/arrow_left_24px" />
+
+    <Button
+        android:id="@+id/btn_sm_easy"
+        android:layout_width="154sp"
+        android:layout_height="69sp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:text="Легкий"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.489" />
+
+    <ImageView
+        android:id="@+id/iv_back_to_sm_choose"
+        android:layout_width="79sp"
+        android:layout_height="84sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.048"
+        app:srcCompat="@drawable/arrow_left_24px" />
+</androidx.constraintlayout.widget.ConstraintLayout>

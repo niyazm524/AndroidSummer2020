@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FinalActivity">
+
+    <TextView
+        android:id="@+id/tv_final_text"
+        android:layout_width="408dp"
+        android:layout_height="81dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="@color/end"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.456"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.093" />
+
+    <TextView
+        android:id="@+id/tv_final_user_score"
+        android:layout_width="143dp"
+        android:layout_height="174dp"
+        android:layout_marginTop="120dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="@color/justBlack"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.004"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.318"  />
+
+    <TextView
+        android:id="@+id/tv_final_bot_score"
+        android:layout_width="143dp"
+        android:layout_height="174dp"
+        android:layout_marginTop="120dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="@color/justBlack"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.996"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.318" />
+
+    <Button
+        android:id="@+id/btn_final_game_over"
+        android:layout_width="190dp"
+        android:layout_height="79dp"
+        android:layout_marginTop="135dp"
+        android:backgroundTint="@color/colorAccent"
+        android:text="Завершить игру"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.866" />
+
+    <TextView
+        android:id="@+id/tv_final_vs"
+        android:layout_width="95dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/faster_one"
+        android:gravity="center"
+        android:text="vs"
+        android:textColor="@color/vs"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_final_game_over"
+        app:layout_constraintEnd_toStartOf="@+id/tv_final_bot_score"
+        app:layout_constraintStart_toEndOf="@+id/tv_final_user_score"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.637" />
+</androidx.constraintlayout.widget.ConstraintLayout>

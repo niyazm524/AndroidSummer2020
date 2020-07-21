@@ -1,5 +1,6 @@
 package ru.itis.androidsummer
 
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -10,20 +11,22 @@ import kotlinx.android.synthetic.main.item_cell.*
 import ru.itis.androidsummer.data.Category
 import ru.itis.androidsummer.data.Question
 
-
 class QuestionsAdapter : RecyclerView.Adapter<CategoriesViewHolder>() {
     private val categories = ArrayList<Category>()
     private var itemClickListener: ((Question) -> Unit)? = null
 
+    var count = 0
 
     fun inputCategory(category: Category) {
         categories.add(category)
     }
 
-    fun inputList(category: List<Category>) {
+    fun inputList(category: List<Category>): Int  {
         category.forEach {
             inputCategory(it)
+            count += it.questions.size
         }
+        return count
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesViewHolder {
@@ -83,24 +86,36 @@ class CategoriesViewHolder(override val containerView: View) :
     RecyclerView.ViewHolder(containerView), LayoutContainer {
 
     fun bind(category: Category, index: Int?, listener: (Question) -> Unit) {
-        tv_help2.setOnClickListener {
+        tv_tableitem.setOnClickListener {
             if (index != null) {
                 category.questions.getOrNull(index)?.let { question ->
                     listener(question)
+                    question.isAnswer = true
                 }
-                tv_help2.visibility = View.INVISIBLE
+                tv_tableitem.visibility = View.GONE
+
             }
         }
 
-        tv_help2.textSize = 25F
         if (index != null) {
-            tv_help2.text = category.questions.getOrNull(index)?.price?.toString() ?: "n"
-            tv_help2.isClickable = true
-            tv_help2.setTextColor(Color.DKGRAY)
+            tv_tableitem.textSize = 26F
+            val question = category.questions.getOrNull(index)
+            if ((question != null)) {
+                if(!question.isAnswer) {
+                    tv_tableitem.text = question.price.toString()
+                    tv_tableitem.isClickable = true
+                    tv_tableitem.setTextColor(Color.WHITE)
+                }
+                else{
+                    tv_tableitem.visibility = View.GONE
+                }
+            } else{
+                tv_tableitem.visibility = View.GONE
+            }
         } else {
-            tv_help2.text = category.title
-            tv_help2.background = null
-            tv_help2.textSize = 14F
+            tv_tableitem.text = category.title
+            tv_tableitem.background = null
+            tv_tableitem.textSize = 16F
         }
     }
 
